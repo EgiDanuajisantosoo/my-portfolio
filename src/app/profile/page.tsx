@@ -7,34 +7,51 @@ type SpotifyTrack = {
   album: { images: { url: string }[] };
 };
 
-const accessToken = "PASTE_YOUR_ACCESS_TOKEN_HERE"; // Ganti dengan token Anda
-
 function SpotifyCurrentTrack() {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchCurrentTrack() {
+    async function fetchTokenAndTrack() {
       setLoading(true);
-      const res = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      setError(null);
 
-      if (res.status === 200) {
-        const data = await res.json();
-        setTrack(data.item);
-      } else {
+      try {
+        // Fetch the access token from your API
+        const tokenRes = await fetch("/api/spotify-token");
+        if (!tokenRes.ok) {
+          throw new Error("Gagal mendapatkan token Spotify");
+        }
+        const tokenData = await tokenRes.json();
+        const accessToken = tokenData.access_token;
+
+        // Fetch the current track from Spotify
+        const res = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (res.status === 200) {
+          const data = await res.json();
+          setTrack(data.item);
+        } else {
+          setTrack(null);
+        }
+      } catch (err: any) {
+        setError(err.message || "Terjadi kesalahan");
         setTrack(null);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
 
-    fetchCurrentTrack();
+    fetchTokenAndTrack();
   }, []);
 
   if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
   if (!track) return <div>Tidak ada lagu yang sedang diputar saat ini.</div>;
 
   return (
@@ -57,5 +74,3 @@ export default function Profile() {
     </div>
   );
 }
-
-
