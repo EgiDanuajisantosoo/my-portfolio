@@ -6,7 +6,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function SpotifyCurrentTrack() {
   const { data, error } = useSWR('/api/now-playing', fetcher, {
-    refreshInterval: 5000, // Ambil data baru setiap 5 detik
+    refreshInterval: 5000,
   });
 
   if (error) return <div>Gagal memuat data Spotify...</div>;

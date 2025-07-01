@@ -1,4 +1,3 @@
-// src/app/api/now-playing/route.ts
 import { NextResponse } from 'next/server';
 
 async function getAccessToken(client_id: string, client_secret: string, refresh_token: string) {
