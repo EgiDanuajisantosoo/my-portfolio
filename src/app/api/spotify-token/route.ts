@@ -1,43 +1,47 @@
-// src/app/api/spotify-token/route.ts
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const code = body.code;
-
-  if (!code) {
-    return NextResponse.json({ error: 'Code not provided' }, { status: 400 });
-  }
-
-  const client_id = process.env.SPOTIFY_CLIENT_ID!;
-  const client_secret = process.env.SPOTIFY_CLIENT_SECRET!;
-  const redirect_uri = process.env.SPOTIFY_REDIRECT_URI!;
-
-  const basicAuth = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
-
-  const params = new URLSearchParams();
-  params.append('grant_type', 'authorization_code');
-  params.append('code', code);
-  params.append('redirect_uri', redirect_uri);
-
+export async function POST(request: Request) {
   try {
+    const body = await request.json();
+    const { code } = body;
+
+    if (!code) {
+      return NextResponse.json(
+        { error: 'Code not provided' },
+        { status: 400 }
+      );
+    }
+
+    const client_id = process.env.SPOTIFY_CLIENT_ID;
+    const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+    const redirect_uri = 'https://my-portfolio-omega-livid-52.vercel.app/callback';
+
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
-        Authorization: `Basic ${basicAuth}`,
         'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization:
+          'Basic ' +
+          Buffer.from(client_id + ':' + client_secret).toString('base64'),
       },
-      body: params,
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        code: code,
+        redirect_uri: redirect_uri,
+      }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorBody = await response.text();
-      return new NextResponse(`Spotify Token Error: ${errorBody}`, { status: 500 });
+      return NextResponse.json(data, { status: response.status });
     }
 
-    const data = await response.json();
     return NextResponse.json(data);
-  } catch (err: any) {
-    return new NextResponse(`Internal Error: ${err.message}`, { status: 500 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }
