@@ -50,8 +50,14 @@ function SpotifyCurrentTrack() {
 
   // --- useEffect yang sudah diperbaiki ---
   useEffect(() => {
+    // Cleanup interval jika lagu tidak diputar
+    if (!data?.isPlaying) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
     // Selalu hentikan interval sebelumnya setiap kali effect ini berjalan.
-    // Ini mencegah beberapa timer berjalan secara bersamaan.
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
@@ -98,9 +104,13 @@ function SpotifyCurrentTrack() {
   if (error) return <Card><div>Gagal memuat data Spotify.</div></Card>;
   if (!data) return <Card><div>Loading...</div></Card>;
 
+  // Hitung persentase progress bar
   const progressPercentage = data.isPlaying && data.duration_ms
     ? (progress / data.duration_ms) * 100
     : 0;
+
+  // Jika lagu dipause, pastikan progress tidak bertambah
+  
 
   return (
     <Card>
