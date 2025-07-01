@@ -1,7 +1,7 @@
 'use client';
 
 import useSWR from 'swr';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // 🔊 Ikon Spotify
 const SpotifyIcon = () => (
@@ -43,21 +43,30 @@ function SpotifyCurrentTrack() {
   });
 
   const [progress, setProgress] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (data?.isPlaying && data.progress_ms != null) {
-      setProgress(data.progress_ms);
+  // Jika sedang memutar lagu
+  if (data?.isPlaying && data.progress_ms != null) {
+    setProgress(data.progress_ms);
 
-      const interval = setInterval(() => {
-        setProgress((prev) => {
-          const next = prev + 1000;
-          return next > data.duration_ms ? data.duration_ms : next;
-        });
-      }, 1000);
+    // Mulai timer
+    intervalRef.current = setInterval(() => {
+      setProgress((prev) => {
+        const next = prev + 1000;
+        return next > data.duration_ms ? data.duration_ms : next;
+      });
+    }, 1000);
+  }
 
-      return () => clearInterval(interval);
+  // Stop interval saat tidak memutar atau unmount
+  return () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
-  }, [data?.isPlaying, data?.progress_ms, data?.duration_ms]);
+  };
+}, [data?.isPlaying, data?.progress_ms, data?.duration_ms]);
 
   const Card = ({ children }: { children: React.ReactNode }) => (
     <div className="bg-[#2a273f] text-white rounded-lg p-4 w-full max-w-xs font-sans shadow-lg">
@@ -130,3 +139,5 @@ export default function Profile() {
     </main>
   );
 }
+// (Removed custom useRef implementation - now using React's useRef)
+
