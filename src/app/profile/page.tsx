@@ -1,4 +1,3 @@
-// src/app/profile/page.tsx
 'use client';
 
 import useSWR from 'swr';
@@ -42,33 +41,41 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function SpotifyCurrentTrack() {
   const { data, error } = useSWR('/api/now-playing', fetcher, {
-    refreshInterval: 5000,
+    // Periksa data baru setiap 2 detik agar lebih responsif
+    refreshInterval: 2000,
   });
 
   const [progress, setProgress] = useState(0);
 
   // --- useEffect yang sudah diperbaiki ---
   useEffect(() => {
-    // Hanya jalankan interval jika lagu sedang diputar.
-    if (data?.isPlaying) {
-      setProgress(data.progress_ms); // Set progress awal dari data API.
+    let timerId: NodeJS.Timeout | null = null;
 
-      const timerId = setInterval(() => {
+    if (data?.isPlaying) {
+      // Jika lagu sedang diputar, kita mulai timer.
+      setProgress(data.progress_ms); // Sinkronkan dengan progress dari server.
+      
+      timerId = setInterval(() => {
         // Update progress setiap detik.
-        setProgress((prev) => {
-          // Pastikan progress tidak melebihi durasi lagu.
-          if (prev >= data.duration_ms) {
-            return data.duration_ms;
-          }
-          return prev + 1000;
-        });
+        setProgress(currentProgress => currentProgress + 1000);
       }, 1000);
 
-      // Fungsi cleanup akan berjalan saat `data.isPlaying` berubah menjadi false
-      // atau saat komponen di-unmount. Ini adalah kunci untuk menghentikan timer.
-      return () => clearInterval(timerId);
+    } else {
+        // Jika lagu tidak diputar, kita tidak memulai timer.
+        // Cukup pastikan progress diatur ke posisi terakhir yang diketahui dari API.
+        setProgress(data?.progress_ms ?? 0);
     }
-  }, [data?.isPlaying, data?.progress_ms, data?.duration_ms]);
+
+    // Fungsi cleanup ini sangat penting. React akan menjalankannya
+    // setiap kali komponen di-unmount ATAU sebelum effect ini dijalankan lagi
+    // (misalnya saat `data` berubah). Ini memastikan kita tidak pernah memiliki
+    // beberapa timer yang berjalan bersamaan dan timer berhenti saat `isPlaying` menjadi false.
+    return () => {
+      if (timerId) {
+        clearInterval(timerId);
+      }
+    };
+  }, [data]); // Jalankan ulang effect ini setiap kali objek `data` dari SWR berubah.
 
 
   const Card = ({ children }: { children: React.ReactNode }) => (
@@ -86,8 +93,10 @@ function SpotifyCurrentTrack() {
   if (error) return <Card><div>Gagal memuat data Spotify.</div></Card>;
   if (!data) return <Card><div>Loading...</div></Card>;
 
+  // Batasi nilai progress agar tidak melebihi durasi lagu
+  const clampedProgress = Math.min(progress, data?.duration_ms ?? progress);
   const progressPercentage = data?.isPlaying && data?.duration_ms
-    ? (progress / data.duration_ms) * 100
+    ? (clampedProgress / data.duration_ms) * 100
     : 0;
 
   return (
@@ -121,7 +130,7 @@ function SpotifyCurrentTrack() {
                 />
               </div>
               <div className="flex justify-between text-xs text-gray-400 mt-1">
-                <span>{formatTime(progress)}</span>
+                <span>{formatTime(clampedProgress)}</span>
                 <span>{formatTime(data.duration_ms)}</span>
               </div>
             </>
