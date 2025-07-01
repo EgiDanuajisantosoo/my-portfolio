@@ -1,7 +1,8 @@
+// src/app/profile/page.tsx
 'use client';
 
 import useSWR from 'swr';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // --- Helper: Komponen Ikon Spotify (SVG) ---
 const SpotifyIcon = () => (
@@ -46,33 +47,33 @@ function SpotifyCurrentTrack() {
   });
 
   const [progress, setProgress] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // --- useEffect yang sudah diperbaiki ---
   useEffect(() => {
-    let timerId: NodeJS.Timeout | null = null;
-
-    if (data?.isPlaying) {
-      // Jika lagu sedang diputar, kita mulai timer.
-      setProgress(data.progress_ms); // Sinkronkan dengan progress dari server.
-      
-      timerId = setInterval(() => {
-        // Update progress setiap detik.
-        setProgress(currentProgress => currentProgress + 1000);
-      }, 1000);
-
-    } else {
-        // Jika lagu tidak diputar, kita tidak memulai timer.
-        // Cukup pastikan progress diatur ke posisi terakhir yang diketahui dari API.
-        setProgress(data?.progress_ms ?? 0);
+    // Selalu bersihkan interval sebelumnya untuk mencegah beberapa timer berjalan bersamaan.
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
     }
 
-    // Fungsi cleanup ini sangat penting. React akan menjalankannya
-    // setiap kali komponen di-unmount ATAU sebelum effect ini dijalankan lagi
-    // (misalnya saat `data` berubah). Ini memastikan kita tidak pernah memiliki
-    // beberapa timer yang berjalan bersamaan dan timer berhenti saat `isPlaying` menjadi false.
+    if (data?.isPlaying) {
+      // Jika lagu sedang diputar, set progress akurat dari API.
+      setProgress(data.progress_ms);
+      
+      // Mulai interval baru untuk menyimulasikan progress.
+      intervalRef.current = setInterval(() => {
+        setProgress(prev => prev + 1000);
+      }, 1000);
+    } else {
+      // Jika lagu tidak diputar, cukup set progress ke posisi terakhir yang diketahui.
+      // Interval sudah dibersihkan di atas, jadi tidak akan berjalan.
+      setProgress(data?.progress_ms ?? 0);
+    }
+
+    // Fungsi cleanup untuk saat komponen unmount.
     return () => {
-      if (timerId) {
-        clearInterval(timerId);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
       }
     };
   }, [data]); // Jalankan ulang effect ini setiap kali objek `data` dari SWR berubah.
