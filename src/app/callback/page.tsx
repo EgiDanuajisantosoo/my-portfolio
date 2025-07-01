@@ -1,56 +1,10 @@
-"use client";
+import { Suspense } from "react";
+import CallbackPage from "./CallbackPage";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-
-export default function CallbackPage() {
-  const searchParams = useSearchParams();
-  const [message, setMessage] = useState("Memproses otorisasi...");
-
-  useEffect(() => {
-    const code = searchParams.get("code");
-    const error = searchParams.get("error");
-
-    if (error) {
-      setMessage(`Error: ${error}`);
-      return;
-    }
-
-    if (code) {
-      setMessage(
-        "Otorisasi berhasil! Kode Anda telah diterima. Anda bisa menukar kode ini dengan Access Token."
-      );
-    // Kirim kode ke backend untuk ditukar dengan access token & refresh token
-    fetch('/api/spotify-token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ code }),
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-        const err = await res.text();
-        setMessage(`Gagal menukar kode: ${err}`);
-        return;
-        }
-        const data = await res.json();
-        setMessage("Token berhasil didapatkan! Silakan cek konsol untuk detail.");
-        console.log("Spotify Token Response:", data);
-      })
-      .catch((err) => {
-        setMessage(`Terjadi kesalahan: ${err.message}`);
-      });
-      console.log("Spotify Authorization Code:", code);
-    } else {
-      setMessage("Tidak menemukan kode otorisasi. Silakan coba lagi.");
-    }
-  }, [searchParams]);
-
+export default function Page() {
   return (
-    <div style={{ padding: "40px", fontFamily: "sans-serif" }}>
-      <h1>Status Otorisasi Spotify</h1>
-      <p>{message}</p>
-    </div>
+    <Suspense fallback={<div>Memuat callback...</div>}>
+      <CallbackPage />
+    </Suspense>
   );
 }
