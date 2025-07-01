@@ -11,6 +11,7 @@ const SpotifyIcon = () => (
   </svg>
 );
 
+
 // --- Helper: Fungsi untuk format waktu mm:ss ---
 const formatTime = (ms: number) => {
   if (!ms || ms < 0) return '0:00';
@@ -105,11 +106,17 @@ function SpotifyCurrentTrack() {
   if (!data) return <Card><div>Loading...</div></Card>;
 
   // Hitung persentase progress bar
-  const progressPercentage = data.isPlaying && data.duration_ms
-    ? (progress / data.duration_ms) * 100
-    : 0;
-
-  // Jika lagu dipause, pastikan progress tidak bertambah
+  const isProgressActive = !!data?.isPlaying;
+  let progressPercentage = 0;
+  if (isProgressActive) {
+    progressPercentage = data.isPlaying && data.duration_ms
+      ? (progress / data.duration_ms) * 100
+      : 0;
+  } else {
+    progressPercentage = 0;
+  }
+  
+  
   
 
   return (
