@@ -31,8 +31,9 @@ export default function CallbackPage() {
             return;
           }
           const data = await res.json();
-          setMessage("Token berhasil didapatkan! Silakan cek konsol untuk detail.");
+          setMessage("Token berhasil didapatkan! Mengarahkan ke profil...");
           console.log("Spotify Token Response:", data);
+          window.location.href = "/profile";
         })
         .catch((err) => {
           setMessage(`Terjadi kesalahan: ${err.message}`);
