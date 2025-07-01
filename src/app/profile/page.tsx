@@ -46,20 +46,27 @@ function SpotifyCurrentTrack() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-  // Jika sedang memutar lagu
-  if (data?.isPlaying && data.progress_ms != null) {
-    setProgress(data.progress_ms);
-
-    // Mulai timer
-    intervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        const next = prev + 1000;
-        return next > data.duration_ms ? data.duration_ms : next;
-      });
-    }, 1000);
+  // Hentikan interval jika tidak memutar lagu
+  if (!data?.isPlaying) {
+    setProgress(data?.progress_ms ?? 0);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    return;
   }
 
-  // Stop interval saat tidak memutar atau unmount
+  // Jika sedang memutar lagu
+  setProgress(data.progress_ms);
+
+  intervalRef.current = setInterval(() => {
+    setProgress((prev) => {
+      const next = prev + 1000;
+      return next > data.duration_ms ? data.duration_ms : next;
+    });
+  }, 1000);
+
+  // Cleanup saat unmount atau data berubah
   return () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
