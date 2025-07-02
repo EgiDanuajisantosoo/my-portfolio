@@ -146,9 +146,52 @@ function SpotifyCurrentTrack() {
 export default function Profile() {
   return (
     <main className="bg-gray-900 min-h-screen flex items-end justify-center p-4">
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
+      <div
+      className="fixed bottom-[-30px] left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md px-2"
+      tabIndex={0}
+      onClick={e => {
+        // Hanya aktifkan di mobile (max-width: 640px)
+        if (window.innerWidth <= 640) {
+        (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
+        }
+      }}
+      onBlur={e => {
+        if (window.innerWidth <= 640) {
+        (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
+        }
+      }}
+      onTouchEnd={e => {
+        if (window.innerWidth <= 640) {
+        (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
+        }
+      }}
+      onMouseEnter={e => {
+        // Aktifkan efek hover di desktop (min-width: 641px)
+        if (window.innerWidth > 640) {
+        (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
+        }
+      }}
+      onMouseLeave={e => {
+        if (window.innerWidth > 640) {
+        (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
+        }
+      }}
+      style={{}}
+      >
       <SpotifyCurrentTrack />
       </div>
+      <style jsx global>{`
+      @media (max-width: 640px) {
+        .!bottom-4 {
+        bottom: 1rem !important;
+        }
+      }
+      @media (min-width: 641px) {
+        .!bottom-4 {
+        bottom: 1rem !important;
+        }
+      }
+      `}</style>
     </main>
   );
 }
