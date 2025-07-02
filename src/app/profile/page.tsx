@@ -147,10 +147,9 @@ export default function Profile() {
   return (
     <main className="bg-gray-900 min-h-screen flex items-end justify-center p-4">
       <div
-      className="fixed bottom-[-30px] left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md px-2"
+      className="fixed bottom-[-100px] left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md px-2"
       tabIndex={0}
       onClick={e => {
-        // Hanya aktifkan di mobile (max-width: 640px)
         if (window.innerWidth <= 640) {
         (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
         }
