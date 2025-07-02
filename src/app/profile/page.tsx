@@ -145,8 +145,10 @@ function SpotifyCurrentTrack() {
 // --- Halaman Profil ---
 export default function Profile() {
   return (
-    <main className="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+    <main className="bg-gray-900 min-h-screen flex items-end justify-center p-4">
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
       <SpotifyCurrentTrack />
+      </div>
     </main>
   );
 }
