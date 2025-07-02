@@ -59,7 +59,7 @@ function SpotifyCurrentTrack() {
     if (data?.isPlaying) {
       // Jika lagu sedang diputar, set progress akurat dari API.
       setProgress(data.progress_ms);
-      
+
       // Mulai interval baru untuk menyimulasikan progress.
       intervalRef.current = setInterval(() => {
         setProgress(prev => prev + 1000);
@@ -85,7 +85,9 @@ function SpotifyCurrentTrack() {
         <p className="text-xs font-semibold text-gray-300 tracking-wider uppercase">
           {data?.isPlaying ? 'Listening to Spotify' : 'Last Played on Spotify'}
         </p>
-        <SpotifyIcon />
+        <a href="https://open.spotify.com/user/f9ui57alw48v8z4oba6z9hdde?si=1c9b19039d024d24" target="_blank" className='hover:cursor-pointer'>
+          <SpotifyIcon />
+        </a>
       </div>
       {children}
     </div>
@@ -147,37 +149,37 @@ export default function Profile() {
   return (
     <main className="bg-gray-900 min-h-screen flex items-end justify-center p-4">
       <div
-      className="fixed bottom-[-100px] left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md px-2"
-      tabIndex={0}
-      onClick={e => {
-        if (window.innerWidth <= 640) {
-        (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
-        }
-      }}
-      onBlur={e => {
-        if (window.innerWidth <= 640) {
-        (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
-        }
-      }}
-      onTouchEnd={e => {
-        if (window.innerWidth <= 640) {
-        (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
-        }
-      }}
-      onMouseEnter={e => {
-        // Aktifkan efek hover di desktop (min-width: 641px)
-        if (window.innerWidth > 640) {
-        (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
-        }
-      }}
-      onMouseLeave={e => {
-        if (window.innerWidth > 640) {
-        (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
-        }
-      }}
-      style={{}}
+        className="fixed bottom-[-100px] left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md px-2"
+        tabIndex={0}
+        onClick={e => {
+          if (window.innerWidth <= 640) {
+            (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
+          }
+        }}
+        onBlur={e => {
+          if (window.innerWidth <= 640) {
+            (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
+          }
+        }}
+        onTouchEnd={e => {
+          if (window.innerWidth <= 640) {
+            (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
+          }
+        }}
+        onMouseEnter={e => {
+          // Aktifkan efek hover di desktop (min-width: 641px)
+          if (window.innerWidth > 640) {
+            (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
+          }
+        }}
+        onMouseLeave={e => {
+          if (window.innerWidth > 640) {
+            (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
+          }
+        }}
+        style={{}}
       >
-      <SpotifyCurrentTrack />
+        <SpotifyCurrentTrack />
       </div>
       <style jsx global>{`
       @media (max-width: 640px) {
