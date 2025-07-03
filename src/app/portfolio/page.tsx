@@ -173,7 +173,7 @@ export default function Portfolio() {
       {/* tentang-saya */}
       <main
         id="tentang-saya"
-        className="bg-[#1e1e1e] min-h-screen flex items-center justify-center p-8 text-white relative z-0"
+        className="bg-[#162139] min-h-screen flex items-center justify-center p-8 text-white relative z-0"
       >
         <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
@@ -294,7 +294,7 @@ export default function Portfolio() {
       </main>
 
       {/* pengalaman-kerja */}
-      <main id='pengalaman-kerja' className="bg-[#1e1e1e] min-h-screen flex flex-col items-center justify-center text-center p-4 relative">
+      <main id='pengalaman-kerja' className="bg-[#162139] min-h-screen flex flex-col items-center justify-center text-center p-4 relative">
         <div className="text-white w-full max-w-3xl mx-auto">
           {/* Judul Utama */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase tracking-widest mb-10 sm:mb-14 md:mb-16">
