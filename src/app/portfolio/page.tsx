@@ -86,7 +86,7 @@ function SpotifyCurrentTrack() {
           {data?.isPlaying ? 'Listening to Spotify' : 'Last Played on Spotify'}
         </p>
         <a
-          href={data?.songUrl}
+          href={data?.songUrl || data?.external_urls?.spotify}
           target="_blank"
           rel="noopener noreferrer"
           className="hover:cursor-pointer"
