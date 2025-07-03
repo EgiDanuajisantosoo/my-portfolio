@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { useEffect,useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const navLinks = [
   { href: '#home', label: 'Home' },
@@ -11,24 +11,36 @@ const navLinks = [
   { href: '#rincian-proyek', label: 'Proyek & Sertifikasi' },
 ];
 
-
-
-
 export default function Navbar() {
   const [activeLink, setActiveLink] = useState('#home');
   const [menuOpen, setMenuOpen] = useState(false);
+  const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const handleScroll = () => {
+      let current = '#home';
+      for (const link of navLinks) {
+        const section = document.querySelector(link.href);
+        if (section) {
+          const rect = (section as HTMLElement).getBoundingClientRect();
+          if (rect.top <= 80) {
+            current = link.href;
+          }
+        }
+      }
+      setActiveLink(current);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <nav className="bg-[#2b2b2b] text-gray-400 fixed w-full z-10">
       <div className="flex items-center container mx-auto p-4 relative">
-        { }
         <div className="flex-grow border-b border-white h-px hidden sm:block"></div>
-
-        { }
         <button
           className="sm:hidden ml-auto text-gray-400 hover:text-white focus:outline-none"
           onClick={() => setMenuOpen((open) => !open)}
@@ -42,8 +54,6 @@ export default function Navbar() {
             )}
           </svg>
         </button>
-
-        {/* Navigation Links */}
         <ul
           className={`
             flex-col sm:flex-row sm:flex items-center space-y-4 sm:space-y-0 sm:space-x-8 ml-0 sm:ml-8
@@ -83,4 +93,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
