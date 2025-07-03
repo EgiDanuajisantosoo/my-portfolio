@@ -46,37 +46,27 @@ function SpotifyCurrentTrack() {
     refreshInterval: 2000,
   });
 
+  // State untuk progress tetap dibutuhkan untuk me-render bar
   const [progress, setProgress] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // --- useEffect yang sudah diperbaiki ---
+  // --- useEffect yang disederhanakan ---
   useEffect(() => {
-    // Selalu bersihkan interval sebelumnya untuk mencegah beberapa timer berjalan bersamaan.
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
+    // Langsung set progress dari data API setiap kali SWR me-refresh.
+    // Ini lebih akurat karena selalu menggunakan data server, baik saat lagu
+    // diputar maupun dijeda.
+    setProgress(data?.progress_ms ?? 0);
+  }, [data]); // Effect ini berjalan setiap kali 'data' diperbarui oleh SWR
 
-    if (data?.isPlaying) {
-      // Jika lagu sedang diputar, set progress akurat dari API.
-      setProgress(data.progress_ms);
 
-      // Mulai interval baru untuk menyimulasikan progress.
-      intervalRef.current = setInterval(() => {
-        setProgress(prev => prev + 1000);
-      }, 1000);
-    } else {
-      // Jika lagu tidak diputar, cukup set progress ke posisi terakhir yang diketahui.
-      // Interval sudah dibersihkan di atas, jadi tidak akan berjalan.
-      setProgress(data?.progress_ms ?? 0);
-    }
+  // (Removed duplicate Card declaration)
 
-    // Fungsi cleanup untuk saat komponen unmount.
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [data]); // Jalankan ulang effect ini setiap kali objek `data` dari SWR berubah.
+  // if (error) return <Card><div>Gagal memuat data Spotify.</div></Card>;
+  // if (!data) return <Card><div>Loading...</div></Card>;
+
+// Variabel untuk progress bar bisa langsung menggunakan state 'progress'
+// (progressPercentage will be declared later after clampedProgress)
+
+// (Remove the first return block here, as the correct one is below)
 
 
   const Card = ({ children }: { children: React.ReactNode }) => (
