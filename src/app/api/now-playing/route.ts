@@ -46,6 +46,9 @@ export async function GET() {
           album: { images: song.item.album.images },
           progress_ms: song.progress_ms,
           duration_ms: song.item.duration_ms,
+          played_at: song.timestamp,
+          external_urls: song.item.external_urls,
+          songUrl: song.item.external_urls.spotify,
         });
       }
     }
