@@ -1,4 +1,3 @@
-// src/app/profile/page.tsx
 'use client';
 
 import useSWR from 'swr';
@@ -144,10 +143,17 @@ function SpotifyCurrentTrack() {
   );
 }
 
-// --- Halaman Profil ---
-export default function Profile() {
+export default function Portfolio() {
   return (
-    <main className="bg-gray-900 min-h-screen flex items-end justify-center p-4">
+    <>
+      <main className="bg-gray-900 min-h-screen flex flex-col justify-between items-center p-4">
+        <div className="flex flex-col items-center justify-center flex-1">
+          <div className="text-center text-white">
+            <h1 className="text-2xl font-bold mb-2">Selamat Datang di Portfolio Saya</h1>
+            <p className="text-gray-400 text-sm">Ini adalah halaman Portfolio saya yang sederhana.</p>
+          </div>
+        </div>
+      </main>
       <div
         className="fixed bottom-[-100px] left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md px-2"
         tabIndex={0}
@@ -182,17 +188,17 @@ export default function Profile() {
         <SpotifyCurrentTrack />
       </div>
       <style jsx global>{`
-      @media (max-width: 640px) {
-        .!bottom-4 {
-        bottom: 1rem !important;
+        @media (max-width: 640px) {
+          .!bottom-4 {
+            bottom: 1rem !important;
+          }
         }
-      }
-      @media (min-width: 641px) {
-        .!bottom-4 {
-        bottom: 1rem !important;
+        @media (min-width: 641px) {
+          .!bottom-4 {
+            bottom: 1rem !important;
+          }
         }
-      }
       `}</style>
-    </main>
+    </>
   );
 }

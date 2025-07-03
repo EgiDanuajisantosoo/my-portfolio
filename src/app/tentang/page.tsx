@@ -1,4 +1,4 @@
-import SpotifyCurrentTrack from '../profile/page';
+import SpotifyCurrentTrack from '../portfolio/page';
 
 
 export default function Tentang() {
