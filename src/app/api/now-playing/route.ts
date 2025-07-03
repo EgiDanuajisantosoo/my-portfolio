@@ -54,30 +54,30 @@ export async function GET() {
     }
 
     // ❗ Tidak ada lagu aktif → Ambil terakhir diputar
-    // const recentlyPlayedRes = await fetch(
-    //   'https://api.spotify.com/v1/me/player/recently-played?limit=1',
-    //   {
-    //     headers: { Authorization: `Bearer ${accessToken}` },
-    //   }
-    // );
+    const recentlyPlayedRes = await fetch(
+      'https://api.spotify.com/v1/me/player/recently-played?limit=1',
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
 
-    // if (recentlyPlayedRes.ok) {
-    //   const data = await recentlyPlayedRes.json();
-    //   const item = data.items?.[0];
-    //   if (item) {
-    //     return NextResponse.json({
-    //       isPlaying: false,
-    //       name: item.track.name,
-    //       artists: item.track.artists.map((artist: any) => artist.name),
-    //       album: { images: item.track.album.images },
-    //       played_at: item.played_at,
-    //       duration_ms: item.track.duration_ms,
-    //       progress_ms: item.progress_ms,
-    //       external_urls: item.track.external_urls,
-    //       songUrl: item.track.external_urls.spotify,
-    //     });
-    //   }
-    // }
+    if (recentlyPlayedRes.ok) {
+      const data = await recentlyPlayedRes.json();
+      const item = data.items?.[0];
+      if (item) {
+        return NextResponse.json({
+          isPlaying: false,
+          name: item.track.name,
+          artists: item.track.artists.map((artist: any) => artist.name),
+          album: { images: item.track.album.images },
+          played_at: item.played_at,
+          duration_ms: item.track.duration_ms,
+          progress_ms: item.progress_ms,
+          external_urls: item.track.external_urls,
+          songUrl: item.track.external_urls.spotify,
+        });
+      }
+    }
 
     // return NextResponse.json({ isPlaying: false });
   } catch (error) {
