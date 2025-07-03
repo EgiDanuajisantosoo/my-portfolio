@@ -1,7 +1,7 @@
 'use client';
 
 import useSWR from 'swr';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 // --- Helper: Komponen Ikon Spotify (SVG) ---
@@ -42,31 +42,14 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function SpotifyCurrentTrack() {
   const { data, error } = useSWR('/api/now-playing', fetcher, {
-    // Periksa data baru setiap 2 detik agar lebih responsif
     refreshInterval: 2000,
   });
 
-  // State untuk progress tetap dibutuhkan untuk me-render bar
   const [progress, setProgress] = useState(0);
 
-  // --- useEffect yang disederhanakan ---
   useEffect(() => {
-    // Langsung set progress dari data API setiap kali SWR me-refresh.
-    // Ini lebih akurat karena selalu menggunakan data server, baik saat lagu
-    // diputar maupun dijeda.
     setProgress(data?.progress_ms ?? 0);
-  }, [data]); // Effect ini berjalan setiap kali 'data' diperbarui oleh SWR
-
-
-  // (Removed duplicate Card declaration)
-
-  // if (error) return <Card><div>Gagal memuat data Spotify.</div></Card>;
-  // if (!data) return <Card><div>Loading...</div></Card>;
-
-// Variabel untuk progress bar bisa langsung menggunakan state 'progress'
-// (progressPercentage will be declared later after clampedProgress)
-
-// (Remove the first return block here, as the correct one is below)
+  }, [data]);
 
 
   const Card = ({ children }: { children: React.ReactNode }) => (
@@ -140,14 +123,41 @@ function SpotifyCurrentTrack() {
 }
 
 export default function Portfolio() {
+  // Tambahkan state untuk filter dan data proyek/sertifikat
+  const [filter, setFilter] = useState<'all' | 'project' | 'certificate'>('all');
+
+  const items = [
+    {
+      type: 'project',
+      title: 'Website Portfolio',
+      desc: 'Portfolio pribadi menggunakan Next.js dan Tailwind CSS.',
+      image: '/images/me.png',
+      link: 'https://github.com/EgiDanuajisantosoo/my-portfolio',
+    },
+    {
+      type: 'certificate',
+      title: 'Sertifikat Laravel',
+      desc: 'Sertifikat pelatihan Laravel dari Dicoding.',
+      image: '/images/me.png',
+      link: 'https://www.dicoding.com/certificates/XXXXXX',
+    },
+    // Tambahkan item lain sesuai kebutuhan
+  ];
+
+  // Filter item sesuai tab yang dipilih
+  const filteredItems =
+    filter === 'all'
+      ? items
+      : items.filter((item) => item.type === filter);
+
   return (
     <>
       {/* home */}
       <main id='home' className="bg-gray-900 min-h-screen flex flex-col justify-between items-center p-4">
         <div className="flex flex-col items-center justify-center flex-1">
           <div className="text-center text-white">
-            <h1 className="text-5xl font-bold mb-2">Selamat Datang di Portfolio Saya</h1>
-            <p className="text-gray-400 text-1xl">Ini adalah halaman Portfolio saya yang sederhana.</p>
+            <h1 className="text-5xl font-bold mb-2">Selamat Datang di Web Portfolio Saya</h1>
+            <p className="text-gray-400 text-2xl">Ini adalah halaman Portfolio saya yang sederhana.</p>
           </div>
         </div>
         {/* Ikon tiga titik di bawah */}
@@ -170,13 +180,14 @@ export default function Portfolio() {
           {/* Kolom Kiri: Gambar dan Ikon */}
           {/* <div className="content flex"> */}
           <div className="flex flex-col items-center relative w-full">
-            <div className="w-[200px] h-72 rounded-full overflow-hidden flex justify-center items-center mx-auto">
+            <div className="w-[150px] h-[200px] sm:w-[250px] sm:h-[350px] md:w-[300px] md:h-[400px] lg:w-[320px] lg:h-[480px] rounded-full overflow-hidden flex justify-center items-center mx-auto">
               <Image
                 src="/images/me.png"
                 alt="Foto Profil Egi Danuajisantoso"
-                width={300}
-                height={300}
+                width={350}
+                height={350}
                 className="object-cover w-full h-full"
+                priority
               />
             </div>
             <div className="flex items-center gap-4 justify-center w-full mt-6 mb-2">
@@ -213,7 +224,7 @@ export default function Portfolio() {
           {/* Kolom Kanan: Teks Deskripsi */}
           <div className="flex flex-col justify-center">
             <div className="w-16 h-1 bg-gray-400 mb-4"></div>
-            <h1 className="text-4xl font-extrabold uppercase tracking-wider mb-6">
+            <h1 className="text-3xl font-extrabold uppercase tracking-wider mb-6">
               Tentang Saya
             </h1>
             <p className="text-gray-300 leading-relaxed mb-4">
@@ -254,7 +265,7 @@ export default function Portfolio() {
             {/* Entri 1: SMK */}
             <div className="px-2 sm:px-8">
               <h2 className="text-lg sm:text-xl font-bold tracking-wider text-white">
-                SMK TELEKOMUNIKASI TUNAS HARAPAN (2020 - 2023)
+                SMK TELEKOMUNIKASI TUNAS HARAPAN (<span className="text-xs sm:text-sm">2020 - 2023</span>)
               </h2>
               <p className="text-gray-400 tracking-wider text-sm sm:text-base">
                 Rekayasa Perangkat Lunak
@@ -264,7 +275,7 @@ export default function Portfolio() {
             {/* Entri 2: Universitas */}
             <div className="px-2 sm:px-8">
               <h2 className="text-lg sm:text-xl font-bold tracking-wider text-white">
-                TELKOM UNIVERSITY <span className="text-xs sm:text-sm">(Saat Ini)</span>
+                TELKOM UNIVERSITY (<span className="text-xs sm:text-sm">2023 - Saat Ini</span>)
               </h2>
               <p className="text-gray-400 tracking-wider text-sm sm:text-base">
                 D3 Rekayasa Perangkat Lunak Aplikasi
@@ -325,11 +336,67 @@ export default function Portfolio() {
 
       {/* rincian-proyek */}
       <main id='rincian-proyek' className="bg-gray-900 min-h-screen flex flex-col justify-between items-center p-4">
-        <div className="flex flex-col items-center justify-start flex-1 w-full">
+        <div className="flex items-center justify-start flex-1">
           <div className="text-center text-white mt-8">
-            <h1 className="text-2xl font-bold mb-2">Project & Sertifikasi</h1>
+            <h1 className="text-3xl font-bold mb-2">Project & Sertifikasi</h1>
             <p className="text-gray-400 text-sm">Ini adalah halaman Project & Sertifikasi saya</p>
           </div>
+        </div>
+        {/* Filter Tabs */}
+        <div className="flex justify-center gap-4 mt-5 mb-6">
+          <button
+            className={`px-4 py-2 rounded-full font-semibold transition-colors hover:cursor-pointer ${
+              filter === 'all'
+          ? 'bg-[#1ed760] text-white'
+          : 'bg-[#232136] text-gray-300 hover:bg-[#2a273f]'
+            }`}
+            onClick={() => setFilter('all')}
+          >
+            Semua
+          </button>
+          <button
+            className={`px-4 py-2 rounded-full font-semibold transition-colors hover:cursor-pointer ${
+              filter === 'project'
+          ? 'bg-[#1ed760] text-white'
+          : 'bg-[#232136] text-gray-300 hover:bg-[#2a273f]'
+            }`}
+            onClick={() => setFilter('project')}
+          >
+            Project
+          </button>
+          <button
+            className={`px-4 py-2 rounded-full font-semibold transition-colors hover:cursor-pointer ${
+              filter === 'certificate'
+          ? 'bg-[#1ed760] text-white'
+          : 'bg-[#232136] text-gray-300 hover:bg-[#2a273f]'
+            }`}
+            onClick={() => setFilter('certificate')}
+          >
+            Sertifikasi
+          </button>
+        </div>
+
+        <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {filteredItems.map((item, idx) => (
+            <div key={idx} className="bg-[#232136] rounded-lg shadow-lg p-5 flex flex-col items-center">
+              <Image
+          src={item.image}
+          alt={item.title}
+          width={200}
+          height={120}
+          className="rounded-md object-cover mb-4"
+              />
+              <h2 className="text-lg font-bold text-white mb-2">{item.title}</h2>
+              <p className="text-gray-300 text-sm mb-4 text-center">{item.desc}</p>
+              <a
+          href={item.link}
+          target="_blank"
+          className="text-[#1ed760] font-semibold hover:underline"
+              >
+          {item.type === 'certificate' ? 'Lihat Sertifikat' : 'Lihat Project'}
+              </a>
+            </div>
+          ))}
         </div>
         {/* Ikon tiga titik di bawah */}
         <div className="flex items-center gap-2 mt-6 justify-center">
