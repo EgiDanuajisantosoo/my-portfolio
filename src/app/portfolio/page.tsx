@@ -157,8 +157,8 @@ export default function Portfolio() {
       </div>
       {/* Ikon tiga titik di bawah */}
       <div className="absolute left-1/2 -translate-x-1/2 bottom-4 flex items-center gap-2 justify-center">
-        <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
         <div className="w-3 h-3 bg-white rounded-full"></div>
+        <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
         <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
         <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
         <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
@@ -293,8 +293,8 @@ export default function Portfolio() {
       <div className="absolute left-1/2 -translate-x-1/2 bottom-4 flex items-center gap-2 justify-center">
         <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
         <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
-        <div className="w-3 h-3 bg-white rounded-full"></div>
         <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+        <div className="w-3 h-3 bg-white rounded-full"></div>
         <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
       </div>
       </main>
@@ -320,67 +320,69 @@ export default function Portfolio() {
       {/* Spotify Current Track */}
       {/* Komponen SpotifyCurrentTrack */}
       <div
-        className="fixed left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md px-2 bottom-[-100px] sm:left-auto sm:right-4 sm:bottom-[-100px] sm:translate-x-0"
-        tabIndex={0}
-        onClick={e => {
-          if (window.innerWidth <= 640) {
+      className="fixed left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md px-2 bottom-[-100px] sm:left-auto sm:right-0 sm:bottom-[-100px] sm:translate-x-0"
+      tabIndex={0}
+      onClick={e => {
+        if (window.innerWidth <= 640) {
         (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
-          }
-        }}
-        onBlur={e => {
-          if (window.innerWidth <= 640) {
+        }
+      }}
+      onBlur={e => {
+        if (window.innerWidth <= 640) {
         (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
-          }
-        }}
-        onTouchEnd={e => {
-          if (window.innerWidth <= 640) {
+        }
+      }}
+      onTouchEnd={e => {
+        if (window.innerWidth <= 640) {
         (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
-          }
-        }}
-        onMouseEnter={e => {
-          // Aktifkan efek hover di desktop (min-width: 641px)
-          if (window.innerWidth > 640) {
+        }
+      }}
+      onMouseEnter={e => {
+        // Aktifkan efek hover di desktop (min-width: 641px)
+        if (window.innerWidth > 640) {
         (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
-          }
-        }}
-        onMouseLeave={e => {
-          if (window.innerWidth > 640) {
+        }
+      }}
+      onMouseLeave={e => {
+        if (window.innerWidth > 640) {
         (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
-          }
-        }}
-        style={{}}
+        }
+      }}
+      style={{}}
       >
-        <SpotifyCurrentTrack />
+      <SpotifyCurrentTrack />
       </div>
       <style jsx global>{`
-        @media (max-width: 640px) {
-          .!bottom-4 {
+      @media (max-width: 640px) {
+        .!bottom-4 {
         bottom: 1rem !important;
         left: 50% !important;
         right: auto !important;
         transform: translateX(-50%) !important;
-          }
         }
-        @media (min-width: 641px) {
-          .!bottom-4 {
+      }
+      @media (min-width: 641px) {
+        .!bottom-4 {
         bottom: 1rem !important;
         right: 1rem !important;
         left: auto !important;
         transform: none !important;
-          }
-          .fixed.sm\\:left-auto {
-        left: auto !important;
-          }
-          .fixed.sm\\:right-4 {
-        right: 1rem !important;
-          }
-          .fixed.sm\\:bottom-\\[-100px\\] {
-        bottom: -100px !important;
-          }
-          .fixed.sm\\:translate-x-0 {
-        transform: none !important;
-          }
         }
+      }
+      @media (min-width: 641px) {
+        .fixed.sm\\:left-auto {
+        left: auto !important;
+        }
+        .fixed.sm\\:right-4 {
+        right: 1rem !important;
+        }
+        .fixed.sm\\:bottom-\\[-100px\\] {
+        bottom: -100px !important;
+        }
+        .fixed.sm\\:translate-x-0 {
+        transform: none !important;
+        }
+      }
       `}</style>
     </>
   );
