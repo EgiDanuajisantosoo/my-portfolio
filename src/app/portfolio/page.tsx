@@ -2,6 +2,7 @@
 
 import useSWR from 'swr';
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 
 // --- Helper: Komponen Ikon Spotify (SVG) ---
 const SpotifyIcon = () => (
@@ -146,14 +147,178 @@ function SpotifyCurrentTrack() {
 export default function Portfolio() {
   return (
     <>
-      <main className="bg-gray-900 min-h-screen flex flex-col justify-between items-center p-4">
+      {/* home */}
+      <main id='home' className="bg-gray-900 min-h-screen flex flex-col justify-between items-center p-4">
+        <div className="flex flex-col items-center justify-center flex-1">
+          <div className="text-center text-white">
+            <h1 className="text-5xl font-bold mb-2">Selamat Datang di Portfolio Saya</h1>
+            <p className="text-gray-400 text-sm">Ini adalah halaman Portfolio saya yang sederhana.</p>
+          </div>
+        </div>
+        {/* Ikon tiga titik di bawah */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-4 flex items-center gap-2 justify-center">
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-white rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+        </div>
+      </main>
+
+      {/* tentang-saya */}
+      <main
+        id="tentang-saya"
+        className="bg-[#1e1e1e] min-h-screen flex items-center justify-center p-8 text-white relative z-0"
+      >
+        <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+          {/* Kolom Kiri: Gambar dan Ikon */}
+          {/* <div className="content flex"> */}
+          <div className="flex flex-col items-center md:items-start">
+            <div className="w-[200px] h-72 rounded-full overflow-hidden">
+              <Image
+                src="/images/me.png" // Ganti dengan path gambar Anda
+                alt="Foto Profil Egi Danuajisantoso"
+                width={300}
+                height={300}
+                className="object-cover w-full h-full"
+              />
+            </div>
+          </div>
+
+          {/* Kolom Kanan: Teks Deskripsi */}
+          <div className="flex flex-col justify-center">
+            <div className="w-16 h-1 bg-gray-400 mb-4"></div>
+            <h1 className="text-4xl font-extrabold uppercase tracking-wider mb-6">
+              Tentang Saya
+            </h1>
+            <p className="text-gray-300 leading-relaxed mb-4">
+              Saya adalah Egi Danuajisantoso seorang web developer yang bersemangat dan berdedikasi untuk terus berkembang dalam dunia pengembangan web. Saat ini, fokus utama saya adalah memperdalam keahlian dan mengoptimalkan penggunaan Laravel, framework PHP yang saya yakini sangat powerful dan efisien untuk membangun aplikasi web modern.
+            </p>
+            <p className="text-gray-300 leading-relaxed mb-4">
+              Dengan pengalaman yang saya miliki dalam menggunakan Laravel, saya telah berhasil mengembangkan berbagai proyek, mulai dari aplikasi manajemen konten sederhana hingga sistem yang lumayan kompleks dengan integrasi API. Saya selalu berusaha untuk menulis kode yang bersih, terstruktur, dan mudah dipelihara, mengikuti praktik terbaik (best practices) dalam pengembangan perangkat lunak.
+            </p>
+            <p className="text-gray-300 leading-relaxed">
+              Saya ingin bergabung dengan tim atau proyek yang memberikan kesempatan untuk belajar dari para ahli, berkolaborasi dalam solusi inovatif agar saya bisa mengukur kemampuan yang sudah saya pelajari.
+            </p>
+          </div>
+        </div>
+        {/* </div> */}
+        {/* Ikon tiga titik di bawah */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-4 flex items-center gap-2 justify-center">
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-white rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+        </div>
+      </main>
+
+      {/* pendidikan */}
+      <main
+        id="pendidikan"
+        className="bg-[#101828] min-h-screen flex flex-col items-center justify-center text-center p-4 relative"
+      >
+        <div className="text-white w-full max-w-3xl mx-auto">
+          {/* Judul Utama */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase tracking-widest mb-10 sm:mb-14 md:mb-16">
+        Pendidikan
+          </h1>
+
+          {/* Daftar Pendidikan */}
+          <div className="space-y-8 sm:space-y-10">
+        {/* Entri 1: SMK */}
+        <div className="px-2 sm:px-8">
+          <h2 className="text-lg sm:text-xl font-bold tracking-wider text-white">
+            SMK TELEKOMUNIKASI TUNAS HARAPAN
+          </h2>
+          <p className="text-gray-400 tracking-wider text-sm sm:text-base">
+            Rekayasa Perangkat Lunak
+          </p>
+        </div>
+
+        {/* Entri 2: Universitas */}
+        <div className="px-2 sm:px-8">
+          <h2 className="text-lg sm:text-xl font-bold tracking-wider text-white">
+            TELKOM UNIVERSITY <span className="text-xs sm:text-sm">(Saat Ini)</span>
+          </h2>
+          <p className="text-gray-400 tracking-wider text-sm sm:text-base">
+            D3 Rekayasa Perangkat Lunak Aplikasi
+          </p>
+        </div>
+          </div>
+        </div>
+        {/* Ikon tiga titik di bawah */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-4 flex items-center gap-2 justify-center">
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-white rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+        </div>
+      </main>
+
+      {/* pengalaman-kerja */}
+      <main id='pengalaman-kerja' className="bg-[#1e1e1e] min-h-screen flex flex-col items-center justify-center text-center p-4 relative">
+        <div className="text-white w-full max-w-3xl mx-auto">
+          {/* Judul Utama */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase tracking-widest mb-10 sm:mb-14 md:mb-16">
+        Pengalaman Kerja
+          </h1>
+
+          {/* Daftar Pendidikan */}
+          <div className="space-y-8 sm:space-y-10">
+        {/* Entri 1: SMK */}
+        <div className="px-2 sm:px-8">
+          <h2 className="text-lg sm:text-xl font-bold tracking-wider text-white">
+            MAGANG 3 BULAN SAAT SMK
+          </h2>
+          <p className="text-gray-400 tracking-wider text-sm sm:text-base">
+            {/* Rekayasa Perangkat Lunak */}
+          </p>
+        </div>
+
+        {/* Entri 2: Universitas */}
+        <div className="px-2 sm:px-8">
+          <h2 className="text-lg sm:text-xl font-bold tracking-wider text-white">
+            {/* TELKOM UNIVERSITY <span className="text-xs sm:text-sm">(Saat Ini)</span> */}
+          </h2>
+          <p className="text-gray-400 tracking-wider text-sm sm:text-base">
+            {/* D3 Rekayasa Perangkat Lunak Aplikasi */}
+          </p>
+        </div>
+          </div>
+        </div>
+        {/* Ikon tiga titik di bawah */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-4 flex items-center gap-2 justify-center">
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-white rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+        </div>
+      </main>
+
+      {/* rincian-proyek */}
+      <main id='rincian-proyek' className="bg-gray-900 min-h-screen flex flex-col justify-between items-center p-4">
         <div className="flex flex-col items-center justify-center flex-1">
           <div className="text-center text-white">
             <h1 className="text-2xl font-bold mb-2">Selamat Datang di Portfolio Saya</h1>
             <p className="text-gray-400 text-sm">Ini adalah halaman Portfolio saya yang sederhana.</p>
           </div>
         </div>
+        {/* Ikon tiga titik di bawah */}
+        <div className="flex items-center gap-2 mt-6 justify-center">
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-white rounded-full"></div>
+        </div>
       </main>
+
+      {/* Spotify Current Track */}
+      {/* Komponen SpotifyCurrentTrack */}
       <div
         className="fixed bottom-[-100px] left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs sm:max-w-sm md:max-w-md px-2"
         tabIndex={0}

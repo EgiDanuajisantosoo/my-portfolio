@@ -1,27 +1,34 @@
 "use client";
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect,useState } from 'react';
 
 const navLinks = [
   { href: '#home', label: 'Home' },
-  { href: '#pengalaman-kerja', label: 'Pengalaman Kerja' },
-  { href: '#pendidikan', label: 'Pendidikan' },
   { href: '#tentang-saya', label: 'Tentang Saya' },
-  { href: '#rincian-proyek', label: 'Rincian Proyek' },
+  { href: '#pendidikan', label: 'Pendidikan' },
+  { href: '#pengalaman-kerja', label: 'Pengalaman Kerja' },
+  { href: '#rincian-proyek', label: 'Proyek & Sertifikasi' },
 ];
+
+
+
 
 export default function Navbar() {
   const [activeLink, setActiveLink] = useState('#home');
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <nav className="bg-[#2b2b2b] text-gray-400 fixed w-full">
+    <nav className="bg-[#2b2b2b] text-gray-400 fixed w-full z-10">
       <div className="flex items-center container mx-auto p-4 relative">
-        {}
+        { }
         <div className="flex-grow border-b border-white h-px hidden sm:block"></div>
 
-        {}
+        { }
         <button
           className="sm:hidden ml-auto text-gray-400 hover:text-white focus:outline-none"
           onClick={() => setMenuOpen((open) => !open)}
@@ -52,15 +59,19 @@ export default function Navbar() {
               <li key={link.href} className="w-full sm:w-auto text-center">
                 <Link
                   href={link.href}
-                  onClick={() => {
+                  onClick={e => {
+                    e.preventDefault();
                     setActiveLink(link.href);
                     setMenuOpen(false);
+                    const el = document.querySelector(link.href);
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                    }
                   }}
-                  className={`block py-2 sm:py-0 text-sm tracking-wider transition-colors duration-300 ${
-                    isActive
+                  className={`block py-2 sm:py-0 text-sm tracking-wider transition-colors duration-300 ${isActive
                       ? 'text-white border-b-2 border-white pb-1'
                       : 'hover:text-white'
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -72,3 +83,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
