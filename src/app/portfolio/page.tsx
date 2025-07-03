@@ -245,6 +245,22 @@ export default function Portfolio() {
                 </a>
               </div>
             </div>
+            <div className="flex flex-col items-center justify-center w-full mt-6 mb-2 px-2 sm:px-0">
+              <div className="flex items-center gap-2 mb-2 flex-wrap justify-center">
+              <span className="inline-block w-8 h-1 bg-gradient-to-r from-[#1ed760] to-[#23a455] rounded-full"></span>
+              <h6 className="text-base sm:text-lg font-bold text-[#1ed760] uppercase tracking-wider drop-shadow">
+                Motto
+              </h6>
+              <span className="inline-block w-8 h-1 bg-gradient-to-l from-[#1ed760] to-[#23a455] rounded-full"></span>
+              </div>
+              <blockquote className="relative bg-[#1ed760]/10 border-l-4 border-[#1ed760] px-3 py-3 sm:px-6 rounded-md shadow-md max-w-xs sm:max-w-sm md:max-w-md text-center">
+              <span className="text-xl sm:text-2xl text-[#1ed760] font-bold leading-none mr-1">“</span>
+              <span className="italic text-white font-semibold text-sm sm:text-base tracking-wide break-words">
+                Hidup itu pilihan, jadi setiap keputusan yang Anda pilih menentukan kehidupan Anda...
+              </span>
+              <span className="text-xl sm:text-2xl text-[#1ed760] font-bold leading-none ml-1">”</span>
+              </blockquote>
+            </div>
           </div>
 
           {/* Kolom Kanan: Teks Deskripsi */}
