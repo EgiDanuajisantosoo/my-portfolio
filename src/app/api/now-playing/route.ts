@@ -1,5 +1,6 @@
 // src/app/api/now-playing/route.ts
 import { NextResponse } from 'next/server';
+import { it } from 'node:test';
 
 async function getAccessToken(client_id: string, client_secret: string, refresh_token: string) {
   const response = await fetch('https://accounts.spotify.com/api/token', {
@@ -68,6 +69,9 @@ export async function GET() {
           album: { images: item.track.album.images },
           played_at: item.played_at,
           duration_ms: item.track.duration_ms,
+          progress_ms: item.progress_ms,
+          external_urls: item.track.external_urls,
+          songUrl: item.track.external_urls.spotify,
         });
       }
     }
