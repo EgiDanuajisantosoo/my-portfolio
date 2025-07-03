@@ -85,7 +85,12 @@ function SpotifyCurrentTrack() {
         <p className="text-xs font-semibold text-gray-300 tracking-wider uppercase">
           {data?.isPlaying ? 'Listening to Spotify' : 'Last Played on Spotify'}
         </p>
-        <a href="https://open.spotify.com/user/f9ui57alw48v8z4oba6z9hdde?si=1c9b19039d024d24" target="_blank" className='hover:cursor-pointer'>
+        <a
+          href={data?.songUrl || "https://open.spotify.com/user/f9ui57alw48v8z4oba6z9hdde?si=1c9b19039d024d24"}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:cursor-pointer"
+        >
           <SpotifyIcon />
         </a>
       </div>
@@ -152,7 +157,7 @@ export default function Portfolio() {
         <div className="flex flex-col items-center justify-center flex-1">
           <div className="text-center text-white">
             <h1 className="text-5xl font-bold mb-2">Selamat Datang di Portfolio Saya</h1>
-            <p className="text-gray-400 text-sm">Ini adalah halaman Portfolio saya yang sederhana.</p>
+            <p className="text-gray-400 text-1xl">Ini adalah halaman Portfolio saya yang sederhana.</p>
           </div>
         </div>
         {/* Ikon tiga titik di bawah */}
@@ -184,7 +189,6 @@ export default function Portfolio() {
                 className="object-cover w-full h-full"
               />
             </div>
-            {/* Ikon tiga titik di bawah, posisinya di tengah gambar */}
             <div className="flex items-center gap-4 justify-center w-full mt-6 mb-2">
               <div className="w-6 h-6 flex items-center justify-center">
                 <a href="https://www.instagram.com/egi_danuajisantoso" target="_blank">
@@ -192,15 +196,20 @@ export default function Portfolio() {
                 </a>
               </div>
               <div className="w-6 h-6 flex items-center justify-center">
+                <a href="https://github.com/EgiDanuajisantosoo" target="_blank">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 256 256"><g fill="none"><rect width={256} height={256} fill="#f4f2ed" rx={60}></rect><path fill="#161614" d="M128.001 30C72.779 30 28 74.77 28 130.001c0 44.183 28.653 81.667 68.387 94.89c4.997.926 6.832-2.169 6.832-4.81c0-2.385-.093-10.262-.136-18.618c-27.82 6.049-33.69-11.799-33.69-11.799c-4.55-11.559-11.104-14.632-11.104-14.632c-9.073-6.207.684-6.079.684-6.079c10.042.705 15.33 10.305 15.33 10.305c8.919 15.288 23.394 10.868 29.1 8.313c.898-6.464 3.489-10.875 6.349-13.372c-22.211-2.529-45.56-11.104-45.56-49.421c0-10.918 3.906-19.839 10.303-26.842c-1.039-2.519-4.462-12.69.968-26.464c0 0 8.398-2.687 27.508 10.25c7.977-2.215 16.531-3.326 25.03-3.364c8.498.038 17.06 1.149 25.051 3.365c19.087-12.939 27.473-10.25 27.473-10.25c5.443 13.773 2.019 23.945.98 26.463c6.412 7.003 10.292 15.924 10.292 26.842c0 38.409-23.394 46.866-45.662 49.341c3.587 3.104 6.783 9.189 6.783 18.519c0 13.38-.116 24.149-.116 27.443c0 2.661 1.8 5.779 6.869 4.797C199.383 211.64 228 174.169 228 130.001C228 74.771 183.227 30 128.001 30M65.454 172.453c-.22.497-1.002.646-1.714.305c-.726-.326-1.133-1.004-.898-1.502c.215-.512.999-.654 1.722-.311c.727.326 1.141 1.01.89 1.508m4.919 4.389c-.477.443-1.41.237-2.042-.462c-.654-.697-.777-1.629-.293-2.078c.491-.442 1.396-.235 2.051.462c.654.706.782 1.631.284 2.078m3.374 5.616c-.613.426-1.615.027-2.234-.863c-.613-.889-.613-1.955.013-2.383c.621-.427 1.608-.043 2.236.84c.611.904.611 1.971-.015 2.406m5.707 6.504c-.548.604-1.715.442-2.57-.383c-.874-.806-1.118-1.95-.568-2.555c.555-.606 1.729-.435 2.59.383c.868.804 1.133 1.957.548 2.555m7.376 2.195c-.242.784-1.366 1.14-2.499.807c-1.13-.343-1.871-1.26-1.642-2.052c.235-.788 1.364-1.159 2.505-.803c1.13.341 1.871 1.252 1.636 2.048m8.394.932c.028.824-.932 1.508-2.121 1.523c-1.196.027-2.163-.641-2.176-1.452c0-.833.939-1.51 2.134-1.53c1.19-.023 2.163.639 2.163 1.459m8.246-.316c.143.804-.683 1.631-1.864 1.851c-1.161.212-2.236-.285-2.383-1.083c-.144-.825.697-1.651 1.856-1.865c1.183-.205 2.241.279 2.391 1.097"></path></g></svg>
+                </a>
+              </div>
+              <div className="w-6 h-6 flex items-center justify-center">
                 <a href="https://www.linkedin.com/in/egi-danuajisantoso" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 128 128"><path fill="#0076b2" d="M116 3H12a8.91 8.91 0 0 0-9 8.8v104.42a8.91 8.91 0 0 0 9 8.78h104a8.93 8.93 0 0 0 9-8.81V11.77A8.93 8.93 0 0 0 116 3"></path><path fill="#fff" d="M21.06 48.73h18.11V107H21.06zm9.06-29a10.5 10.5 0 1 1-10.5 10.49a10.5 10.5 0 0 1 10.5-10.49m20.41 29h17.36v8h.24c2.42-4.58 8.32-9.41 17.13-9.41C103.6 47.28 107 59.35 107 75v32H88.89V78.65c0-6.75-.12-15.44-9.41-15.44s-10.87 7.36-10.87 15V107H50.53z"></path></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 128 128"><path fill="#0076b2" d="M116 3H12a8.91 8.91 0 0 0-9 8.8v104.42a8.91 8.91 0 0 0 9 8.78h104a8.93 8.93 0 0 0 9-8.81V11.77A8.93 8.93 0 0 0 116 3"></path><path fill="#fff" d="M21.06 48.73h18.11V107H21.06zm9.06-29a10.5 10.5 0 1 1-10.5 10.49a10.5 10.5 0 0 1 10.5-10.49m20.41 29h17.36v8h.24c2.42-4.58 8.32-9.41 17.13-9.41C103.6 47.28 107 59.35 107 75v32H88.89V78.65c0-6.75-.12-15.44-9.41-15.44s-10.87 7.36-10.87 15V107H50.53z"></path></svg>
 
                 </a>
               </div>
               <div className="w-6 h-6 flex items-center justify-center">
                 <a href="https://discord.com/users/688864050989367357" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 256 256"><g fill="none"><rect width={256} height={256} fill="#5865f2" rx={60}></rect><g clipPath="url(#skillIconsDiscord0)"><path fill="#fff" d="M197.308 64.797a165 165 0 0 0-40.709-12.627a.62.62 0 0 0-.654.31c-1.758 3.126-3.706 7.206-5.069 10.412c-15.373-2.302-30.666-2.302-45.723 0c-1.364-3.278-3.382-7.286-5.148-10.412a.64.64 0 0 0-.655-.31a164.5 164.5 0 0 0-40.709 12.627a.6.6 0 0 0-.268.23c-25.928 38.736-33.03 76.52-29.546 113.836a.7.7 0 0 0 .26.468c17.106 12.563 33.677 20.19 49.94 25.245a.65.65 0 0 0 .702-.23c3.847-5.254 7.276-10.793 10.217-16.618a.633.633 0 0 0-.347-.881c-5.44-2.064-10.619-4.579-15.601-7.436a.642.642 0 0 1-.063-1.064a86 86 0 0 0 3.098-2.428a.62.62 0 0 1 .646-.088c32.732 14.944 68.167 14.944 100.512 0a.62.62 0 0 1 .655.08a80 80 0 0 0 3.106 2.436a.642.642 0 0 1-.055 1.064a102.6 102.6 0 0 1-15.609 7.428a.64.64 0 0 0-.339.889a133 133 0 0 0 10.208 16.61a.64.64 0 0 0 .702.238c16.342-5.055 32.913-12.682 50.02-25.245a.65.65 0 0 0 .26-.46c4.17-43.141-6.985-80.616-29.571-113.836a.5.5 0 0 0-.26-.238M94.834 156.142c-9.855 0-17.975-9.047-17.975-20.158s7.963-20.158 17.975-20.158c10.09 0 18.131 9.127 17.973 20.158c0 11.111-7.962 20.158-17.973 20.158m66.456 0c-9.855 0-17.974-9.047-17.974-20.158s7.962-20.158 17.974-20.158c10.09 0 18.131 9.127 17.974 20.158c0 11.111-7.884 20.158-17.974 20.158"></path></g><defs><clipPath id="skillIconsDiscord0"><path fill="#fff" d="M28 51h200v154.93H28z"></path></clipPath></defs></g></svg>
-                
+                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 256 256"><g fill="none"><rect width={256} height={256} fill="#5865f2" rx={60}></rect><g clipPath="url(#skillIconsDiscord0)"><path fill="#fff" d="M197.308 64.797a165 165 0 0 0-40.709-12.627a.62.62 0 0 0-.654.31c-1.758 3.126-3.706 7.206-5.069 10.412c-15.373-2.302-30.666-2.302-45.723 0c-1.364-3.278-3.382-7.286-5.148-10.412a.64.64 0 0 0-.655-.31a164.5 164.5 0 0 0-40.709 12.627a.6.6 0 0 0-.268.23c-25.928 38.736-33.03 76.52-29.546 113.836a.7.7 0 0 0 .26.468c17.106 12.563 33.677 20.19 49.94 25.245a.65.65 0 0 0 .702-.23c3.847-5.254 7.276-10.793 10.217-16.618a.633.633 0 0 0-.347-.881c-5.44-2.064-10.619-4.579-15.601-7.436a.642.642 0 0 1-.063-1.064a86 86 0 0 0 3.098-2.428a.62.62 0 0 1 .646-.088c32.732 14.944 68.167 14.944 100.512 0a.62.62 0 0 1 .655.08a80 80 0 0 0 3.106 2.436a.642.642 0 0 1-.055 1.064a102.6 102.6 0 0 1-15.609 7.428a.64.64 0 0 0-.339.889a133 133 0 0 0 10.208 16.61a.64.64 0 0 0 .702.238c16.342-5.055 32.913-12.682 50.02-25.245a.65.65 0 0 0 .26-.46c4.17-43.141-6.985-80.616-29.571-113.836a.5.5 0 0 0-.26-.238M94.834 156.142c-9.855 0-17.975-9.047-17.975-20.158s7.963-20.158 17.975-20.158c10.09 0 18.131 9.127 17.973 20.158c0 11.111-7.962 20.158-17.973 20.158m66.456 0c-9.855 0-17.974-9.047-17.974-20.158s7.962-20.158 17.974-20.158c10.09 0 18.131 9.127 17.974 20.158c0 11.111-7.884 20.158-17.974 20.158"></path></g><defs><clipPath id="skillIconsDiscord0"><path fill="#fff" d="M28 51h200v154.93H28z"></path></clipPath></defs></g></svg>
+
                 </a>
               </div>
               <div className="w-7 h-7 flex items-center justify-center">
@@ -255,7 +264,7 @@ export default function Portfolio() {
             {/* Entri 1: SMK */}
             <div className="px-2 sm:px-8">
               <h2 className="text-lg sm:text-xl font-bold tracking-wider text-white">
-                SMK TELEKOMUNIKASI TUNAS HARAPAN
+                SMK TELEKOMUNIKASI TUNAS HARAPAN (2020 - 2023)
               </h2>
               <p className="text-gray-400 tracking-wider text-sm sm:text-base">
                 Rekayasa Perangkat Lunak
@@ -296,11 +305,11 @@ export default function Portfolio() {
             {/* Entri 1: SMK */}
             <div className="px-2 sm:px-8">
               <h2 className="text-lg sm:text-xl font-bold tracking-wider text-white">
-                MAGANG 3 BULAN SAAT SMK
+                MAGANG 3 BULAN (SAAT SMK)
               </h2>
-              <p className="text-gray-400 tracking-wider text-sm sm:text-base">
-                {/* Rekayasa Perangkat Lunak */}
-              </p>
+              <a href='' className="text-gray-400 tracking-wider text-sm sm:text-base">
+                PT. Adhikari Inovasi Indonesia
+              </a>
             </div>
 
             {/* Entri 2: Universitas */}
@@ -326,8 +335,8 @@ export default function Portfolio() {
 
       {/* rincian-proyek */}
       <main id='rincian-proyek' className="bg-gray-900 min-h-screen flex flex-col justify-between items-center p-4">
-        <div className="flex flex-col items-center justify-center flex-1">
-          <div className="text-center text-white">
+        <div className="flex flex-col items-center justify-start flex-1 w-full">
+          <div className="text-center text-white mt-8">
             <h1 className="text-2xl font-bold mb-2">Project & Sertifikasi</h1>
             <p className="text-gray-400 text-sm">Ini adalah halaman Project & Sertifikasi saya</p>
           </div>
