@@ -177,7 +177,20 @@ export default function Portfolio() {
       : items.filter((item) => item.type === filter);
 
   return (
-    <>
+<>
+<style jsx global>{`
+  html, body {
+    /* overflow: hidden; */
+    /* Gunakan ini agar scrollbar tetap ada, tapi tidak terlihat */
+    overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+`}</style>
+
       {/* home */}
       <main id='home' className="bg-gray-900 min-h-screen flex flex-col justify-between items-center p-4">
         <div className="flex flex-col items-center justify-center flex-1">
@@ -439,7 +452,7 @@ export default function Portfolio() {
             {/* Entri 1: SMK */}
             <div className="px-2 sm:px-8">
               <h2 className="text-lg sm:text-xl font-bold tracking-wider text-white">
-                MAGANG 3 BULAN (SAAT SMK)
+                MAGANG 3 BULAN (<span className="text-xs sm:text-sm">SAAT SMK</span>)
               </h2>
               <a href='' className="text-gray-400 tracking-wider text-sm sm:text-base">
                 PT. Adhikari Inovasi Indonesia
