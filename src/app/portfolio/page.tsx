@@ -56,7 +56,7 @@ function SpotifyCurrentTrack() {
     <div className="bg-[#0a0f1a] text-white rounded-lg p-4 w-full max-w-xs font-sans shadow-lg">
       <div className="flex justify-between items-center mb-4">
         <p className="text-xs font-semibold text-gray-300 tracking-wider uppercase">
-          {data?.isPlaying ? 'Listening to Spotify' : 'Last Played on Spotify'}
+          {data?.isPlaying ? 'Mendengarkan Spotify saat ini' : 'Terakhir Diputar di Spotify'}
         </p>
         <a
           href={data?.songUrl || data?.external_urls?.spotify}
@@ -129,17 +129,43 @@ export default function Portfolio() {
   const items = [
     {
       type: 'project',
-      title: 'Website Portfolio',
-      desc: 'Portfolio pribadi menggunakan Next.js dan Tailwind CSS.',
-      image: '/images/me.png',
-      link: 'https://github.com/EgiDanuajisantosoo/my-portfolio',
+      title: 'Website KontrakanKita',
+      desc: 'Teknologi: Laravel 12, MySQL, Google Client API (OAuth 2.0), Pusher,Tailwind',
+      image: '/proyek/kontrakanKita1.png',
+      image1: '/proyek/kontrakanKita2.png',
+      link: 'https://github.com/EgiDanuajisantosoo/KontrakanKita',
+    },
+    {
+      type: 'project',
+      title: 'Website UsahaKita',
+      desc: 'Teknologi: Laravel 11, MySQL,fillament, Tailwind',
+      image: '/proyek/usahaKita1.png',
+      image1: '/proyek/usahaKita1.png',
+      link: 'https://github.com/EgiDanuajisantosoo/pbw2_Tubes_UsahaKita',
+    },
+    {
+      type: 'project',
+      title: 'Website Rental Mobil',
+      desc: 'Tailwind,JavaScript,HTML,CSS,Aos.js',
+      image: '/proyek/rentCar1.png',
+      image1: '/proyek/rentCar2.png',
+      link: 'https://github.com/EgiDanuajisantosoo/RentCar',
     },
     {
       type: 'certificate',
-      title: 'Sertifikat Laravel',
-      desc: 'Sertifikat pelatihan Laravel dari Dicoding.',
-      image: '/images/me.png',
-      link: 'https://www.dicoding.com/certificates/XXXXXX',
+      title: 'Sertifikat Junor Web Developer',
+      desc: 'Sertifikat pelatihan Junor Web Developer dari Badan Nasional Sertifikasi Profesi.',
+      image: '/sertifikasi/juniorWebDev.png',
+      image1: '/null',
+      link: '/sertifikasi/juniorWebDev.png',
+    },
+    {
+      type: 'certificate',
+      title: 'Sertifikat Office Application',
+      desc: 'Sertifikat pelatihan Office Application dari Badan Nasional Sertifikasi Profesi.',
+      image: '/sertifikasi/OfficeApplication.png',
+      image1: '/null',
+      link: '/sertifikasi/OfficeApplication.png',
     },
     // Tambahkan item lain sesuai kebutuhan
   ];
@@ -386,6 +412,16 @@ export default function Portfolio() {
           height={120}
           className="rounded-md object-cover mb-4"
               />
+          {item.image1 !== '/null' && (
+            <Image
+              src={item.image1}
+              alt={item.title}
+              width={200}
+              height={120}
+              className="rounded-md object-cover mb-4"
+            />
+          )}
+              
               <h2 className="text-lg font-bold text-white mb-2">{item.title}</h2>
               <p className="text-gray-300 text-sm mb-4 text-center">{item.desc}</p>
               <a
