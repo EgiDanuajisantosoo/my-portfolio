@@ -76,7 +76,7 @@ export async function GET() {
       }
     }
 
-    // return NextResponse.json({ isPlaying: false });
+    return NextResponse.json({ isPlaying: false });
   } catch (error) {
     console.error('[Spotify API Error]', error);
     return NextResponse.json({ error: 'Failed to fetch data from Spotify' }, { status: 500 });
