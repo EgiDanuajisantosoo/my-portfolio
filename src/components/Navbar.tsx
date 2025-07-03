@@ -38,7 +38,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="bg-black text-gray-400 fixed w-full z-10">
+    <nav className="bg-[#0a0f1a] text-gray-400 fixed w-full z-10">
       <div className="flex items-center container mx-auto p-4 relative">
         <div className="flex-grow border-b border-white h-px hidden sm:block"></div>
         <button
