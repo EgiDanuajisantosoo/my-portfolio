@@ -140,7 +140,7 @@ export default function Portfolio() {
       title: 'Website UsahaKita',
       desc: 'Teknologi: Laravel 11, MySQL,fillament, Tailwind',
       image: '/proyek/usahaKita1.png',
-      image1: '/proyek/usahaKita1.png',
+      image1: '/proyek/usahaKita2.png',
       link: 'https://github.com/EgiDanuajisantosoo/pbw2_Tubes_UsahaKita',
     },
     {
