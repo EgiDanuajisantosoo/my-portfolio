@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from 'react';
 const navLinks = [
   { href: '#home', label: 'Home' },
   { href: '#tentang-saya', label: 'Tentang Saya' },
+  { href: '#keahlian', label: 'Keahlian' },
   { href: '#pendidikan', label: 'Pendidikan' },
   { href: '#pengalaman-kerja', label: 'Pengalaman Kerja' },
   { href: '#rincian-proyek', label: 'Proyek & Sertifikasi' },
