@@ -54,27 +54,24 @@ export async function GET() {
     }
 
     // ❗ Tidak ada lagu aktif → Ambil terakhir diputar
-    const recentlyPlayedRes = await fetch(
-      'https://api.spotify.com/v1/me/player/recently-played?limit=1',
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
+    // Coba ambil status player (bisa playing, paused, atau tidak ada track)
+    const playerRes = await fetch('https://api.spotify.com/v1/me/player', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
 
-    if (recentlyPlayedRes.ok) {
-      const data = await recentlyPlayedRes.json();
-      const item = data.items?.[0];
-      if (item) {
+    if (playerRes.ok) {
+      const player = await playerRes.json();
+      if (player && player.item) {
         return NextResponse.json({
-          isPlaying: false,
-          name: item.track.name,
-          artists: item.track.artists.map((artist: any) => artist.name),
-          album: { images: item.track.album.images },
-          played_at: item.played_at,
-          duration_ms: item.track.duration_ms,
-          progress_ms: item.progress_ms,
-          external_urls: item.track.external_urls,
-          songUrl: item.track.external_urls.spotify,
+          isPlaying: player.is_playing,
+          name: player.item.name,
+          artists: player.item.artists.map((artist: any) => artist.name),
+          album: { images: player.item.album.images },
+          progress_ms: player.progress_ms,
+          duration_ms: player.item.duration_ms,
+          played_at: player.timestamp,
+          external_urls: player.item.external_urls,
+          songUrl: player.item.external_urls.spotify,
         });
       }
     }
@@ -85,3 +82,4 @@ export async function GET() {
     return NextResponse.json({ error: 'Failed to fetch data from Spotify' }, { status: 500 });
   }
 }
+
