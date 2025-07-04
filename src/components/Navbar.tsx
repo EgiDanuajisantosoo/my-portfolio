@@ -8,7 +8,7 @@ const navLinks = [
   { href: '#tentang-saya', label: 'Tentang Saya' },
   { href: '#keahlian', label: 'Keahlian' },
   { href: '#pendidikan', label: 'Pendidikan' },
-  { href: '#pengalaman-kerja', label: 'Pengalaman Kerja' },
+  { href: '#pengalaman-kerja', label: 'Pengalaman' },
   { href: '#rincian-proyek', label: 'Proyek & Sertifikasi' },
 ];
 

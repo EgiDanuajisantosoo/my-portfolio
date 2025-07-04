@@ -444,7 +444,7 @@ export default function Portfolio() {
         <div className="text-white w-full max-w-3xl mx-auto">
           {/* Judul Utama */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase tracking-widest mb-10 sm:mb-14 md:mb-16">
-            Pengalaman Kerja
+            Pengalaman
           </h1>
 
           {/* Daftar Pendidikan */}
