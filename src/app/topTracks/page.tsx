@@ -164,7 +164,7 @@ export default function TopItemsPage() {
     };
 
     return (
-        <main className='bg-[#0a0a0a]'>
+        <main className='bg-[#0a0a0a] text-white'>
             <div className="w-full max-w-4xl mx-auto p-4">
                 <h1 className="text-3xl font-bold">Top Spotify Saya</h1>
                 <p className="text-neutral-400 mt-1">List artis dan lagu yang paling sering saya putar.</p>
