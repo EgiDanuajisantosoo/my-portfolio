@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
     if (!response.ok) {
       const errorData = await response.json();
       return NextResponse.json(
-        { error: 'Gagal mengambil data dari Spotify', details: errorData },
+        { error: 'Tidak ada data', details: errorData },
         { status: response.status }
       );
     }
