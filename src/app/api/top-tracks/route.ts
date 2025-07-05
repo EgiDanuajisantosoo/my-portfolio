@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 
 // Fungsi untuk mendapatkan access token menggunakan refresh token
-// (Diambil langsung dari contoh Anda)
 async function getAccessToken(client_id: string, client_secret: string, refresh_token: string) {
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
@@ -13,12 +12,10 @@ async function getAccessToken(client_id: string, client_secret: string, refresh_
       grant_type: 'refresh_token',
       refresh_token,
     }),
-    // Menambahkan cache: 'no-store' agar setiap request selalu baru
     cache: 'no-store',
   });
 
   const data = await response.json();
-  // Menambahkan penanganan jika refresh token tidak valid
   if (data.error) {
     console.error('Error refreshing token:', data.error_description);
     throw new Error(data.error_description);
@@ -28,7 +25,6 @@ async function getAccessToken(client_id: string, client_secret: string, refresh_
 
 // Endpoint utama
 export async function GET(request: NextRequest) {
-  // 1. Ambil kredensial dari environment variables
   const client_id = process.env.SPOTIFY_CLIENT_ID;
   const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
   const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
@@ -38,26 +34,25 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // 2. Dapatkan Access Token yang baru setiap kali ada permintaan
     const accessToken = await getAccessToken(client_id, client_secret, refresh_token);
 
-    // 3. Ambil query parameters dari URL (type, time_range, limit)
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') || 'tracks'; // 'tracks' atau 'artists'
     const time_range = searchParams.get('time_range') || 'medium_term';
-    const limit = searchParams.get('limit') || '10'; // Default limit 10
+    const limit = searchParams.get('limit') || '10';
 
-    // 4. Bangun URL untuk API Top Items Spotify
-    const TOP_ITEMS_ENDPOINT = `https://api.spotify.com/v1/me/top/${type}?time_range=${time_range}&limit=${limit}`;
+    // URL Spotify API yang benar untuk top tracks/artists
+    const api_url = new URL(`https://api.spotify.com/v1/me/top/${type}`);
+    api_url.searchParams.append('time_range', time_range);
+    api_url.searchParams.append('limit', limit);
 
-    // 5. Panggil API Spotify untuk mendapatkan data top items
-    const response = await fetch(TOP_ITEMS_ENDPOINT, {
+    const response = await fetch(api_url.toString(), {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
+      cache: 'no-store',
     });
 
-    // Jika respons dari Spotify tidak OK, teruskan errornya
     if (!response.ok) {
       const errorData = await response.json();
       return NextResponse.json(
@@ -66,7 +61,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Jika berhasil, kirimkan data kembali ke klien
     const data = await response.json();
     return NextResponse.json(data);
 

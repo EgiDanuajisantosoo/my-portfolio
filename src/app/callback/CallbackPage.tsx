@@ -33,7 +33,7 @@ export default function CallbackPage() {
           const data = await res.json();
           setMessage("Token berhasil didapatkan! Mengarahkan ke profil...");
           console.log("Spotify Token Response:", data);
-          window.location.href = "/profile";
+          // window.location.href = "/profile";
         })
         .catch((err) => {
           setMessage(`Terjadi kesalahan: ${err.message}`);

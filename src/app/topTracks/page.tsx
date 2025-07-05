@@ -53,33 +53,44 @@ export default function TopTracksPage() {
     if (loading) return <div>Loading top tracks...</div>;
     if (error) return <div>Error: {error}</div>;
 
+    if (!tracks.length) {
+        return <div>No top tracks found.</div>;
+    }
+
     return (
         <div>
             <h1 className="text-2xl font-bold mb-4">My Top Spotify Tracks</h1>
             <ul className="space-y-4">
-                {tracks.map((track, idx) => (
-                    <li key={track.id} className="flex items-center space-x-4">
-                        <span className="text-lg font-semibold">{idx + 1}.</span>
-                        <img
-                            src={track.album.images[1]?.url || track.album.images[0]?.url}
-                            alt={track.name}
-                            className="w-16 h-16 rounded"
-                        />
-                        <div>
-                            <a
-                                href={track.external_urls.spotify}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 hover:underline font-medium"
-                            >
-                                {track.name}
-                            </a>
-                            <div className="text-gray-600">
-                                {track.artists.map((a) => a.name).join(", ")} &mdash; {track.album.name}
+                {tracks.map((track, idx) => {
+                    // Ambil gambar album, jika tidak ada tampilkan placeholder
+                    const albumImage =
+                        track.album.images[1]?.url ||
+                        track.album.images[0]?.url ||
+                        "https://via.placeholder.com/64?text=No+Image";
+                    return (
+                        <li key={track.id} className="flex items-center space-x-4">
+                            <span className="text-lg font-semibold">{idx + 1}.</span>
+                            <img
+                                src={albumImage}
+                                alt={track.name}
+                                className="w-16 h-16 rounded bg-gray-200 object-cover"
+                            />
+                            <div>
+                                <a
+                                    href={track.external_urls.spotify}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 hover:underline font-medium"
+                                >
+                                    {track.name}
+                                </a>
+                                <div className="text-gray-600">
+                                    {track.artists.map((a) => a.name).join(", ")} &mdash; {track.album.name}
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                ))}
+                        </li>
+                    );
+                })}
             </ul>
         </div>
     );
