@@ -80,7 +80,7 @@ const TrackItem = ({ track }: { track: Track }) => {
         <li className="flex items-center gap-4 rounded p-2 transition-colors hover:bg-neutral-800">
             <img src={imageUrl} alt={track.name} className="h-16 w-16 rounded object-cover bg-neutral-700" />
             <div>
-                <p className="font-bold">{track.name}</p>
+                <p className="font-bold text-white">{track.name}</p>
                 <p className="text-sm text-neutral-400">{track.artists.map((artist: any) => artist.name).join(', ')}</p>
                 <a
                     href={spotifyUrl}
@@ -103,7 +103,7 @@ const ArtistItem = ({ artist }: { artist: Artist }) => {
         <li className="flex items-center gap-4 rounded p-2 transition-colors hover:bg-neutral-800">
             <img src={imageUrl} alt={artist.name} className="h-16 w-16 rounded-full object-cover bg-neutral-700" />
             <div>
-                <p className="font-bold">{artist.name}</p>
+                <p className="font-bold text-white">{artist.name}</p>
                 <p className="text-sm capitalize text-neutral-400">
                     {artist.genres?.join(', ') || 'No Genre'}
                 </p>
@@ -166,7 +166,7 @@ export default function TopItemsPage() {
     return (
         <main className='bg-[#0a0a0a] text-white'>
             <div className="w-full max-w-4xl mx-auto p-4">
-                <h1 className="text-3xl font-bold">Top Spotify Saya</h1>
+                <h1 className="text-3xl font-bold text-white">Top Spotify Saya</h1>
                 <p className="text-neutral-400 mt-1">List artis dan lagu yang paling sering saya putar.</p>
 
                 <FilterControls
