@@ -53,6 +53,12 @@ export async function GET(request: NextRequest) {
       cache: 'no-store',
     });
 
+    // if( limit === '0' ) {
+    //   return NextResponse.json({ error: 'Limit tidak boleh 0' }, { status: 400 });
+    // }else if(limit > '50') {
+    //   return NextResponse.json({ error: 'Limit tidak boleh lebih dari 50' }, { status: 400 });
+    // }
+
     if (!response.ok) {
       const errorData = await response.json();
       return NextResponse.json(

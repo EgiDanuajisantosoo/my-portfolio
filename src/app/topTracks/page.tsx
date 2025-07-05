@@ -19,8 +19,21 @@ type FilterControlsProps = {
 
 
 
-function FilterControls({ filter, onFilterChange, timeRange, onTimeRangeChange, limit, onLimitChange }: FilterControlsProps) {
+function FilterControls({
+    filter,
+    onFilterChange,
+    timeRange,
+    onTimeRangeChange,
+    limit,
+    onLimitChange,
+}: FilterControlsProps) {
     const baseButtonClass = 'px-4 py-2 rounded-full font-semibold transition-colors';
+    const [limitInput, setLimitInput] = useState<string>(limit.toString());
+
+    // Sinkronkan limit dari props saat berubah
+    useEffect(() => {
+        setLimitInput(limit.toString());
+    }, [limit]);
 
     return (
         <div className="sticky top-0 z-50 w-full bg-neutral-800/90 backdrop-blur-md p-4 border-b border-neutral-700 shadow">
@@ -42,27 +55,86 @@ function FilterControls({ filter, onFilterChange, timeRange, onTimeRangeChange, 
                 >
                     <option value="short_term">4 Minggu</option>
                     <option value="medium_term">6 Bulan</option>
-                    <option value="long_term">1 tahun</option>
+                    <option value="long_term">1 Tahun</option>
                 </select>
             </div>
 
             {/* Desktop Buttons */}
             <div className="hidden md:flex flex-wrap items-center gap-6 justify-between">
                 <div className="flex gap-3">
-                    <button onClick={() => onFilterChange('tracks')} className={`${baseButtonClass} ${filter === 'tracks' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}>Top Tracks</button>
-                    <button onClick={() => onFilterChange('artists')} className={`${baseButtonClass} ${filter === 'artists' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}>Top Artists</button>
+                    <button
+                        onClick={() => onFilterChange('tracks')}
+                        className={`${baseButtonClass} ${filter === 'tracks' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}
+                    >
+                        Top Tracks
+                    </button>
+                    <button
+                        onClick={() => onFilterChange('artists')}
+                        className={`${baseButtonClass} ${filter === 'artists' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}
+                    >
+                        Top Artists
+                    </button>
                 </div>
                 <div className="flex gap-3">
-                    <button onClick={() => onTimeRangeChange('short_term')} className={`${baseButtonClass} ${timeRange === 'short_term' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}>4 Minggu</button>
-                    <button onClick={() => onTimeRangeChange('medium_term')} className={`${baseButtonClass} ${timeRange === 'medium_term' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}>6 Bulan</button>
-                    <button onClick={() => onTimeRangeChange('long_term')} className={`${baseButtonClass} ${timeRange === 'long_term' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}>1 tahun</button>
+                    <button
+                        onClick={() => onTimeRangeChange('short_term')}
+                        className={`${baseButtonClass} ${timeRange === 'short_term' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}
+                    >
+                        4 Minggu
+                    </button>
+                    <button
+                        onClick={() => onTimeRangeChange('medium_term')}
+                        className={`${baseButtonClass} ${timeRange === 'medium_term' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}
+                    >
+                        6 Bulan
+                    </button>
+                    <button
+                        onClick={() => onTimeRangeChange('long_term')}
+                        className={`${baseButtonClass} ${timeRange === 'long_term' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}
+                    >
+                        1 Tahun
+                    </button>
                 </div>
             </div>
 
-            {/* Jumlah (Selalu tampil) */}
+            {/* Jumlah */}
             <div className="mt-4 flex items-center gap-3">
                 <label htmlFor="limit-input" className="text-sm text-neutral-400">Jumlah:</label>
-                <input id="limit-input" type="number" value={limit} onChange={(e) => onLimitChange(Number(e.target.value))} className="w-20 rounded border border-neutral-600 bg-neutral-700 p-2 text-center text-white" min="1" max="50" />
+                <input
+                    id="limit-input"
+                    type="number"
+                    value={limitInput}
+                    onChange={(e) => {
+                        let raw = e.target.value;
+
+                        // Hapus leading zero (misal '05' jadi '5', tapi '0' tetap '0')
+                        if (/^0\d/.test(raw)) {
+                            raw = raw.replace(/^0+/, '');
+                        }
+
+                        setLimitInput(raw);
+
+                        const num = Number(raw);
+                        if (!isNaN(num) && num >= 1 && num <= 50) {
+                            onLimitChange(num); // update ke parent langsung
+                        }
+                    }}
+                    onBlur={() => {
+                        const num = Number(limitInput);
+                        if (isNaN(num) || num < 1) {
+                            setLimitInput('1');
+                            onLimitChange(1);
+                        } else if (num > 50) {
+                            setLimitInput('50');
+                            onLimitChange(50);
+                        } else {
+                            // Tidak perlu setLimitInput di sini karena sudah valid
+                        }
+                    }}
+                    className="w-20 rounded border border-neutral-600 bg-neutral-700 p-2 text-center text-white"
+                    min="1"
+                    max="50"
+                />
             </div>
         </div>
     );
@@ -75,7 +147,7 @@ function FilterControls({ filter, onFilterChange, timeRange, onTimeRangeChange, 
 // Komponen Item
 const TrackItem = ({ track }: { track: Track }) => {
     const imageUrl = track.album?.images?.[0]?.url || 'https://place-hold.it/128x128?text=No+Image';
-    const spotifyUrl = track.external_urls?.spotify || '#'; 
+    const spotifyUrl = track.external_urls?.spotify || '#';
     return (
         <li className="flex items-center gap-4 rounded p-2 transition-colors hover:bg-neutral-800">
             <img src={imageUrl} alt={track.name} className="h-16 w-16 rounded object-cover bg-neutral-700" />
@@ -97,7 +169,7 @@ const TrackItem = ({ track }: { track: Track }) => {
 
 const ArtistItem = ({ artist }: { artist: Artist }) => {
     const imageUrl = artist.images?.[0]?.url || 'https://place-hold.it/128x128?text=No+Image';
-    const spotifyUrl = artist.external_urls?.spotify || '#'; 
+    const spotifyUrl = artist.external_urls?.spotify || '#';
 
     return (
         <li className="flex items-center gap-4 rounded p-2 transition-colors hover:bg-neutral-800">
