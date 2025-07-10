@@ -26,6 +26,7 @@ export interface Artist {
 
 // Tipe untuk satu item trek
 export interface Track {
+  type: string;
   is_playable: boolean;
   id: string;
   name: string;

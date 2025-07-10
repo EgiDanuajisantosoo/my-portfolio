@@ -9,11 +9,12 @@ import {
   TopArtistsResponse,
   AudioFeaturesResponse,
   UserProfileResponse,
+  AudioFeature,
 } from '@/app/lib/types';
 
 const USER_PROFILE_ENDPOINT = 'https://api.spotify.com/v1/me';
-const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=50';
-const TOP_ARTISTS_ENDPOINT = 'https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=50';
+const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=50';
+const TOP_ARTISTS_ENDPOINT = 'https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=50';
 const AUDIO_FEATURES_ENDPOINT = 'https://api.spotify.com/v1/audio-features';
 
 async function checkSpotifyResponse<T>(response: Response, action: string): Promise<T> {
@@ -36,18 +37,14 @@ export async function GET(request: NextRequest) {
   try {
     const accessToken = await getAccessToken();
 
-    const userProfileRes = await fetch(USER_PROFILE_ENDPOINT, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    const userProfile = await checkSpotifyResponse<UserProfileResponse>(userProfileRes, 'mengambil profil pengguna');
-    const market = userProfile.country;
-
     const [topTracksRes, topArtistsRes] = await Promise.all([
-      fetch(`${TOP_TRACKS_ENDPOINT}&market=${market}`, {
+      fetch(TOP_TRACKS_ENDPOINT, {
         headers: { Authorization: `Bearer ${accessToken}` },
+        cache: 'no-store',
       }),
       fetch(TOP_ARTISTS_ENDPOINT, {
         headers: { Authorization: `Bearer ${accessToken}` },
+        cache: 'no-store',
       }),
     ]);
 
@@ -56,31 +53,49 @@ export async function GET(request: NextRequest) {
 
     const favoriteGenres = analyzeGenres(topArtists);
 
-    // --- PERBAIKAN KUNCI DI SINI ---
-    // Saring lagu untuk hanya menyertakan yang dapat diputar.
-    // Ini adalah pertahanan terbaik melawan error 403 yang disebabkan oleh lisensi.
-    const playableTracks = topTracks.items.filter(
-      (track) => track.is_playable !== false
+    const playableMusicTracks = topTracks.items.filter(
+      (track) => track && track.id && track.is_playable !== false && track.type === 'track'
     );
     
-    // Gunakan ID dari lagu yang sudah disaring.
-    const trackIds = playableTracks.map((t) => t.id).filter(Boolean);
-    // --- AKHIR PERBAIKAN ---
+    const trackIds = playableMusicTracks.map((t) => t.id);
+
+    // --- Mengembalikan ke Logika Batching yang Efisien ---
+    let allAudioFeatures: AudioFeature[] = [];
+    const batchSize = 50; // Bisa menggunakan batch yang lebih besar sekarang
+
+    for (let i = 0; i < trackIds.length; i += batchSize) {
+      const batch = trackIds.slice(i, i + batchSize);
+      
+      try {
+        const audioRes = await fetch(`${AUDIO_FEATURES_ENDPOINT}?ids=${batch.join(',')}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        
+        if (audioRes.ok) {
+          const audioFeaturesData = await audioRes.json() as AudioFeaturesResponse;
+          if (audioFeaturesData.audio_features) {
+            allAudioFeatures = allAudioFeatures.concat(audioFeaturesData.audio_features.filter(Boolean));
+          }
+        } else {
+          const errorBody = await audioRes.json().catch(() => ({}));
+          console.warn(`[ANALYSIS_BATCH_WARN] Gagal memproses batch. Status: ${audioRes.status}`, errorBody);
+        }
+      } catch (batchError) {
+        console.warn(`[ANALYSIS_BATCH_ERROR] Terjadi error pada batch.`, batchError);
+      }
+    }
+    // --- AKHIR LOGIKA BATCHING ---
 
     let averageAudioFeatures = { energy: 0, danceability: 0, valence: 0, acousticness: 0 };
-
-    if (trackIds.length > 0) {
-      const audioRes = await fetch(`${AUDIO_FEATURES_ENDPOINT}?ids=${trackIds.join(',')}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      const audioFeaturesData = await checkSpotifyResponse<AudioFeaturesResponse>(audioRes, 'mengambil audio features');
-      averageAudioFeatures = analyzeAudioFeatures(audioFeaturesData);
+    
+    if (allAudioFeatures.length > 0) {
+      averageAudioFeatures = analyzeAudioFeatures({ audio_features: allAudioFeatures });
     } else {
-      console.log("Tidak ada lagu yang dapat diputar ditemukan untuk dianalisis.");
+      console.log("Tidak ada fitur audio yang berhasil diambil untuk dianalisis.");
     }
 
     return NextResponse.json({
-      topTracks: topTracks.items, // Anda bisa memilih untuk mengembalikan semua lagu atau hanya yang dapat diputar
+      topTracks: topTracks.items,
       favoriteGenres,
       averageAudioFeatures,
     });
