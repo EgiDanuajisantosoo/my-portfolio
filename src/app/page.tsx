@@ -63,8 +63,19 @@ const Dashboard: React.FC = () => {
   if (!topTracks || !favoriteGenres || !averageAudioFeatures) {
     return <div className="text-center text-yellow-400 mt-10">Data tidak lengkap dari Spotify.</div>;
   }
+  
+  // --- PERBAIKAN DI SINI ---
+  // Periksa apakah data fitur audio valid (bukan semuanya 0)
+  const isAudioDataAvailable = 
+    averageAudioFeatures.energy > 0 ||
+    averageAudioFeatures.danceability > 0 ||
+    averageAudioFeatures.valence > 0 ||
+    averageAudioFeatures.acousticness > 0;
 
-  const mood = averageAudioFeatures.valence > 0.5 ? 'Ceria 😄' : 'Melankolis 😔';
+  const mood = isAudioDataAvailable 
+    ? (averageAudioFeatures.valence > 0.5 ? 'Ceria 😄' : 'Melankolis 😔')
+    : 'Tidak dapat ditentukan';
+    
   const topFiveTracks = topTracks.slice(0, 50);
 
   return (
@@ -82,7 +93,7 @@ const Dashboard: React.FC = () => {
           {/* Kolom Kiri: Top Tracks */}
           <section className="xl:col-span-2 bg-slate-800/50 p-6 rounded-xl shadow-lg backdrop-blur-sm">
             <h2 className="text-2xl font-semibold mb-5 text-emerald-400 flex items-center gap-3">
-              🎵 Top 5 Lagu Saat Ini
+              🎵 Top 50 Lagu Saat Ini
             </h2>
             <ol className="space-y-3">
               {topFiveTracks.map((track, index) => (
@@ -127,12 +138,23 @@ const Dashboard: React.FC = () => {
               <p className="text-center text-slate-300 mb-5">
                 Suasana hatimu secara umum: <strong className="text-white">{mood}</strong>
               </p>
-              <div className="space-y-5">
-                <StatBar label="Energi" value={averageAudioFeatures.energy} />
-                <StatBar label="Danceability" value={averageAudioFeatures.danceability} />
-                <StatBar label="Positif (Valence)" value={averageAudioFeatures.valence} />
-                <StatBar label="Akustik" value={averageAudioFeatures.acousticness} />
-              </div>
+              
+              {/* Tampilkan statistik atau pesan error berdasarkan ketersediaan data */}
+              {isAudioDataAvailable ? (
+                <div className="space-y-5">
+                  <StatBar label="Energi" value={averageAudioFeatures.energy} />
+                  <StatBar label="Danceability" value={averageAudioFeatures.danceability} />
+                  <StatBar label="Positif (Valence)" value={averageAudioFeatures.valence} />
+                  <StatBar label="Akustik" value={averageAudioFeatures.acousticness} />
+                </div>
+              ) : (
+                <div className="bg-slate-700/50 p-4 rounded-lg text-center">
+                  <p className="font-semibold text-yellow-400">Gagal Menganalisis DNA Musik</p>
+                  <p className="text-sm text-slate-300 mt-2">
+                    Tidak dapat mengambil data fitur audio dari Spotify. Ini mungkin karena batasan pada akun Anda atau konfigurasi aplikasi di Spotify Developer Dashboard.
+                  </p>
+                </div>
+              )}
             </section>
           </div>
         </div>

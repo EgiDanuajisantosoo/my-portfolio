@@ -37,15 +37,18 @@ export async function GET(request: NextRequest) {
   try {
     const accessToken = await getAccessToken();
 
+    // Menambahkan header User-Agent umum untuk semua permintaan fetch
+    const fetchOptions = {
+      headers: { 
+        Authorization: `Bearer ${accessToken}`,
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      },
+      cache: 'no-store' as RequestCache,
+    };
+
     const [topTracksRes, topArtistsRes] = await Promise.all([
-      fetch(TOP_TRACKS_ENDPOINT, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        cache: 'no-store',
-      }),
-      fetch(TOP_ARTISTS_ENDPOINT, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        cache: 'no-store',
-      }),
+      fetch(TOP_TRACKS_ENDPOINT, fetchOptions),
+      fetch(TOP_ARTISTS_ENDPOINT, fetchOptions),
     ]);
 
     const topTracks = await checkSpotifyResponse<TopTracksResponse>(topTracksRes, 'mengambil top tracks');
@@ -59,17 +62,15 @@ export async function GET(request: NextRequest) {
     
     const trackIds = playableMusicTracks.map((t) => t.id);
 
-    // --- Mengembalikan ke Logika Batching yang Efisien ---
     let allAudioFeatures: AudioFeature[] = [];
-    const batchSize = 50; // Bisa menggunakan batch yang lebih besar sekarang
+    const batchSize = 50;
 
     for (let i = 0; i < trackIds.length; i += batchSize) {
       const batch = trackIds.slice(i, i + batchSize);
       
       try {
-        const audioRes = await fetch(`${AUDIO_FEATURES_ENDPOINT}?ids=${batch.join(',')}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        // Menggunakan fetchOptions yang sama untuk permintaan batch
+        const audioRes = await fetch(`${AUDIO_FEATURES_ENDPOINT}?ids=${batch.join(',')}`, fetchOptions);
         
         if (audioRes.ok) {
           const audioFeaturesData = await audioRes.json() as AudioFeaturesResponse;
@@ -84,7 +85,6 @@ export async function GET(request: NextRequest) {
         console.warn(`[ANALYSIS_BATCH_ERROR] Terjadi error pada batch.`, batchError);
       }
     }
-    // --- AKHIR LOGIKA BATCHING ---
 
     let averageAudioFeatures = { energy: 0, danceability: 0, valence: 0, acousticness: 0 };
     
