@@ -153,7 +153,7 @@ export default function Portfolio() {
               <blockquote className="relative bg-[#1ed760]/10 border-l-4 border-[#1ed760] px-3 py-3 sm:px-6 rounded-md shadow-md max-w-xs sm:max-w-sm md:max-w-md text-center">
               <span className="text-xl sm:text-2xl text-[#1ed760] font-bold leading-none mr-1">“</span>
               <span className="italic text-white font-semibold text-sm sm:text-base tracking-wide break-words">
-                Hidup itu pilihan, jadi setiap keputusan yang Anda pilih akan menentukan kehidupan Anda...
+                Hidup itu pilihan, jadi setiap keputusan yang Anda pilih akan menentukan kehidupan Anda dan setiap pilihan terkadang harus ada suatu hal yang dikorbankan...
               </span>
               <span className="text-xl sm:text-2xl text-[#1ed760] font-bold leading-none ml-1">”</span>
               </blockquote>
