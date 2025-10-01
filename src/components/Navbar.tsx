@@ -59,7 +59,7 @@ export default function Navbar() {
           className={`
             flex-col sm:flex-row sm:flex items-center space-y-4 sm:space-y-0 sm:space-x-8 ml-0 sm:ml-8
             ${menuOpen ? 'flex' : 'hidden sm:flex'}
-            absolute sm:static left-0 sm:left-auto w-full sm:w-auto bg-[#2b2b2b] sm:bg-transparent z-20
+            absolute sm:static left-0 sm:left-auto w-full sm:w-auto bg-[#0A0F1A] sm:bg-transparent z-20
             top-full sm:top-auto shadow-lg sm:shadow-none
             transition-all duration-300
           `}
