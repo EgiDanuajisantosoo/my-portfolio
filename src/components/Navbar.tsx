@@ -10,6 +10,7 @@ const navLinks = [
   { href: '#pendidikan', label: 'Pendidikan' },
   { href: '#pengalaman-kerja', label: 'Pengalaman' },
   { href: '#rincian-proyek', label: 'Proyek & Sertifikasi' },
+  { href: '#hobby', label: 'Hobby' },
 ];
 
 export default function Navbar() {

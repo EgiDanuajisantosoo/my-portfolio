@@ -71,7 +71,6 @@ export function SpotifyCurrentTrack() {
   if (error) return <Card><div>Gagal memuat data Spotify.</div></Card>;
   if (!data) return <Card><div>Loading...</div></Card>;
 
-  // Batasi nilai progress agar tidak melebihi durasi lagu
   const clampedProgress = Math.min(progress, data?.duration_ms ?? progress);
   const progressPercentage = data?.isPlaying && data?.duration_ms
     ? (clampedProgress / data.duration_ms) * 100

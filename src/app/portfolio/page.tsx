@@ -60,8 +60,8 @@ export default function Portfolio() {
       : items.filter((item) => item.type === filter);
 
   return (
-<>
-<style jsx global>{`
+    <>
+      <style jsx global>{`
   html, body {
     /* overflow: hidden; */
     /* Gunakan ini agar scrollbar tetap ada, tapi tidak terlihat */
@@ -144,18 +144,18 @@ export default function Portfolio() {
             </div>
             <div className="flex flex-col items-center justify-center w-full mt-6 mb-2 px-2 sm:px-0">
               <div className="flex items-center gap-2 mb-2 flex-wrap justify-center">
-              <span className="inline-block w-8 h-1 bg-gradient-to-r from-[#1ed760] to-[#23a455] rounded-full"></span>
-              <h6 className="text-base sm:text-lg font-bold text-[#1ed760] uppercase tracking-wider drop-shadow">
-                Motto
-              </h6>
-              <span className="inline-block w-8 h-1 bg-gradient-to-l from-[#1ed760] to-[#23a455] rounded-full"></span>
+                <span className="inline-block w-8 h-1 bg-gradient-to-r from-[#1ed760] to-[#23a455] rounded-full"></span>
+                <h6 className="text-base sm:text-lg font-bold text-[#1ed760] uppercase tracking-wider drop-shadow">
+                  Motto
+                </h6>
+                <span className="inline-block w-8 h-1 bg-gradient-to-l from-[#1ed760] to-[#23a455] rounded-full"></span>
               </div>
               <blockquote className="relative bg-[#1ed760]/10 border-l-4 border-[#1ed760] px-3 py-3 sm:px-6 rounded-md shadow-md max-w-xs sm:max-w-sm md:max-w-md text-center">
-              <span className="text-xl sm:text-2xl text-[#1ed760] font-bold leading-none mr-1">“</span>
-              <span className="italic text-white font-semibold text-sm sm:text-base tracking-wide break-words">
-                Hidup itu pilihan, jadi setiap keputusan yang Anda pilih akan menentukan kehidupan Anda dan setiap pilihan terkadang harus ada suatu hal yang dikorbankan...
-              </span>
-              <span className="text-xl sm:text-2xl text-[#1ed760] font-bold leading-none ml-1">”</span>
+                <span className="text-xl sm:text-2xl text-[#1ed760] font-bold leading-none mr-1">“</span>
+                <span className="italic text-white font-semibold text-sm sm:text-base tracking-wide break-words">
+                  Hidup itu pilihan, jadi setiap keputusan yang Anda pilih akan menentukan kehidupan Anda dan setiap pilihan terkadang harus ada suatu hal yang dikorbankan...
+                </span>
+                <span className="text-xl sm:text-2xl text-[#1ed760] font-bold leading-none ml-1">”</span>
               </blockquote>
             </div>
           </div>
@@ -375,31 +375,28 @@ export default function Portfolio() {
         {/* Filter Tabs */}
         <div className="flex justify-center gap-4 mt-5 mb-6">
           <button
-            className={`px-4 py-2 rounded-full font-semibold transition-colors hover:cursor-pointer ${
-              filter === 'all'
-          ? 'bg-[#1ed760] text-white'
-          : 'bg-[#1a2b50] text-gray-300 hover:bg-[#1a2b50c4]'
-            }`}
+            className={`px-4 py-2 rounded-full font-semibold transition-colors hover:cursor-pointer ${filter === 'all'
+              ? 'bg-[#1ed760] text-white'
+              : 'bg-[#1a2b50] text-gray-300 hover:bg-[#1a2b50c4]'
+              }`}
             onClick={() => setFilter('all')}
           >
             Semua
           </button>
           <button
-            className={`px-4 py-2 rounded-full font-semibold transition-colors hover:cursor-pointer ${
-              filter === 'project'
-          ? 'bg-[#1ed760] text-white'
-          : 'bg-[#1a2b50] text-gray-300 hover:bg-[#1a2b50c4]'
-            }`}
+            className={`px-4 py-2 rounded-full font-semibold transition-colors hover:cursor-pointer ${filter === 'project'
+              ? 'bg-[#1ed760] text-white'
+              : 'bg-[#1a2b50] text-gray-300 hover:bg-[#1a2b50c4]'
+              }`}
             onClick={() => setFilter('project')}
           >
             Project
           </button>
           <button
-            className={`px-4 py-2 rounded-full font-semibold transition-colors hover:cursor-pointer ${
-              filter === 'certificate'
-          ? 'bg-[#1ed760] text-white'
-          : 'bg-[#1a2b50] text-gray-300 hover:bg-[#1a2b50c4]'
-            }`}
+            className={`px-4 py-2 rounded-full font-semibold transition-colors hover:cursor-pointer ${filter === 'certificate'
+              ? 'bg-[#1ed760] text-white'
+              : 'bg-[#1a2b50] text-gray-300 hover:bg-[#1a2b50c4]'
+              }`}
             onClick={() => setFilter('certificate')}
           >
             Sertifikasi
@@ -410,30 +407,30 @@ export default function Portfolio() {
           {filteredItems.map((item, idx) => (
             <div key={idx} className="bg-[#1a2b50] rounded-lg shadow-lg p-5 flex flex-col items-center">
               <Image
-          src={item.image}
-          alt={item.title}
-          width={200}
-          height={120}
-          className="rounded-md object-cover mb-4"
+                src={item.image}
+                alt={item.title}
+                width={200}
+                height={120}
+                className="rounded-md object-cover mb-4"
               />
-          {item.image1 !== '/null' && (
-            <Image
-              src={item.image1}
-              alt={item.title}
-              width={200}
-              height={120}
-              className="rounded-md object-cover mb-4"
-            />
-          )}
-              
+              {item.image1 !== '/null' && (
+                <Image
+                  src={item.image1}
+                  alt={item.title}
+                  width={200}
+                  height={120}
+                  className="rounded-md object-cover mb-4"
+                />
+              )}
+
               <h2 className="text-lg font-bold text-white mb-2">{item.title}</h2>
               <p className="text-gray-300 text-sm mb-4 text-center">{item.desc}</p>
               <a
-          href={item.link}
-          target="_blank"
-          className="text-[#1ed760] font-semibold hover:underline"
+                href={item.link}
+                target="_blank"
+                className="text-[#1ed760] font-semibold hover:underline"
               >
-          {item.type === 'certificate' ? 'Lihat Sertifikat' : 'Lihat Project'}
+                {item.type === 'certificate' ? 'Lihat Sertifikat' : 'Lihat Project'}
               </a>
             </div>
           ))}
@@ -446,6 +443,157 @@ export default function Portfolio() {
           <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
           <div className="w-3 h-3 bg-white rounded-full"></div>
         </div>
+
+        {/* Hobby */}
+      </main>
+
+      {/* Hobby */}
+      <main
+        id="hobby"
+        className="bg-[#101828] min-h-screen flex flex-col items-center justify-center text-center p-6 relative"
+      >
+        <div className="text-white w-full max-w-5xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase tracking-widest mb-10 sm:mb-14 md:mb-16">
+            Hobi
+          </h1>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Hobby 1 */}
+            <button
+              type="button"
+              className="group w-full bg-[#1a2b50] rounded-xl shadow-lg p-6 flex flex-col items-center text-left hover:bg-[#1f3260] hover:shadow-xl transition transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#1ed760]"
+            >
+              <div className="w-12 h-12 flex items-center justify-center mb-4 rounded-full bg-[#1ed760]/20 text-[#1ed760] text-2xl">
+                🎧
+              </div>
+              <h2 className="text-xl font-bold mb-2 text-white">Mendengarkan Musik</h2>
+              <p className="text-gray-300 text-sm mb-3 text-center">
+                Saya suka mendengarkan musik saat ngoding atau bersantai, terutama playlist favorit di Spotify.
+              </p>
+              <a
+                href="https://open.spotify.com/user/f9ui57alw48v8z4oba6z9hdde?si=66ebe92df1f94125"
+                target="_blank"
+                className="inline-flex items-center gap-2 rounded-full border border-[#1ed760]/60 bg-[#162139] px-3 py-1 text-[11px] sm:text-xs font-semibold text-[#1ed760] group-hover:border-[#1ed760] group-hover:text-white group-hover:bg-[#1ed760]/80 transition-colors"
+              >
+                <span className="text-xs">🎵</span>
+                <span>Profil Spotify</span>
+              </a>
+            </button>
+
+            {/* Hobby 2 */}
+            <button
+              type="button"
+              className="group w-full bg-[#1a2b50] rounded-xl shadow-lg p-6 flex flex-col items-center text-left hover:bg-[#1f3260] hover:shadow-xl transition transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#38bdf8]"
+            >
+              <div className="w-12 h-12 flex items-center justify-center mb-4 rounded-full bg-[#38bdf8]/20 text-[#38bdf8] text-2xl">
+                💻
+              </div>
+              <h2 className="text-xl font-bold mb-2 text-white">Ngoding & Eksperimen</h2>
+              <p className="text-gray-300 text-sm mb-3 text-center">
+                Mencoba teknologi baru, membuat mini project, dan mengutak-atik UI/UX menjadi kegiatan yang menyenangkan bagi saya.
+              </p>
+              <a
+                href="https://github.com/EgiDanuajisantosoo"
+                target="_blank"
+                className="inline-flex items-center gap-2 rounded-full border border-[#38bdf8]/60 bg-[#162139] px-3 py-1 text-[11px] sm:text-xs font-semibold text-[#38bdf8] group-hover:border-[#38bdf8] group-hover:text-white group-hover:bg-[#38bdf8]/80 transition-colors"
+              >
+                <span className="text-xs">🐙</span>
+                <span>Profil GitHub</span>
+              </a>
+            </button>
+
+            {/* Hobby 3 */}
+            <button
+              type="button"
+              className="group w-full bg-[#1a2b50] rounded-xl shadow-lg p-6 flex flex-col items-center text-left hover:bg-[#1f3260] hover:shadow-xl transition transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#f97316]"
+            >
+              <div className="w-12 h-12 flex items-center justify-center mb-4 rounded-full bg-[#f97316]/20 text-[#f97316] text-2xl">
+                📚
+              </div>
+              <h2 className="text-xl font-bold mb-1 text-white">Belajar & Membaca</h2>
+              <p className="text-gray-300 text-sm mb-3 text-center">
+                Saya sering membaca dokumentasi, artikel, atau menonton tutorial untuk menambah wawasan tentang dunia pemrograman.
+              </p>
+              <a
+                href="/mylist/buku"
+                className="inline-flex items-center gap-2 rounded-full border border-[#f97316]/60 bg-[#162139] px-3 py-1 text-[11px] sm:text-xs font-semibold text-[#f97316] group-hover:border-[#f97316] group-hover:text-white group-hover:bg-[#f97316]/80 transition-colors"
+              >
+                <span className="text-xs">📖</span>
+                <span>Daftar Buku</span>
+              </a>
+            </button>
+
+            {/* Hobby 4 */}
+            <button
+              type="button"
+              className="group w-full bg-[#1a2b50] rounded-xl shadow-lg p-6 flex flex-col items-center text-left hover:bg-[#1f3260] hover:shadow-xl transition transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#22c55e]"
+            >
+              <div className="w-12 h-12 flex items-center justify-center mb-4 rounded-full bg-[#22c55e]/20 text-[#22c55e] text-2xl">
+                🎮
+              </div>
+              <h2 className="text-xl font-bold mb-2 text-white">Gaming</h2>
+              <p className="text-gray-300 text-sm mb-3 text-center">
+                Di waktu senggang, saya suka bermain game untuk refreshing dan mencari inspirasi.
+              </p>
+              <a
+                href="/mylist/game"
+                className="inline-flex items-center gap-2 rounded-full border border-[#22c55e]/60 bg-[#162139] px-3 py-1 text-[11px] sm:text-xs font-semibold text-[#22c55e] group-hover:border-[#22c55e] group-hover:text-white group-hover:bg-[#22c55e]/80 transition-colors"
+              >
+                <span className="text-xs">🕹</span>
+                <span>Daftar Game</span>
+              </a>
+            </button>
+
+            {/* Hobby 5 */}
+            <button
+              type="button"
+              className="group w-full bg-[#1a2b50] rounded-xl shadow-lg p-6 flex flex-col items-center text-left hover:bg-[#1f3260] hover:shadow-xl transition transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#eab308]"
+            >
+              <div className="w-12 h-12 flex items-center justify-center mb-4 rounded-full bg-[#eab308]/20 text-[#eab308] text-2xl">
+              📺
+              </div>
+
+              <h2 className="text-xl font-bold mb-2 text-white">
+              Menonton Film / Series
+              </h2>
+
+              <p className="text-gray-300 text-sm mb-4 text-center">
+              Menonton film atau series menjadi cara saya untuk rehat sejenak dari aktivitas harian.
+              </p>
+
+              <p className="text-xs sm:text-sm text-gray-400 mb-3 text-center">
+              Lihat beberapa daftar tontonan favorit saya:
+              </p>
+
+              <div className="w-full flex flex-wrap justify-center gap-2">
+              <a
+                href="/mylist/anime"
+                className="inline-flex items-center gap-2 rounded-full border border-[#eab308]/60 bg-[#162139] px-3 py-1 text-[11px] sm:text-xs font-semibold text-[#eab308] group-hover:border-[#eab308] group-hover:text-white group-hover:bg-[#eab308]/80 transition-colors"
+              >
+                <span className="text-xs">🎌</span>
+                <span>Anime</span>
+              </a>
+              <a
+                href="/mylist/film"
+                className="inline-flex items-center gap-2 rounded-full border border-[#eab308]/60 bg-[#162139] px-3 py-1 text-[11px] sm:text-xs font-semibold text-[#eab308] group-hover:border-[#eab308] group-hover:text-white group-hover:bg-[#eab308]/80 transition-colors"
+              >
+                <span className="text-xs">🎬</span>
+                <span>Film</span>
+              </a>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Ikon tiga titik di bawah */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-4 flex items-center gap-2 justify-center">
+          <div className="w-3 h-3 bg-white rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+        </div>
       </main>
 
       {/* Komponen SpotifyCurrentTrack */}
@@ -454,28 +602,28 @@ export default function Portfolio() {
         tabIndex={0}
         onClick={e => {
           if (window.innerWidth <= 640) {
-        (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
+            (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
           }
         }}
         onBlur={e => {
           if (window.innerWidth <= 640) {
-        (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
+            (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
           }
         }}
         onTouchEnd={e => {
           if (window.innerWidth <= 640) {
-        (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
+            (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
           }
         }}
         onMouseEnter={e => {
           // Aktifkan efek hover di desktop (min-width: 641px)
           if (window.innerWidth > 640) {
-        (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
+            (e.currentTarget as HTMLDivElement).classList.add('!bottom-4');
           }
         }}
         onMouseLeave={e => {
           if (window.innerWidth > 640) {
-        (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
+            (e.currentTarget as HTMLDivElement).classList.remove('!bottom-4');
           }
         }}
         style={{}}
