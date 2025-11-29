@@ -1,36 +1,20 @@
 // src/app/api/now-playing/route.ts
 import { NextResponse } from 'next/server';
-import { it } from 'node:test';
-
-async function getAccessToken(client_id: string, client_secret: string, refresh_token: string) {
-  const response = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: 'Basic ' + Buffer.from(`${client_id}:${client_secret}`).toString('base64'),
-    },
-    body: new URLSearchParams({
-      grant_type: 'refresh_token',
-      refresh_token,
-    }),
-  });
-
-  const data = await response.json();
-  return data.access_token;
-}
 
 export async function GET() {
   const client_id = process.env.SPOTIFY_CLIENT_ID;
   const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
   const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
+  const accessToken = process.env.SPOTIFY_ACCESS_TOKEN;
 
   if (!client_id || !client_secret || !refresh_token) {
     return NextResponse.json({ error: 'Environment variables not configured' }, { status: 500 });
   }
 
   try {
-    const accessToken = await getAccessToken(client_id, client_secret, refresh_token);
+    // const accessToken = await getAccessToken(client_id, client_secret, refresh_token);
 
+    // console.log('Access Token:', accessToken);
     // 🔊 Coba ambil lagu yang sedang diputar
     const nowPlayingRes = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
       headers: { Authorization: `Bearer ${accessToken}` },

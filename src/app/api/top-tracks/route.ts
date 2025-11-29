@@ -28,16 +28,17 @@ export async function GET(request: NextRequest) {
   const client_id = process.env.SPOTIFY_CLIENT_ID;
   const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
   const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
+  const accessToken = process.env.SPOTIFY_ACCESS_TOKEN;
+
 
   if (!client_id || !client_secret || !refresh_token) {
     return NextResponse.json({ error: 'Variabel lingkungan Spotify belum diatur' }, { status: 500 });
   }
 
   try {
-    const accessToken = await getAccessToken(client_id, client_secret, refresh_token);
 
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get('type') || 'tracks'; // 'tracks' atau 'artists'
+    const type = searchParams.get('type') || 'tracks';
     const time_range = searchParams.get('time_range') || 'medium_term';
     const limit = searchParams.get('limit') || '10';
 

@@ -51,7 +51,7 @@ export function SpotifyCurrentTrack() {
 
   const Card = ({ children }: { children: React.ReactNode }) => (
     <div className="bg-[#0a0f1a] text-white rounded-lg p-4 w-full max-w-xs font-sans shadow-lg">
-      <div className="flex justify-between items-center mb-50">
+      <div className="flex justify-between items-center mb-4">
         <p className="text-xs font-semibold text-gray-300 tracking-wider uppercase">
           {data?.isPlaying ? 'Mendengarkan Spotify saat ini' : 'Terakhir Diputar di Spotify'}
         </p>
