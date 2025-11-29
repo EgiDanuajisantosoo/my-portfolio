@@ -16,9 +16,10 @@ async function getAnime(q: string) {
 export default async function AnimePage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams?: Record<string, string | string[] | undefined>;
 }) {
-  const query = searchParams.q?.trim() || "naruto";
+  const query = (searchParams?.q as string)?.trim() || "naruto";
+
   let animeList: any[] = [];
 
   try {
@@ -26,6 +27,7 @@ export default async function AnimePage({
   } catch {
     animeList = [];
   }
+
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
