@@ -15,8 +15,8 @@ export async function GET(req: Request) {
         return NextResponse.redirect(new URL('/?error=state_mismatch', url));
     }
 
-    // clear state cookie
-    const redirectResponse = NextResponse.redirect(new URL('/', url));
+    // clear state cookie and redirect to /portfolio after success
+    const redirectResponse = NextResponse.redirect(new URL('/portfolio', url));
     redirectResponse.cookies.delete({ name: 'spotify_auth_state', path: '/' });
 
     const client_id = process.env.SPOTIFY_CLIENT_ID;
