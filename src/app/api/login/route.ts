@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 
-const REDIRECT_URI = process.env.REDIRECT_URI ?? 'http://localhost:3000/api/callback';
+const REDIRECT_URI = process.env.REDIRECT_URI ?? 'http://127.0.0.1:3000/api/callback';
 
 function generateRandomString(length: number): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
