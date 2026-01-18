@@ -32,8 +32,6 @@ export default function CallbackPage() {
           }
           const data = await res.json();
 
-          // Simpan token dengan masa berlaku 5 tahun di localStorage
-          // Pastikan API mengembalikan setidaknya access_token
           const fiveYearsMs = 5 * 365 * 24 * 60 * 60 * 1000;
           const expiresAt = Date.now() + fiveYearsMs;
           if (data?.access_token) {

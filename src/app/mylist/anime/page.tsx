@@ -64,7 +64,6 @@ export default async function AnimeHobbyList({
 
     const { data: hobbies, error } = await favQuery;
 
-    // Error handling
     if (error) {
         return (
             <div className="max-w-5xl mx-auto p-6">
