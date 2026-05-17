@@ -148,12 +148,16 @@ function FilterControls({
 const TrackItem = ({ track }: { track: Track }) => {
     const imageUrl = track.album?.images?.[0]?.url || 'https://place-hold.it/128x128?text=No+Image';
     const spotifyUrl = track.external_urls?.spotify || '#';
+    const artistsList = Array.isArray(track.artists)
+        ? track.artists.map((artist: any) => artist.name).join(', ')
+        : 'Artis Tidak Dikenal';
+
     return (
         <li className="flex items-center gap-4 rounded p-2 transition-colors hover:bg-neutral-800">
             <img src={imageUrl} alt={track.name} className="h-16 w-16 rounded object-cover bg-neutral-700" />
             <div>
                 <p className="font-bold text-white">{track.name}</p>
-                <p className="text-sm text-neutral-400">{track.artists.map((artist: any) => artist.name).join(', ')}</p>
+                <p className="text-sm text-neutral-400">{artistsList}</p>
                 <a
                     href={spotifyUrl}
                     target="_blank"
@@ -170,6 +174,9 @@ const TrackItem = ({ track }: { track: Track }) => {
 const ArtistItem = ({ artist }: { artist: Artist }) => {
     const imageUrl = artist.images?.[0]?.url || 'https://place-hold.it/128x128?text=No+Image';
     const spotifyUrl = artist.external_urls?.spotify || '#';
+    const genresList = Array.isArray(artist.genres)
+        ? artist.genres.join(', ')
+        : 'No Genre';
 
     return (
         <li className="flex items-center gap-4 rounded p-2 transition-colors hover:bg-neutral-800">
@@ -177,7 +184,7 @@ const ArtistItem = ({ artist }: { artist: Artist }) => {
             <div>
                 <p className="font-bold text-white">{artist.name}</p>
                 <p className="text-sm capitalize text-neutral-400">
-                    {artist.genres?.join(', ') || 'No Genre'}
+                    {genresList}
                 </p>
                 <a
                     href={spotifyUrl}
@@ -212,6 +219,8 @@ export default function TopItemsPage() {
     }, []);
 
     useEffect(() => {
+        let active = true;
+
         async function fetchTopItems() {
             setLoading(true);
             setError(null);
@@ -222,14 +231,24 @@ export default function TopItemsPage() {
                     throw new Error(errData.error || errData.details || 'Gagal mengambil data');
                 }
                 const result = await res.json();
-                setData(result);
+                if (active) {
+                    setData(result);
+                }
             } catch (err: any) {
-                setError(err.message);
+                if (active) {
+                    setError(err.message);
+                }
             } finally {
-                setLoading(false);
+                if (active) {
+                    setLoading(false);
+                }
             }
         }
         fetchTopItems();
+
+        return () => {
+            active = false;
+        };
     }, [filter, timeRange, limit, lastfmUsername]); // <-- Dependensi yang bersih
 
     // Handler untuk mereset data saat filter utama berubah
@@ -250,32 +269,34 @@ export default function TopItemsPage() {
                     <div>
                         <h1 className="text-3xl font-bold text-white flex items-center gap-2">
                             <span>Top Musik Saya</span>
-                            <span className="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full font-normal">Last.fm</span>
+                            <span className="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full font-normal">dari Last.fm mulai tanggal (17/05/2026)</span>
                         </h1>
                         <p className="text-neutral-400 mt-1">
-                            {lastfmUsername 
-                                ? `Menampilkan lagu & artis teratas untuk akun Last.fm: ${lastfmUsername}` 
+                            {lastfmUsername
+                                ? `Menampilkan lagu & artis teratas untuk akun Last.fm: ${lastfmUsername}`
                                 : 'List artis dan lagu yang paling sering diputar.'
                             }
                         </p>
                     </div>
-                    <div>
+                    {/* <div>
                         {lastfmUsername ? (
-                            <a 
-                                href="/api/lastfm/logout" 
+                            <a
+                                href="/api/lastfm/logout"
                                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-red-600/80 hover:bg-red-600 text-white transition-colors"
                             >
                                 🔴 Keluar dari Last.fm
                             </a>
-                        ) : (
-                            <a 
-                                href="/api/lastfm/login" 
+                        ) 
+                        : (
+                            <a
+                                href="/api/lastfm/login"
                                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-red-500/20 border border-red-500/40 hover:border-red-500 hover:bg-red-500/30 text-red-400 hover:text-white transition-all duration-200"
                             >
                                 🎵 Hubungkan Last.fm Anda
                             </a>
-                        )}
-                    </div>
+                        )
+                        }
+                    </div> */}
                 </div>
 
                 <FilterControls

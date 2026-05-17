@@ -39,34 +39,86 @@ function resolveImage(rawUrl: string | undefined, name: string, isArtist: boolea
   return rawUrl;
 }
 
-function mapLastfmTrackToSpotify(track: any) {
-  const rawUrl = track.image?.find((img: any) => img.size === 'extralarge' || img.size === 'large')?.['#text'];
-  const imageUrl = resolveImage(rawUrl, track.name, false);
-  
+async function enhanceTrackWithDeezer(track: any) {
+  const artistName = track.artist?.name || '';
+  const trackName = track.name;
+
+  const query = `${trackName} ${artistName}`;
+  const deezerUrl = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=1`;
+
+  let imageUrl = undefined;
+  let trackId = track.mbid || `${trackName}-${artistName}`.replace(/\s+/g, '-');
+
+  try {
+    const res = await fetch(deezerUrl, { next: { revalidate: 3600 } });
+    if (res.ok) {
+      const data = await res.json();
+      const deezerTrack = data.data?.[0];
+      if (deezerTrack && deezerTrack.album?.cover_medium) {
+        imageUrl = deezerTrack.album.cover_medium;
+        trackId = `deezer-${deezerTrack.id}`;
+      }
+    }
+  } catch (err) {
+    console.error(`[Deezer Track Search Error] ${query}:`, err);
+  }
+
+  if (!imageUrl) {
+    const rawUrl = track.image?.find((img: any) => img.size === 'extralarge' || img.size === 'large')?.['#text'];
+    imageUrl = resolveImage(rawUrl, trackName, false);
+  }
+
+  const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent(trackName + ' ' + artistName)}`;
+
   return {
-    id: track.mbid || `${track.name}-${track.artist?.name || ''}`.replace(/\s+/g, '-'),
-    name: track.name,
-    artists: [{ name: track.artist?.name || 'Artis Tidak Dikenal' }],
+    id: trackId,
+    name: trackName,
+    artists: [{ name: artistName || 'Artis Tidak Dikenal' }],
     album: {
       images: [{ url: imageUrl }]
     },
     external_urls: {
-      spotify: track.url
+      spotify: spotifySearchUrl
     }
   };
 }
 
-function mapLastfmArtistToSpotify(artist: any) {
-  const rawUrl = artist.image?.find((img: any) => img.size === 'extralarge' || img.size === 'large')?.['#text'];
-  const imageUrl = resolveImage(rawUrl, artist.name, true);
+async function enhanceArtistWithDeezer(artist: any) {
+  const artistName = artist.name;
+  const deezerUrl = `https://api.deezer.com/search/artist?q=${encodeURIComponent(artistName)}&limit=1`;
+
+  let imageUrl = undefined;
+  let artistId = artist.mbid || artistName.replace(/\s+/g, '-');
+  let genres = ['Last.fm Artist'];
+
+  try {
+    const res = await fetch(deezerUrl, { next: { revalidate: 3600 } });
+    if (res.ok) {
+      const data = await res.json();
+      const deezerArtist = data.data?.[0];
+      if (deezerArtist && deezerArtist.picture_medium) {
+        imageUrl = deezerArtist.picture_medium;
+        artistId = `deezer-${deezerArtist.id}`;
+      }
+    }
+  } catch (err) {
+    console.error(`[Deezer Artist Search Error] ${artistName}:`, err);
+  }
+
+  if (!imageUrl) {
+    const rawUrl = artist.image?.find((img: any) => img.size === 'extralarge' || img.size === 'large')?.['#text'];
+    imageUrl = resolveImage(rawUrl, artistName, true);
+  }
+
+  const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent(artistName)}`;
 
   return {
-    id: artist.mbid || artist.name.replace(/\s+/g, '-'),
-    name: artist.name,
-    genres: ['Last.fm Artist'],
+    id: artistId,
+    name: artistName,
+    genres: genres,
     images: [{ url: imageUrl }],
     external_urls: {
-      spotify: artist.url
+      spotify: spotifySearchUrl
     }
   };
 }
@@ -74,15 +126,14 @@ function mapLastfmArtistToSpotify(artist: any) {
 export async function GET(request: NextRequest) {
   const cookieStore = await cookies();
   const loggedInUser = cookieStore.get('lastfm_username')?.value;
-  const defaultUser = process.env.LASTFM_USERNAME || 'egiii_'; // Default fallback
+  const defaultUser = process.env.LASTFM_USERNAME || 'egiii_';
   const username = loggedInUser || defaultUser;
 
-  // Key default Last.fm untuk fallback jika env belum diatur
   const apiKey = process.env.LASTFM_API_KEY || '537f8f94d9302ca1691ab1a12cc9318b';
 
   try {
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get('type') ?? 'tracks'; // tracks | artists
+    const type = searchParams.get('type') ?? 'tracks';
     const time_range = searchParams.get('time_range') ?? 'medium_term';
     const limit = searchParams.get('limit') ?? '10';
 
@@ -118,15 +169,15 @@ export async function GET(request: NextRequest) {
     let items: any[] = [];
 
     if (type === 'artists' && data.topartists?.artist) {
-      const rawArtists = Array.isArray(data.topartists.artist) 
-        ? data.topartists.artist 
+      const rawArtists = Array.isArray(data.topartists.artist)
+        ? data.topartists.artist
         : [data.topartists.artist];
-      items = rawArtists.map(mapLastfmArtistToSpotify);
+      items = await Promise.all(rawArtists.map(enhanceArtistWithDeezer));
     } else if (type === 'tracks' && data.toptracks?.track) {
-      const rawTracks = Array.isArray(data.toptracks.track) 
-        ? data.toptracks.track 
+      const rawTracks = Array.isArray(data.toptracks.track)
+        ? data.toptracks.track
         : [data.toptracks.track];
-      items = rawTracks.map(mapLastfmTrackToSpotify);
+      items = await Promise.all(rawTracks.map(enhanceTrackWithDeezer));
     }
 
     return NextResponse.json({ items });
