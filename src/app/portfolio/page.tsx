@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { SpotifyCurrentTrack } from '@/components/SpotifyCurrentTrack';
+import { AIChatBot } from '@/components/AIChatBot';
 
 
 export default function Portfolio() {
@@ -663,6 +664,7 @@ export default function Portfolio() {
         }
       }
       `}</style>
+      <AIChatBot />
     </>
   );
 }
