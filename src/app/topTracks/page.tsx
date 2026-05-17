@@ -198,10 +198,18 @@ export default function TopItemsPage() {
     const [data, setData] = useState<{ items: any[] } | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [lastfmUsername, setLastfmUsername] = useState<string | null>(null);
 
     const [filter, setFilter] = useState<'tracks' | 'artists'>('tracks');
     const [timeRange, setTimeRange] = useState<'short_term' | 'medium_term' | 'long_term'>('medium_term');
     const [limit, setLimit] = useState<number>(10);
+
+    useEffect(() => {
+        const match = document.cookie.match(/(^|;)\s*lastfm_username\s*=\s*([^;]+)/);
+        if (match) {
+            setLastfmUsername(decodeURIComponent(match[2]));
+        }
+    }, []);
 
     useEffect(() => {
         async function fetchTopItems() {
@@ -211,7 +219,7 @@ export default function TopItemsPage() {
                 const res = await fetch(`/api/top-tracks?type=${filter}&time_range=${timeRange}&limit=${limit}`);
                 if (!res.ok) {
                     const errData = await res.json();
-                    throw new Error(errData.error?.message || 'Gagal mengambil data');
+                    throw new Error(errData.error || errData.details || 'Gagal mengambil data');
                 }
                 const result = await res.json();
                 setData(result);
@@ -222,7 +230,7 @@ export default function TopItemsPage() {
             }
         }
         fetchTopItems();
-    }, [filter, timeRange, limit]); // <-- Dependensi yang bersih
+    }, [filter, timeRange, limit, lastfmUsername]); // <-- Dependensi yang bersih
 
     // Handler untuk mereset data saat filter utama berubah
     const handleFilterChange = (newFilter: 'tracks' | 'artists') => {
@@ -236,16 +244,46 @@ export default function TopItemsPage() {
     };
 
     return (
-        <main className='bg-[#0a0a0a] text-white'>
+        <main className='bg-[#0a0a0a] text-white min-h-screen'>
             <div className="w-full max-w-4xl mx-auto p-4">
-                <h1 className="text-3xl font-bold text-white">Top Spotify Saya</h1>
-                <p className="text-neutral-400 mt-1">List artis dan lagu yang paling sering saya putar.</p>
+                <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-neutral-800 pb-4">
+                    <div>
+                        <h1 className="text-3xl font-bold text-white flex items-center gap-2">
+                            <span>Top Musik Saya</span>
+                            <span className="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full font-normal">Last.fm</span>
+                        </h1>
+                        <p className="text-neutral-400 mt-1">
+                            {lastfmUsername 
+                                ? `Menampilkan lagu & artis teratas untuk akun Last.fm: ${lastfmUsername}` 
+                                : 'List artis dan lagu yang paling sering diputar.'
+                            }
+                        </p>
+                    </div>
+                    <div>
+                        {lastfmUsername ? (
+                            <a 
+                                href="/api/lastfm/logout" 
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-red-600/80 hover:bg-red-600 text-white transition-colors"
+                            >
+                                🔴 Keluar dari Last.fm
+                            </a>
+                        ) : (
+                            <a 
+                                href="/api/lastfm/login" 
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-red-500/20 border border-red-500/40 hover:border-red-500 hover:bg-red-500/30 text-red-400 hover:text-white transition-all duration-200"
+                            >
+                                🎵 Hubungkan Last.fm Anda
+                            </a>
+                        )}
+                    </div>
+                </div>
 
                 <FilterControls
                     filter={filter} onFilterChange={handleFilterChange}
                     timeRange={timeRange} onTimeRangeChange={handleTimeRangeChange}
                     limit={limit} onLimitChange={setLimit} // `limit` tidak perlu mereset data
                 />
+
 
                 {loading && <p className="text-center text-neutral-400">Loading...</p>}
                 {error && <p className="text-center text-red-500">Error: {error}</p>}

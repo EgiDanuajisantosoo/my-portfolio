@@ -1,94 +1,139 @@
 import { NextResponse, NextRequest } from 'next/server';
+import { cookies } from 'next/headers';
 
-// ===============================
-// Refresh access token (OWNER)
-// ===============================
-async function getAccessToken() {
-  const client_id = process.env.SPOTIFY_CLIENT_ID!;
-  const client_secret = process.env.SPOTIFY_CLIENT_SECRET!;
-  const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN!;
+export const dynamic = 'force-dynamic';
 
-  const res = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization:
-        'Basic ' +
-        Buffer.from(`${client_id}:${client_secret}`).toString('base64'),
-    },
-    body: new URLSearchParams({
-      grant_type: 'refresh_token',
-      refresh_token,
-    }),
-    cache: 'no-store',
-  });
+const trackPlaceholders = [
+  'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=200&auto=format&fit=crop', // stage lights
+  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=200&auto=format&fit=crop', // dj deck
+  'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=200&auto=format&fit=crop', // mic
+  'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?q=80&w=200&auto=format&fit=crop', // abstract music
+  'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=200&auto=format&fit=crop', // concert crowd
+  'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=200&auto=format&fit=crop', // sheet music
+  'https://images.unsplash.com/photo-1487180142328-054b783fc471?q=80&w=200&auto=format&fit=crop', // record player
+  'https://images.unsplash.com/photo-1507838153414-b4b713384a76?q=80&w=200&auto=format&fit=crop', // retro radio
+];
 
-  const data = await res.json();
+const artistPlaceholders = [
+  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=200&auto=format&fit=crop', // singer
+  'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=200&auto=format&fit=crop', // performance
+  'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=200&auto=format&fit=crop', // band on stage
+  'https://images.unsplash.com/photo-1482440308425-276ad0f28b19?q=80&w=200&auto=format&fit=crop', // guitar player
+  'https://images.unsplash.com/photo-1517230878791-4d28214057c2?q=80&w=200&auto=format&fit=crop', // mic close up
+  'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?q=80&w=200&auto=format&fit=crop', // keyboard player
+];
 
-  if (!res.ok || data.error) {
-    console.error('[Spotify Token Error]', data);
-    throw new Error(data.error_description || 'Failed to refresh token');
+function getDeterministicImage(name: string, isArtist: boolean): string {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
   }
-
-  return data.access_token as string;
+  const index = Math.abs(hash) % (isArtist ? artistPlaceholders.length : trackPlaceholders.length);
+  return isArtist ? artistPlaceholders[index] : trackPlaceholders[index];
 }
 
-// ===============================
-// Endpoint utama
-// ===============================
-export async function GET(request: NextRequest) {
-  if (
-    !process.env.SPOTIFY_CLIENT_ID ||
-    !process.env.SPOTIFY_CLIENT_SECRET ||
-    !process.env.SPOTIFY_REFRESH_TOKEN
-  ) {
-    return NextResponse.json(
-      { error: 'Variabel lingkungan Spotify belum diatur' },
-      { status: 500 }
-    );
+function resolveImage(rawUrl: string | undefined, name: string, isArtist: boolean): string {
+  if (!rawUrl || rawUrl.trim() === '' || rawUrl.includes('2a96cbd8b46e442fc41c2b86b821562f.png')) {
+    return getDeterministicImage(name, isArtist);
   }
+  return rawUrl;
+}
+
+function mapLastfmTrackToSpotify(track: any) {
+  const rawUrl = track.image?.find((img: any) => img.size === 'extralarge' || img.size === 'large')?.['#text'];
+  const imageUrl = resolveImage(rawUrl, track.name, false);
+  
+  return {
+    id: track.mbid || `${track.name}-${track.artist?.name || ''}`.replace(/\s+/g, '-'),
+    name: track.name,
+    artists: [{ name: track.artist?.name || 'Artis Tidak Dikenal' }],
+    album: {
+      images: [{ url: imageUrl }]
+    },
+    external_urls: {
+      spotify: track.url
+    }
+  };
+}
+
+function mapLastfmArtistToSpotify(artist: any) {
+  const rawUrl = artist.image?.find((img: any) => img.size === 'extralarge' || img.size === 'large')?.['#text'];
+  const imageUrl = resolveImage(rawUrl, artist.name, true);
+
+  return {
+    id: artist.mbid || artist.name.replace(/\s+/g, '-'),
+    name: artist.name,
+    genres: ['Last.fm Artist'],
+    images: [{ url: imageUrl }],
+    external_urls: {
+      spotify: artist.url
+    }
+  };
+}
+
+export async function GET(request: NextRequest) {
+  const cookieStore = await cookies();
+  const loggedInUser = cookieStore.get('lastfm_username')?.value;
+  const defaultUser = process.env.LASTFM_USERNAME || 'egiii_'; // Default fallback
+  const username = loggedInUser || defaultUser;
+
+  // Key default Last.fm untuk fallback jika env belum diatur
+  const apiKey = process.env.LASTFM_API_KEY || '537f8f94d9302ca1691ab1a12cc9318b';
 
   try {
-    // Ambil access token (selalu fresh)
-    const accessToken = await getAccessToken();
-
-    // Ambil query parameter (tetap sama)
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') ?? 'tracks'; // tracks | artists
     const time_range = searchParams.get('time_range') ?? 'medium_term';
     const limit = searchParams.get('limit') ?? '10';
 
-    // Validasi ringan (aman untuk deploy)
     const limitNum = Math.min(Math.max(Number(limit), 1), 50);
 
-    const apiUrl = new URL(`https://api.spotify.com/v1/me/top/${type}`);
-    apiUrl.searchParams.set('time_range', time_range);
-    apiUrl.searchParams.set('limit', String(limitNum));
+    const periodMap: Record<string, string> = {
+      short_term: '7day',
+      medium_term: '6month',
+      long_term: 'overall',
+    };
+    const period = periodMap[time_range] || '6month';
 
-    const response = await fetch(apiUrl.toString(), {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      cache: 'no-store',
-    });
+    const method = type === 'artists' ? 'user.gettopartists' : 'user.gettoptracks';
+
+    const lastfmUrl = `http://ws.audioscrobbler.com/2.0/?method=${method}&user=${username}&api_key=${apiKey}&period=${period}&limit=${limitNum}&format=json`;
+
+    const response = await fetch(lastfmUrl, { cache: 'no-store' });
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorText = await response.text();
       return NextResponse.json(
-        { error: 'Tidak ada data', details: errorData },
+        { error: 'Gagal mengambil data dari Last.fm', details: errorText },
         { status: response.status }
       );
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+
+    if (data.error) {
+      return NextResponse.json({ error: data.message }, { status: 400 });
+    }
+
+    let items: any[] = [];
+
+    if (type === 'artists' && data.topartists?.artist) {
+      const rawArtists = Array.isArray(data.topartists.artist) 
+        ? data.topartists.artist 
+        : [data.topartists.artist];
+      items = rawArtists.map(mapLastfmArtistToSpotify);
+    } else if (type === 'tracks' && data.toptracks?.track) {
+      const rawTracks = Array.isArray(data.toptracks.track) 
+        ? data.toptracks.track 
+        : [data.toptracks.track];
+      items = rawTracks.map(mapLastfmTrackToSpotify);
+    }
+
+    return NextResponse.json({ items });
   } catch (error: any) {
-    console.error('[Spotify API Error]', error);
+    console.error('[Last.fm Top Items Error]', error);
     return NextResponse.json(
-      {
-        error: 'Gagal mengambil data dari Spotify',
-        details: error.message,
-      },
+      { error: 'Gagal mengambil data dari Last.fm', details: error.message },
       { status: 500 }
     );
   }
