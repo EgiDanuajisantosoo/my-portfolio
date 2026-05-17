@@ -80,33 +80,53 @@ export function SpotifyCurrentTrack() {
     return `https://cdn.discordapp.com/app-assets/${applicationId}/${imageId}.png`;
   };
 
-  const Card = ({ children, isSpotify }: { children: React.ReactNode, isSpotify: boolean }) => (
-    <div className="bg-[#0c1222] border border-gray-800 text-white rounded-xl p-4 w-full max-w-xs font-sans shadow-2xl transition-all duration-300 hover:border-green-500/30 hover:shadow-green-500/5">
-      <div className="flex justify-between items-center mb-4">
-        <div className="text-xs font-semibold text-gray-400 tracking-wider uppercase flex items-center gap-1.5">
-          {isSpotify ? (
-            <>
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              <span>Spotify Aktif</span>
-            </>
-          ) : (
-            <>
-              <span className={`w-2 h-2 rounded-full ${getStatusColor(data?.discord_status)}`}></span>
-              <span>Aktivitas Discord</span>
-            </>
-          )}
+  if (error) {
+    return (
+      <div className="bg-[#0c1222] border border-gray-800 text-white rounded-xl p-4 w-full max-w-xs font-sans shadow-2xl">
+        Gagal memuat aktivitas.
+      </div>
+    );
+  }
+  if (!data) {
+    return (
+      <div className="bg-[#0c1222] border border-gray-800 text-white rounded-xl p-4 w-full max-w-xs font-sans shadow-2xl flex items-center justify-center min-h-[100px]">
+        <div className="text-xs text-gray-400 animate-pulse">Loading Aktivitas...</div>
+      </div>
+    );
+  }
+
+  const clampedProgress = Math.min(progress, data.duration_ms ?? progress);
+  const progressPercentage = data.isPlaying && data.duration_ms
+    ? (clampedProgress / data.duration_ms) * 100
+    : 0;
+
+  const activities = data.activities || [];
+  const filteredActivities = activities.filter((act: any) => act.name !== 'Spotify' && act.type !== 4);
+  const customStatus = activities.find((act: any) => act.type === 4);
+
+  const displayName = data.discord_user?.global_name || data.discord_user?.display_name || 'Egiii.';
+  const username = data.discord_user?.username || 'egiii.';
+
+  return (
+    <div className="bg-[#0c1222] border border-gray-800 text-white rounded-xl p-4 w-full max-w-xs font-sans shadow-2xl transition-all duration-300 hover:border-blue-500/30 hover:shadow-blue-500/5">
+      <div className="flex justify-between items-center mb-4 pb-2 border-b border-gray-800/40">
+        <div className="text-[10px] font-bold text-gray-400 tracking-wider uppercase flex items-center gap-1.5">
+          <span className={`w-2 h-2 rounded-full ${getStatusColor(data?.discord_status)}`}></span>
+          <span>Aktivitas Discord</span>
         </div>
-        {isSpotify ? (
+        
+        {data.isPlaying ? (
           <a
             href={data?.songUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:scale-110 transition-transform duration-200"
+            className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/30 px-2 py-0.5 rounded-full hover:scale-105 transition-transform duration-200"
           >
-            <SpotifyIcon />
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+            </span>
+            <span className="text-[9px] text-green-400 font-semibold uppercase tracking-wider">Spotify</span>
           </a>
         ) : (
           <a
@@ -119,168 +139,122 @@ export function SpotifyCurrentTrack() {
           </a>
         )}
       </div>
-      {children}
-    </div>
-  );
 
-  if (error) return <Card isSpotify={false}><div>Gagal memuat aktivitas.</div></Card>;
-  if (!data) return <Card isSpotify={false}><div>Loading...</div></Card>;
-
-  const clampedProgress = Math.min(progress, data.duration_ms ?? progress);
-  const progressPercentage = data.isPlaying && data.duration_ms
-    ? (clampedProgress / data.duration_ms) * 100
-    : 0;
-
-  // Memisahkan aktivitas
-  const activities = data.activities || [];
-  const filteredActivities = activities.filter((act: any) => act.name !== 'Spotify' && act.type !== 4);
-  const customStatus = activities.find((act: any) => act.type === 4);
-
-  // Komponen Aktivitas Discord Bersama
-  const ActivitiesSection = () => {
-    if (filteredActivities.length === 0) return null;
-    return (
-      <div className="mt-4 border-t border-gray-800/60 pt-3 flex flex-col gap-3">
-        <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Sedang Melakukan:</p>
-        {filteredActivities.map((act: any, idx: number) => {
-          const largeImageUrl = act.assets?.large_image ? getAssetUrl(act.application_id, act.assets.large_image) : null;
-          const smallImageUrl = act.assets?.small_image ? getAssetUrl(act.application_id, act.assets.small_image) : null;
-
-          return (
-            <div key={idx} className="flex gap-3 items-center bg-gray-900/40 border border-gray-800/40 rounded-lg p-2 hover:border-gray-700/30 transition-all duration-200">
-              {largeImageUrl ? (
-                <div className="relative flex-shrink-0">
-                  <img
-                    src={largeImageUrl}
-                    alt={act.assets.large_text || act.name}
-                    width={40}
-                    height={40}
-                    className="rounded w-10 h-10 object-cover border border-gray-850 bg-gray-900"
-                  />
-                  {smallImageUrl && (
-                    <img
-                      src={smallImageUrl}
-                      alt={act.assets.small_text || ''}
-                      width={16}
-                      height={16}
-                      className="absolute -bottom-1 -right-1 rounded-full w-4.5 h-4.5 border border-gray-900 bg-gray-900 shadow-md"
-                    />
-                  )}
-                </div>
-              ) : (
-                <div className="w-10 h-10 rounded bg-gray-950/60 border border-gray-850 flex items-center justify-center text-base font-bold text-gray-400">
-                  🎮
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-xs text-white truncate">{act.name}</div>
-                {act.details && <div className="text-[10px] text-gray-300 truncate mt-0.5">{act.details}</div>}
-                {act.state && <div className="text-[10px] text-gray-400 truncate mt-0.5">{act.state}</div>}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
-  if (data.isPlaying) {
-    return (
-      <Card isSpotify={true}>
-        <div className="flex gap-4 items-center">
-          {data.album?.images?.[0]?.url && (
-            <div className="relative flex-shrink-0">
-              <img
-                src={data.album.images[0].url}
-                alt={data.name || 'Album Art'}
-                width={80}
-                height={80}
-                className="rounded-lg w-20 h-20 object-cover border border-gray-700/50 shadow-md"
-              />
-              <div className="absolute inset-0 rounded-lg ring-1 ring-inset ring-white/10"></div>
-            </div>
-          )}
-          <div className="flex-1 min-w-0">
-            <div className="font-bold text-white truncate hover:text-green-400 transition-colors">
-              <a href={data.songUrl} target="_blank" rel="noopener noreferrer">{data.name}</a>
-            </div>
-            <div className="text-sm text-gray-300 truncate">{data.artists?.join(', ')}</div>
-
-            <div className="w-full bg-gray-800 rounded-full h-1.5 mt-3 overflow-hidden">
-              <div
-                className="bg-green-500 h-1.5 rounded-full transition-all duration-1000 linear shadow-[0_0_8px_#1db954]"
-                style={{ width: `${progressPercentage}%` }}
-              />
-            </div>
-            <div className="flex justify-between text-[10px] text-gray-400 mt-1">
-              <span>{formatTime(clampedProgress)}</span>
-              <span>{formatTime(data.duration_ms)}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Section Aktivitas Lain di Discord saat memutar musik */}
-        <ActivitiesSection />
-
-        {pathname === '/portfolio' && (
-          <Link href="/topTracks" className='mt-4 block text-center text-xs text-gray-400 hover:text-green-400 transition-colors duration-200 border-t border-gray-800/60 pt-3'>
-            Lihat Lagu Yang Sering Diputar →
-          </Link>
-        )}
-      </Card>
-    );
-  }
-
-  // Fallback state ketika Spotify mati namun ada status Discord
-  const displayName = data.discord_user?.global_name || data.discord_user?.display_name || 'Egiii.';
-  const username = data.discord_user?.username || 'egiii.';
-
-  return (
-    <Card isSpotify={false}>
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-3 items-center">
         <div className="relative flex-shrink-0">
           {data.discord_user?.avatar ? (
             <img
               src={`https://cdn.discordapp.com/avatars/688864050989367357/${data.discord_user.avatar}.png`}
               alt="Discord Avatar"
-              width={64}
-              height={64}
-              className="rounded-full w-16 h-16 border-2 border-gray-800 shadow-md"
+              width={48}
+              height={48}
+              className="rounded-full w-12 h-12 border-2 border-gray-800 shadow-md"
             />
           ) : (
-            <div className="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-xl font-bold text-gray-300 border border-gray-700">
+            <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-lg font-bold text-gray-300 border border-gray-700">
               E
             </div>
           )}
-          <span className={`absolute bottom-0 right-0 block h-4.5 w-4.5 rounded-full ring-2 ring-[#0c1222] ${getStatusColor(data?.discord_status)} shadow-lg`}></span>
+          <span className={`absolute bottom-0 right-0 block h-3.5 w-3.5 rounded-full ring-2 ring-[#0c1222] ${getStatusColor(data?.discord_status)} shadow-lg`}></span>
         </div>
+        
         <div className="flex-1 min-w-0">
-          <div className="font-bold text-white truncate text-base">{displayName}</div>
-          <div className="text-xs text-gray-400 truncate">@{username}</div>
+          <div className="font-bold text-white truncate text-sm leading-tight">{displayName}</div>
+          <div className="text-[10px] text-gray-400 truncate">@{username}</div>
           
-          {/* Custom Status Bubble */}
           {customStatus && (
-            <div className="text-[10px] text-gray-300 italic bg-gray-950/50 border border-gray-800/40 px-2 py-0.5 rounded-md mt-1.5 inline-flex items-center gap-1 max-w-full">
+            <div className="text-[9px] text-gray-300 italic bg-gray-950/50 border border-gray-850/40 px-1.5 py-0.5 rounded mt-1 inline-flex items-center gap-1 max-w-full">
               {customStatus.emoji && <span>{customStatus.emoji.name}</span>}
               <span className="truncate">{customStatus.state}</span>
             </div>
           )}
-
-          <div className="text-[10px] text-gray-400 mt-2 flex items-center gap-1.5">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-            <span>Discord: {getStatusText(data?.discord_status)}</span>
-          </div>
         </div>
       </div>
 
-      {/* Section Aktivitas Lain di Discord */}
-      <ActivitiesSection />
+      {data.isPlaying && (
+        <div className="mt-3 border-t border-gray-800/60 pt-3 flex flex-col gap-3 bg-green-950/10 border border-green-900/10 rounded-lg p-2.5">
+          <div className="flex gap-3 items-center">
+            {data.album?.images?.[0]?.url && (
+              <div className="relative flex-shrink-0">
+                <img
+                  src={data.album.images[0].url}
+                  alt={data.name || 'Album Art'}
+                  width={48}
+                  height={48}
+                  className="rounded-lg w-12 h-12 object-cover border border-gray-700/30 shadow-md"
+                />
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <div className="font-bold text-xs text-white truncate hover:text-green-400 transition-colors">
+                <a href={data.songUrl} target="_blank" rel="noopener noreferrer">{data.name}</a>
+              </div>
+              <div className="text-[10px] text-gray-300 truncate">{data.artists?.join(', ')}</div>
+
+              <div className="w-full bg-gray-800 rounded-full h-1 mt-2 overflow-hidden">
+                <div
+                  className="bg-green-500 h-1 rounded-full transition-all duration-1000 linear shadow-[0_0_8px_#1db954]"
+                  style={{ width: `${progressPercentage}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-[8px] text-gray-400 mt-1">
+                <span>{formatTime(clampedProgress)}</span>
+                <span>{formatTime(data.duration_ms)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {filteredActivities.length > 0 && (
+        <div className="mt-3 border-t border-gray-800/60 pt-3 flex flex-col gap-2.5">
+          <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest">Sedang Melakukan:</p>
+          {filteredActivities.map((act: any, idx: number) => {
+            const largeImageUrl = act.assets?.large_image ? getAssetUrl(act.application_id, act.assets.large_image) : null;
+            const smallImageUrl = act.assets?.small_image ? getAssetUrl(act.application_id, act.assets.small_image) : null;
+
+            return (
+              <div key={idx} className="flex gap-2.5 items-center bg-gray-900/40 border border-gray-850/40 rounded-lg p-2 hover:border-gray-700/30 transition-all duration-200">
+                {largeImageUrl ? (
+                  <div className="relative flex-shrink-0">
+                    <img
+                      src={largeImageUrl}
+                      alt={act.assets.large_text || act.name}
+                      width={32}
+                      height={32}
+                      className="rounded w-8 h-8 object-cover border border-gray-850 bg-gray-900"
+                    />
+                    {smallImageUrl && (
+                      <img
+                        src={smallImageUrl}
+                        alt={act.assets.small_text || ''}
+                        width={12}
+                        height={12}
+                        className="absolute -bottom-1 -right-1 rounded-full w-3.5 h-3.5 border border-gray-900 bg-gray-900 shadow-md"
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <div className="w-8 h-8 rounded bg-gray-950/60 border border-gray-855 flex items-center justify-center text-xs font-bold text-gray-400">
+                    🎮
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-[11px] text-white truncate">{act.name}</div>
+                  {act.details && <div className="text-[9px] text-gray-300 truncate mt-0.5">{act.details}</div>}
+                  {act.state && <div className="text-[9px] text-gray-400 truncate mt-0.5">{act.state}</div>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {pathname === '/portfolio' && (
-        <Link href="/topTracks" className='mt-4 block text-center text-xs text-gray-400 hover:text-green-400 transition-colors duration-200 border-t border-gray-800/60 pt-3'>
+        <Link href="/topTracks" className="mt-4 block text-center text-xs text-gray-400 hover:text-green-400 transition-colors duration-200 border-t border-gray-800/60 pt-3">
           Lihat Lagu Yang Sering Diputar →
         </Link>
       )}
-    </Card>
+    </div>
   );
 }

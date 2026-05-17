@@ -299,7 +299,7 @@ export default function TopItemsPage() {
                 )}
                 {/* Komponen SpotifyCurrentTrack */}
                 <div
-                    className="fixed left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs px-2 bottom-[-100px] sm:left-auto sm:right-0 sm:bottom-[-100px] sm:translate-x-0"
+                    className="fixed left-1/2 transform -translate-x-1/2 transition-all duration-300 w-full max-w-xs px-2 bottom-[-90px] sm:left-auto sm:right-0 sm:bottom-[-90px] sm:translate-x-0"
                     tabIndex={0}
                     onClick={e => {
                         if (window.innerWidth <= 640) {
