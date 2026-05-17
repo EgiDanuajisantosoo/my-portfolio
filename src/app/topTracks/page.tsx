@@ -266,6 +266,26 @@ export default function TopItemsPage() {
     return (
         <main className='bg-[#0a0a0a] text-white min-h-screen'>
             <div className="w-full max-w-4xl mx-auto p-4">
+                {/* Back to Portfolio Link */}
+                <div className="mb-4">
+                    <a
+                        href="/portfolio"
+                        className="inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-green-400 transition-colors group"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={2}
+                            stroke="currentColor"
+                            className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                        </svg>
+                        <span>Kembali ke Portfolio</span>
+                    </a>
+                </div>
+
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-neutral-800 pb-4">
                     <div>
                         <h1 className="text-3xl font-bold text-white flex items-center gap-2">
