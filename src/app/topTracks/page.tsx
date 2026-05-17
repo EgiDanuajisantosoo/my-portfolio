@@ -1,6 +1,7 @@
 "use client";
 
 import { SpotifyCurrentTrack } from '@/components/SpotifyCurrentTrack';
+import { AIChatBot } from '@/components/AIChatBot';
 import React, { useState, useEffect } from 'react';
 
 // Definisikan tipe data di sini
@@ -385,6 +386,7 @@ export default function TopItemsPage() {
               }
             }
             `}</style>
+            <AIChatBot />
             </div>
         </main>
     );
