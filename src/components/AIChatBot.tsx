@@ -47,12 +47,29 @@ export function AIChatBot() {
         body: JSON.stringify({ messages: chatHistory })
       });
 
+      let data: any = null;
+      try {
+        data = await res.json();
+      } catch (jsonErr) {
+        // Abaikan jika bukan JSON
+      }
+
       if (!res.ok) {
+        if (res.status === 429 || data?.quotaExceeded) {
+          setMessages(prev => [
+            ...prev,
+            {
+              role: 'assistant',
+              content: 'Maaf, kuota harian Asisten AI Egi telah mencapai batas maksimal hari ini. Silakan coba kembali besok ya! Terima kasih atas pengertiannya! 🙏'
+            }
+          ]);
+          return;
+        }
         throw new Error('Gagal terhubung dengan server');
       }
 
-      const data = await res.json();
-      setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
+      const replyContent = data?.reply || 'Maaf, sepertinya ada kendala sistem. Silakan coba sesaat lagi ya!';
+      setMessages(prev => [...prev, { role: 'assistant', content: replyContent }]);
     } catch (err: any) {
       console.error('[Chat Error]', err);
       setMessages(prev => [

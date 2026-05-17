@@ -1,0 +1,331 @@
+{
+  "identitas": {
+    "nama_lengkap": "Egi Danuajisantoso",
+    "nama_panggilan": "Egi",
+    "latar_belakang_pendidikan": "D3 Rekayasa Perangkat Lunak Aplikasi",
+    "arah_karier": [
+      "Full Stack Developer",
+      "Backend Engineer",
+      "System Architect",
+      "AI Tooling Engineer"
+    ],
+    "profil_developer": {
+      "tipe": "builder-oriented",
+      "fokus": [
+        "arsitektur sistem",
+        "backend engineering",
+        "otomatisasi workflow",
+        "AI-assisted development",
+        "sistem scalable"
+      ]
+    }
+  },
+  "kepribadian_dan_gaya_berpikir": {
+    "karakter_utama": [
+      "sistematis",
+      "logis",
+      "eksploratif",
+      "visioner",
+      "berorientasi engineering",
+      "berbasis reasoning"
+    ],
+    "pola_berpikir": {
+      "hal_yang_disukai": [
+        "memahami mengapa sistem bekerja",
+        "memahami bagaimana arsitektur dapat berkembang",
+        "mencari peluang otomatisasi",
+        "menganalisis technical tradeoff"
+      ],
+      "preferensi_komunikasi": {
+        "gaya": [
+          "jelas",
+          "teknikal",
+          "profesional",
+          "langsung ke inti",
+          "terstruktur"
+        ],
+        "hindari": [
+          "jawaban motivasi yang terlalu umum",
+          "penjelasan terlalu sederhana",
+          "jawaban tanpa struktur"
+        ]
+      },
+      "pendekatan_problem_solving": [
+        "menganalisis masalah",
+        "mengidentifikasi bottleneck",
+        "memecah arsitektur menjadi bagian kecil",
+        "menentukan MVP",
+        "memprioritaskan kepraktisan",
+        "melakukan optimisasi setelah validasi"
+      ]
+    }
+  },
+  "ketertarikan_teknikal": {
+    "ketertarikan_utama": [
+      "Backend Development",
+      "Full Stack Development",
+      "AI-assisted Development",
+      "System Architecture",
+      "Automation",
+      "Web Application Engineering",
+      "RBAC System",
+      "Dashboard System",
+      "API Design",
+      "Developer Tools",
+      "SaaS System"
+    ],
+    "bahasa_pemrograman": [
+      "JavaScript",
+      "Java",
+      "PHP",
+      "Python",
+      "HTML",
+      "CSS"
+    ],
+    "framework_dan_teknologi": [
+      "Laravel",
+      "Tailwind CSS",
+      "Express.js",
+      "Flask",
+      "Django",
+      "Spring Boot"
+    ],
+    "konsep_yang_dipahami": [
+      "RBAC",
+      "Authentication",
+      "Authorization",
+      "REST API",
+      "Database Design",
+      "ERD",
+      "MVC",
+      "Workflow Automation",
+      "AI Integration",
+      "Linked List",
+      "Stack",
+      "Queue",
+      "System Design"
+    ],
+    "minat_infrastruktur_dan_devops": [
+      "Docker",
+      "Serverless Architecture",
+      "Microservices",
+      "AWS Certification"
+    ]
+  },
+  "filosofi_pengembangan": {
+    "gaya_pengembangan_yang_disukai": [
+      "sistem modular",
+      "clean architecture",
+      "struktur scalable",
+      "komponen reusable",
+      "automation-first thinking"
+    ],
+    "cara_berpikir_produk": {
+      "mempertimbangkan": [
+        "stakeholder",
+        "alur bisnis",
+        "alur pengguna",
+        "scalability",
+        "maintainability",
+        "developer experience"
+      ]
+    }
+  },
+  "proyek": [
+    {
+      "nama": "Usahakita",
+      "jenis": "platform pencarian partner bisnis",
+      "tech_stack": [
+        "Laravel"
+      ],
+      "fitur": [
+        "rekomendasi partner bisnis",
+        "business matching",
+        "filter industri",
+        "filter lokasi",
+        "profil perusahaan",
+        "keamanan dan privasi"
+      ],
+      "insight": [
+        "memiliki pemikiran platform architecture",
+        "tertarik pada business ecosystem",
+        "tertarik pada recommendation system"
+      ]
+    },
+    {
+      "nama": "Platform Pencari Partner Kontrakan",
+      "jenis": "platform pencarian partner dan kontrakan",
+      "stakeholder": [
+        "pemilik kontrakan",
+        "pencari kontrakan",
+        "pencari partner kontrakan",
+        "admin"
+      ],
+      "fitur": [
+        "roommate matching",
+        "rekomendasi kontrakan",
+        "multi-role system"
+      ],
+      "insight": [
+        "memiliki pola pikir marketplace system",
+        "memahami matching logic",
+        "memahami workflow multi-user"
+      ]
+    },
+    {
+      "nama": "AI Code Auditor",
+      "jenis": "sistem AI untuk workflow development",
+      "konsep": [
+        "PRD parsing",
+        "OpenSpec",
+        "otomatisasi generate YAML",
+        "developer workflow automation",
+        "AI auditing"
+      ],
+      "fokus_arsitektur": [
+        "AI orchestration",
+        "tooling system",
+        "developer experience",
+        "workflow automation"
+      ]
+    },
+    {
+      "nama": "Website Rental Bus",
+      "jenis": "platform penyewaan bus",
+      "tantangan_utama": [
+        "arah UI/UX",
+        "layout visual",
+        "presentasi frontend"
+      ],
+      "insight": [
+        "lebih kuat di backend dan system logic dibanding visual design"
+      ]
+    },
+    {
+      "nama": "Portfolio Tailwind CSS",
+      "jenis": "proyek frontend portfolio",
+      "tech_stack": [
+        "Tailwind CSS"
+      ],
+      "insight": [
+        "memahami modern frontend workflow",
+        "menggunakan utility-first CSS"
+      ]
+    }
+  ],
+  "kekuatan_engineering": {
+    "kekuatan": [
+      "system thinking",
+      "backend logic",
+      "workflow analysis",
+      "eksplorasi arsitektur",
+      "automation mindset",
+      "pemikiran scalability jangka panjang",
+      "technical curiosity"
+    ]
+  },
+  "area_pengembangan": {
+    "area": [
+      {
+        "nama": "kepercayaan diri UI/UX",
+        "detail": "lebih fokus pada backend dan logic dibanding visual design"
+      },
+      {
+        "nama": "risiko overengineering",
+        "detail": "kadang memikirkan sistem terlalu besar sebelum validasi MVP"
+      },
+      {
+        "nama": "eksekusi vs eksplorasi",
+        "detail": "terlalu banyak ide yang dieksplorasi bersamaan dapat mengurangi kedalaman eksekusi"
+      }
+    ]
+  },
+  "perilaku_ai_yang_ideal": {
+    "komunikasi": [
+      "berbasis reasoning",
+      "teknikal",
+      "terstruktur",
+      "memahami tradeoff",
+      "langsung ke inti"
+    ],
+    "ai_harus": [
+      "memecah arsitektur sistem",
+      "mengidentifikasi constraint",
+      "memprioritaskan MVP",
+      "menjelaskan scalability path",
+      "memberikan technical reasoning"
+    ],
+    "ai_harus_menghindari": [
+      "saran terlalu umum",
+      "motivasi kosong",
+      "penjelasan terlalu sederhana"
+    ]
+  },
+  "pola_belajar": {
+    "metode_belajar_terbaik": [
+      "project-based learning",
+      "iterative building",
+      "eksperimen",
+      "implementasi nyata"
+    ],
+    "gaya_belajar": "belajar dengan membangun dan memperbaiki"
+  },
+  "potensi_karier_masa_depan": [
+    "Backend Engineer",
+    "Full Stack Engineer",
+    "System Architect",
+    "AI Tooling Engineer",
+    "Automation Engineer",
+    "Technical Product Builder",
+    "SaaS Founder",
+    "Developer Experience Engineer"
+  ],
+  "karakteristik_paling_menonjol": [
+    "automation mindset",
+    "system thinking",
+    "technical curiosity",
+    "architecture-oriented thinking",
+    "ketertarikan pada AI-assisted engineering"
+  ],
+  "catatan_operasional_ai": {
+    "gaya_respons_yang_disukai": {
+      "harus": [
+        "terstruktur",
+        "modular",
+        "teknikal",
+        "berbasis reasoning",
+        "berorientasi eksekusi"
+      ]
+    },
+    "saat_membantu_proyek": {
+      "selalu_pertimbangkan": [
+        "stakeholder",
+        "security",
+        "scalability",
+        "maintainability",
+        "modularity",
+        "developer experience"
+      ]
+    },
+    "area_bantuan_yang_disukai": [
+      "perencanaan arsitektur",
+      "backend systems",
+      "integrasi workflow AI",
+      "struktur PRD",
+      "RBAC system",
+      "dashboard logic",
+      "perencanaan API",
+      "database design",
+      "automation pipeline"
+    ]
+  },
+  "ringkasan": {
+    "deskripsi": "Egi adalah developer dengan pola pikir builder-oriented yang memiliki ketertarikan kuat pada backend, arsitektur sistem, otomatisasi workflow, dan AI-assisted engineering.",
+    "strategi_interaksi": [
+      "berikan reasoning detail",
+      "fokus pada practicality dan scalability",
+      "hindari jawaban generic",
+      "prioritaskan penjelasan berbasis arsitektur"
+    ]
+  }
+}
