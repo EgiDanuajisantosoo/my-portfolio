@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -7,7 +8,94 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      "colors": {
+              "surface-deep": "#101828",
+              "on-secondary-fixed-variant": "#004e60",
+              "on-surface-variant": "#bbcbb8",
+              "primary": "#4cf479",
+              "on-primary": "#003913",
+              "on-tertiary-container": "#793820",
+              "secondary-container": "#14d1ff",
+              "surface-bright": "#31394b",
+              "surface-raised": "#162139",
+              "error": "#ffb4ab",
+              "tertiary-container": "#ffa585",
+              "background": "#0b1323",
+              "primary-fixed": "#69ff89",
+              "surface-container-low": "#141b2c",
+              "inverse-primary": "#006e2c",
+              "secondary-fixed-dim": "#4cd6ff",
+              "inverse-on-surface": "#293041",
+              "surface-container": "#182030",
+              "surface-container-high": "#222a3b",
+              "primary-container": "#1ed760",
+              "on-primary-container": "#005721",
+              "error-container": "#93000a",
+              "text-primary": "#FFFFFF",
+              "on-error-container": "#ffdad6",
+              "on-primary-fixed-variant": "#00531f",
+              "tertiary-fixed-dim": "#ffb59b",
+              "on-tertiary-fixed-variant": "#73341c",
+              "tertiary-fixed": "#ffdbcf",
+              "on-secondary-container": "#00566b",
+              "on-background": "#dbe2f9",
+              "outline": "#859583",
+              "inverse-surface": "#dbe2f9",
+              "on-tertiary-fixed": "#380d00",
+              "secondary": "#a6e6ff",
+              "on-secondary-fixed": "#001f28",
+              "surface": "#0b1323",
+              "surface-dim": "#0b1323",
+              "on-error": "#690005",
+              "outline-variant": "#3c4a3c",
+              "surface-variant": "#2d3546",
+              "on-primary-fixed": "#002108",
+              "primary-fixed-dim": "#34e36a",
+              "tertiary": "#ffccbb",
+              "on-secondary": "#003543",
+              "surface-container-lowest": "#060e1e",
+              "secondary-fixed": "#b7eaff",
+              "surface-tint": "#34e36a",
+              "on-surface": "#dbe2f9",
+              "surface-container-highest": "#2d3546",
+              "text-secondary": "#94A3B8",
+              "on-tertiary": "#571f08"
+      },
+      "borderRadius": {
+              "DEFAULT": "0.125rem",
+              "lg": "0.25rem",
+              "xl": "0.5rem",
+              "full": "0.75rem"
+      },
+      "spacing": {
+              "base": "8px",
+              "margin-mobile": "20px",
+              "container-max": "1200px",
+              "margin-desktop": "64px",
+              "gutter": "24px"
+      },
+      "fontFamily": {
+              "body-lg": ["Inter"],
+              "body-md": ["Inter"],
+              "display-lg": ["Geist"],
+              "label-md": ["Geist"],
+              "display-lg-mobile": ["Geist"],
+              "headline-sm": ["Geist"],
+              "headline-md": ["Geist"],
+              "code": ["Geist"]
+      },
+      "fontSize": {
+              "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+              "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+              "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+              "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+              "display-lg-mobile": ["36px", {"lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+              "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+              "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+              "code": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+      }
+    }
   },
   plugins: [],
 }

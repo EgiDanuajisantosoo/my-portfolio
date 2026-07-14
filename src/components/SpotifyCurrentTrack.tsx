@@ -104,8 +104,8 @@ export function SpotifyCurrentTrack() {
   const filteredActivities = activities.filter((act: any) => act.name !== 'Spotify' && act.type !== 4);
   const customStatus = activities.find((act: any) => act.type === 4);
 
-  const displayName = data.discord_user?.global_name || data.discord_user?.display_name || 'Egiii.';
-  const username = data.discord_user?.username || 'egiii.';
+  const displayName = data.discord_user?.global_name || data.discord_user?.display_name || 'Egi Danuajisantoso';
+  const username = data.discord_user?.username || 'Egi Danuajisantoso';
 
   return (
     <div className="bg-[#0c1222] border border-gray-800 text-white rounded-xl p-4 w-full max-w-xs font-sans shadow-2xl transition-all duration-300 hover:border-blue-500/30 hover:shadow-blue-500/5">

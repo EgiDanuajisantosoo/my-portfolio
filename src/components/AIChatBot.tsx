@@ -214,11 +214,11 @@ export function AIChatBot() {
       `}} />
 
       {/* Floating Chat Button */}
-      <div className="fixed bottom-6 left-6 z-50">
+      <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50">
         {!isOpen && (
           <button
             onClick={() => setIsOpen(true)}
-            className="relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-teal-500 text-white shadow-[0_8px_24px_rgba(30,215,96,0.3)] hover:shadow-[0_12px_32px_rgba(30,215,96,0.45)] hover:scale-110 active:scale-95 transition-all duration-300 group cursor-pointer"
+            className="relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-teal-500 text-white shadow-[0_8px_24px_rgba(30,215,96,0.3)] hover:shadow-[0_12px_32px_rgba(30,215,96,0.45)] hover:scale-110 active:scale-95 transition-all duration-300 group cursor-pointer"
             aria-label="Tanya AI Asisten"
           >
             {/* Ambient Pulse Glowing Ring */}
@@ -231,7 +231,7 @@ export function AIChatBot() {
               viewBox="0 0 24 24"
               strokeWidth={2.2}
               stroke="currentColor"
-              className="w-7 h-7 relative z-10 transform group-hover:rotate-12 transition-transform duration-300"
+              className="w-6 h-6 sm:w-7 sm:h-7 relative z-10 transform group-hover:rotate-12 transition-transform duration-300"
             >
               <path
                 strokeLinecap="round"
@@ -244,10 +244,10 @@ export function AIChatBot() {
 
         {/* Chat Widget Container */}
         {isOpen && (
-          <div className="w-[340px] sm:w-[400px] h-[520px] bg-[#0b1329]/85 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom-5">
+          <div className="w-[calc(100vw-32px)] sm:w-[400px] h-[480px] sm:h-[520px] bg-[#0b1329]/85 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom-5">
             {/* Header */}
-            <div className="bg-gradient-to-r from-[#0d1c3a]/90 to-[#070d1e]/90 border-b border-white/5 px-5 py-4 flex items-center justify-between shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
-              <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-r from-[#0d1c3a]/90 to-[#070d1e]/90 border-b border-white/5 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <div className="relative">
                   <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#1ed760]/20 to-teal-500/20 border border-[#1ed760]/30 flex items-center justify-center text-xl shadow-inner">
                     🤖
