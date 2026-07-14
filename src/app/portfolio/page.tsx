@@ -267,6 +267,14 @@ export default function Portfolio() {
               <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Menonton Film / Series</h3>
               <p className="font-body-md text-body-md text-text-secondary">Rehat sejenak dengan menonton film atau series.</p>
             </div>
+            
+            <a href="/mylist/anime" className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group block">
+              <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="material-symbols-outlined text-3xl text-primary">animation</span>
+              </div>
+              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Menonton Anime</h3>
+              <p className="font-body-md text-body-md text-text-secondary">Mengikuti serial anime favorit dan mencatatnya ke dalam daftar tontonan (Klik untuk melihat daftar).</p>
+            </a>
           </div>
         </section>
       </main>
