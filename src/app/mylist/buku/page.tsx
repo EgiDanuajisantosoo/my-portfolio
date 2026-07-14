@@ -1,5 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
+import { cookies } from 'next/headers';
+import { getDictionary, Language } from '@/i18n/dictionaries';
 
 export const dynamic = "force-dynamic";
 
@@ -24,17 +26,21 @@ const PAGE_SIZE = 12;
 const REQUEST_TYPE = "request";
 const FAVORITE_TYPE = "favorite";
 
-const WATCHING_STATUS_OPTIONS = [
-    { label: "Selesai Dibaca", value: "completed" },
-    { label: "Sedang Dibaca", value: "watching" },
-    { label: "Rencana Dibaca", value: "draft" }
-];
-
 export default async function BookHobbyList({
     searchParams,
 }: {
     searchParams: Promise<{ page?: string; status?: string }>;
 }) {
+    const cookieStore = await cookies();
+    const lang = (cookieStore.get('NEXT_LOCALE')?.value || 'id') as Language;
+    const dict = getDictionary(lang).bookList;
+
+    const WATCHING_STATUS_OPTIONS = [
+        { value: "completed", label: dict.completed },
+        { value: "watching", label: dict.watching },
+        { value: "draft", label: dict.planToWatch }
+    ];
+
     const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -90,12 +96,11 @@ export default async function BookHobbyList({
                     <div className="max-w-3xl">
                         <Link href="/portfolio" className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-8 font-label-md">
                             <span className="material-symbols-outlined text-[18px]">arrow_back</span>
-                            Kembali ke Portofolio
+                            {dict.backToPortfolio}
                         </Link>
-                        <h1 className="font-display-lg text-display-lg text-primary mb-6 tracking-tighter leading-tight">Daftar Buku Saya</h1>
+                        <h1 className="font-display-lg text-display-lg text-primary mb-6 tracking-tighter leading-tight">{dict.title}</h1>
                         <p className="font-body-lg text-body-lg text-text-secondary leading-relaxed">
-                            Buku-buku yang menginspirasi pemikiran dan memperluas wawasan saya. Koleksi bacaan favorit saya, 
-                            dinilai dan diulas untuk direkomendasikan.
+                            {dict.description}
                         </p>
                     </div>
                 </section>
@@ -107,7 +112,7 @@ export default async function BookHobbyList({
                             href={`?page=1`}
                             className={`px-6 py-2 rounded-full border font-label-md text-label-md transition-all ${!selectedStatus ? "border-white/10 bg-white/5 text-white active-filter" : "border-white/10 text-on-surface-variant hover:border-primary/50 hover:text-primary"}`}
                         >
-                            Semua Buku
+                            {dict.allBooks}
                         </Link>
                         {WATCHING_STATUS_OPTIONS.map((st) => (
                             <Link
@@ -120,7 +125,7 @@ export default async function BookHobbyList({
                         ))}
                     </div>
                     <div className="text-on-surface-variant font-label-md text-label-md flex items-center gap-2">
-                        <span className="text-primary font-bold">{totalHobbies ?? 0}</span> Buku Tersimpan
+                        <span className="text-primary font-bold">{totalHobbies ?? 0}</span> {dict.booksListed}
                     </div>
                 </section>
 
@@ -130,9 +135,9 @@ export default async function BookHobbyList({
                         <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-white/5 grid place-items-center">
                             <span className="text-2xl">📚</span>
                         </div>
-                        <h3 className="font-headline-sm text-headline-sm text-white mb-2">Tidak Ada Buku Ditemukan</h3>
+                        <h3 className="font-headline-sm text-headline-sm text-white mb-2">{dict.noBooks}</h3>
                         <p className="text-text-secondary">
-                            {selectedStatus ? `Tidak ada buku dengan status yang dipilih.` : "Belum ada buku yang ditambahkan ke koleksi."}
+                            {selectedStatus ? dict.noBooksStatus : dict.noBooksTotal}
                         </p>
                         <Link href="/add-hobby/buku" className="inline-block mt-4 text-primary hover:underline">
                             + Cari & Tambah Buku Baru
@@ -168,14 +173,14 @@ export default async function BookHobbyList({
                                         <p className="text-xs text-primary mb-3">Oleh: {item.studio || "Unknown"}</p>
                                         
                                         <p className="font-body-md text-body-md text-text-secondary line-clamp-3 mb-6 flex-grow">
-                                            {item.synopsis || "Sinopsis tidak tersedia untuk buku ini."}
+                                            {item.synopsis || dict.synopsisNotAvailable}
                                         </p>
                                         <div className="pt-5 border-t border-white/10 flex justify-between items-center">
                                             <span className="font-label-md text-label-md flex items-center gap-2 text-primary">
-                                                {item.watching_status === 'completed' && <><span className="material-symbols-outlined text-[20px]">check_circle</span> Selesai Dibaca</>}
-                                                {item.watching_status === 'watching' && <><span className="material-symbols-outlined text-[20px] animate-pulse">menu_book</span> Sedang Dibaca</>}
-                                                {item.watching_status === 'draft' && <><span className="material-symbols-outlined text-[20px] text-tertiary">schedule</span> <span className="text-tertiary">Rencana Dibaca</span></>}
-                                                {!item.watching_status && <><span className="material-symbols-outlined text-[20px]">bookmark</span> Disimpan</>}
+                                                {item.watching_status === 'completed' && <><span className="material-symbols-outlined text-[20px]">check_circle</span> {dict.completed}</>}
+                                                {item.watching_status === 'watching' && <><span className="material-symbols-outlined text-[20px] animate-pulse">play_circle</span> {dict.watching}</>}
+                                                {item.watching_status === 'draft' && <><span className="material-symbols-outlined text-[20px] text-tertiary">schedule</span> <span className="text-tertiary">{dict.planToWatch}</span></>}
+                                                {!item.watching_status && <><span className="material-symbols-outlined text-[20px]">bookmark</span> {dict.added}</>}
                                             </span>
                                             <a href={item.url || "#"} target="_blank" rel="noopener noreferrer" className="text-on-surface-variant hover:text-white transition-colors flex items-center gap-1 text-xs">
                                                 <span>Detail</span>
@@ -196,7 +201,7 @@ export default async function BookHobbyList({
                                 <span className="material-symbols-outlined">arrow_back</span>
                             </Link>
                             <span className="font-label-md text-label-md text-text-secondary">
-                                Halaman <span className="text-white">{page}</span>
+                                {dict.page} <span className="text-white">{page}</span>
                             </span>
                             <Link
                                 href={`?page=${page + 1}${selectedStatus ? `&status=${encodeURIComponent(selectedStatus)}` : ""}`}
@@ -220,16 +225,15 @@ export default async function BookHobbyList({
                     <div className="max-w-4xl mx-auto flex flex-col lg:flex-row gap-12 lg:items-start relative z-10">
                         <div className="flex flex-col items-center text-center py-8 w-full">
                             <div className="w-16 h-1 bg-primary mb-8"></div>
-                            <h2 className="font-display-lg text-display-lg text-white mb-6 tracking-tighter leading-none">Berikan Rekomendasi Buku</h2>
+                            <h2 className="font-display-lg text-display-lg text-white mb-6 tracking-tighter leading-none">{dict.giveRecTitle}</h2>
                             <p className="font-body-lg text-body-lg text-text-secondary max-w-2xl mb-10">
-                                Punya buku favorit yang belum ada di daftar ini? Bagikan rekomendasi Anda. 
-                                Saran Anda akan sangat berharga bagi saya untuk menemukan bacaan hebat selanjutnya.
+                                {dict.giveRecDesc}
                             </p>
                             <Link 
                                 href="/rec/buku" 
                                 className="group flex items-center justify-center gap-3 bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full font-bold active:scale-95 duration-200 transition-all hover:shadow-[0_0_30px_rgba(30,215,96,0.4)]"
                             >
-                                Mulai Rekomendasikan
+                                {dict.startRec}
                                 <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
                             </Link>
                         </div>
@@ -241,7 +245,7 @@ export default async function BookHobbyList({
                     <div className="mt-20 max-w-6xl mx-auto px-4 md:px-0">
                         <div className="flex items-center gap-4 mb-8">
                             <span className="material-symbols-outlined text-3xl text-secondary">forum</span>
-                            <h3 className="font-headline-md text-headline-md text-white">Saran Buku dari Pengunjung</h3>
+                            <h3 className="font-headline-md text-headline-md text-white">{dict.visitorSug}</h3>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {(requests as Hobby[]).map((item) => (
@@ -259,7 +263,7 @@ export default async function BookHobbyList({
                                                     {item.studio || "Unknown Author"}
                                                 </span>
                                             </div>
-                                            <p className="font-body-md text-xs text-text-secondary line-clamp-2">{item.synopsis || "Direkomendasikan oleh seseorang."}</p>
+                                            <p className="font-body-md text-xs text-text-secondary line-clamp-2">{item.synopsis || dict.recBySomeone}</p>
                                         </div>
                                     </div>
                                     <div className="px-5 py-3 border-t border-white/5 flex justify-between items-center bg-black/20">

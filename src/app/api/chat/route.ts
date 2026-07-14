@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
-    const { messages } = await request.json();
+    const { messages, lang = 'id' } = await request.json();
 
     if (!messages || !Array.isArray(messages)) {
       return NextResponse.json({ error: 'Format pesan tidak valid' }, { status: 400 });
@@ -98,7 +98,12 @@ ${nowPlayingText}
     `.trim();
 
     // 2. Build Groq Personal Assistant Prompt
-    const systemPrompt = `Kamu adalah Asisten AI Pribadi Egi Danuajisantoso. Tugasmu adalah menjawab pertanyaan pengunjung portofolio tentang Egi dengan ramah, profesional, ringkas, dan menyenangkan menggunakan Bahasa Indonesia yang asyik tapi sopan.
+    const isEnglish = lang === 'en';
+    const langInstruction = isEnglish 
+      ? 'You MUST answer entirely in English. Your tone should be friendly, professional, and slightly casual but polite.' 
+      : 'Jawablah menggunakan Bahasa Indonesia yang asyik tapi sopan.';
+
+    const systemPrompt = `Kamu adalah Asisten AI Pribadi Egi Danuajisantoso. Tugasmu adalah menjawab pertanyaan pengunjung portofolio tentang Egi dengan ramah, profesional, ringkas, dan menyenangkan. ${langInstruction}
 
 Berikut adalah informasi lengkap tentang Egi yang harus kamu gunakan sebagai konteks utama:
 - Nama Lengkap: Egi Danuajisantoso

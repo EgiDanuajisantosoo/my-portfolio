@@ -1,5 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
+import { cookies } from 'next/headers';
+import { getDictionary, Language } from '@/i18n/dictionaries';
 
 export const dynamic = "force-dynamic";
 
@@ -24,17 +26,21 @@ const PAGE_SIZE = 12; // Lebih banyak item per halaman agar grid lebih padat
 const REQUEST_TYPE = "request";
 const FAVORITE_TYPE = "favorite";
 
-const WATCHING_STATUS_OPTIONS = [
-    { label: "Selesai Ditonton", value: "completed" },
-    { label: "Sedang Ditonton", value: "watching" },
-    { label: "Rencana Ditonton", value: "draft" }
-];
-
 export default async function AnimeHobbyList({
     searchParams,
 }: {
     searchParams: Promise<{ page?: string; status?: string }>;
 }) {
+    const cookieStore = await cookies();
+    const lang = (cookieStore.get('NEXT_LOCALE')?.value || 'id') as Language;
+    const dict = getDictionary(lang).animeList;
+
+    const WATCHING_STATUS_OPTIONS = [
+        { value: "completed", label: dict.completed },
+        { value: "watching", label: dict.watching },
+        { value: "draft", label: dict.planToWatch },
+    ];
+
     const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -90,12 +96,11 @@ export default async function AnimeHobbyList({
                     <div className="max-w-3xl">
                         <Link href="/portfolio" className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-8 font-label-md">
                             <span className="material-symbols-outlined text-[18px]">arrow_back</span>
-                            Kembali ke Portofolio
+                            {dict.backToPortfolio}
                         </Link>
-                        <h1 className="font-display-lg text-display-lg text-primary mb-6 tracking-tighter leading-tight">Daftar Anime Saya</h1>
+                        <h1 className="font-display-lg text-display-lg text-primary mb-6 tracking-tighter leading-tight">{dict.title}</h1>
                         <p className="font-body-lg text-body-lg text-text-secondary leading-relaxed">
-                            Di luar baris kode dan terminal, inilah cerita-cerita yang menginspirasi proses kreatif saya. 
-                            Koleksi tontonan anime favorit saya yang dinilai dan diulas secara personal.
+                            {dict.description}
                         </p>
                     </div>
                 </section>
@@ -107,7 +112,7 @@ export default async function AnimeHobbyList({
                             href={`?page=1`}
                             className={`px-6 py-2 rounded-full border font-label-md text-label-md transition-all ${!selectedStatus ? "border-white/10 bg-white/5 text-white active-filter" : "border-white/10 text-on-surface-variant hover:border-primary/50 hover:text-primary"}`}
                         >
-                            Semua Cerita
+                            {dict.allAnime}
                         </Link>
                         {WATCHING_STATUS_OPTIONS.map((st) => (
                             <Link
@@ -120,7 +125,7 @@ export default async function AnimeHobbyList({
                         ))}
                     </div>
                     <div className="text-on-surface-variant font-label-md text-label-md flex items-center gap-2">
-                        <span className="text-primary font-bold">{totalHobbies ?? 0}</span> Seri Tersimpan
+                        <span className="text-primary font-bold">{totalHobbies ?? 0}</span> {dict.animeListed}
                     </div>
                 </section>
 
@@ -128,11 +133,11 @@ export default async function AnimeHobbyList({
                 {!hobbies || hobbies.length === 0 ? (
                     <div className="rounded-2xl border border-white/10 bg-surface-container/30 p-16 text-center glass-panel">
                         <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-white/5 grid place-items-center">
-                            <span className="text-2xl">📭</span>
+                            <span className="text-2xl">🎬</span>
                         </div>
-                        <h3 className="font-headline-sm text-headline-sm text-white mb-2">Tidak Ada Seri Ditemukan</h3>
+                        <h3 className="font-headline-sm text-headline-sm text-white mb-2">{dict.noAnime}</h3>
                         <p className="text-text-secondary">
-                            {selectedStatus ? `Tidak ada anime dengan status yang dipilih.` : "Belum ada anime yang ditambahkan ke koleksi."}
+                            {selectedStatus ? dict.noAnimeStatus : dict.noAnimeTotal}
                         </p>
                     </div>
                 ) : (
@@ -166,14 +171,14 @@ export default async function AnimeHobbyList({
                                         </div>
                                         <h3 className="font-headline-md text-headline-md text-white mb-3 group-hover:text-primary transition-colors line-clamp-2">{item.title}</h3>
                                         <p className="font-body-md text-body-md text-text-secondary line-clamp-3 mb-6 flex-grow">
-                                            {item.synopsis || "Sinopsis tidak tersedia untuk anime ini."}
+                                            {item.synopsis || dict.synopsisNotAvailable}
                                         </p>
                                         <div className="pt-5 border-t border-white/10 flex justify-between items-center">
                                             <span className="font-label-md text-label-md flex items-center gap-2 text-primary">
-                                                {item.watching_status === 'completed' && <><span className="material-symbols-outlined text-[20px]">check_circle</span> Selesai Ditonton</>}
-                                                {item.watching_status === 'watching' && <><span className="material-symbols-outlined text-[20px] animate-pulse">play_circle</span> Sedang Ditonton</>}
-                                                {item.watching_status === 'draft' && <><span className="material-symbols-outlined text-[20px] text-tertiary">schedule</span> <span className="text-tertiary">Rencana Ditonton</span></>}
-                                                {!item.watching_status && <><span className="material-symbols-outlined text-[20px]">bookmark</span> Ditambahkan</>}
+                                                {item.watching_status === 'completed' && <><span className="material-symbols-outlined text-[20px]">check_circle</span> {dict.completed}</>}
+                                                {item.watching_status === 'watching' && <><span className="material-symbols-outlined text-[20px] animate-pulse">play_circle</span> {dict.watching}</>}
+                                                {item.watching_status === 'draft' && <><span className="material-symbols-outlined text-[20px] text-tertiary">schedule</span> <span className="text-tertiary">{dict.planToWatch}</span></>}
+                                                {!item.watching_status && <><span className="material-symbols-outlined text-[20px]">bookmark</span> {dict.added}</>}
                                             </span>
                                             <a href={item.url || "#"} target="_blank" rel="noopener noreferrer" className="text-on-surface-variant hover:text-white transition-colors">
                                                 <span className="material-symbols-outlined">open_in_new</span>
@@ -193,7 +198,7 @@ export default async function AnimeHobbyList({
                                 <span className="material-symbols-outlined">arrow_back</span>
                             </Link>
                             <span className="font-label-md text-label-md text-text-secondary">
-                                Halaman <span className="text-white">{page}</span>
+                                {dict.page} <span className="text-white">{page}</span>
                             </span>
                             <Link
                                 href={`?page=${page + 1}${selectedStatus ? `&status=${encodeURIComponent(selectedStatus)}` : ""}`}
@@ -217,16 +222,15 @@ export default async function AnimeHobbyList({
                     <div className="max-w-4xl mx-auto flex flex-col lg:flex-row gap-12 lg:items-start relative z-10">
                         <div className="flex flex-col items-center text-center py-8 w-full">
                             <div className="w-16 h-1 bg-primary mb-8"></div>
-                            <h2 className="font-display-lg text-display-lg text-white mb-6 tracking-tighter leading-none">Berikan Rekomendasi</h2>
+                            <h2 className="font-display-lg text-display-lg text-white mb-6 tracking-tighter leading-none">{dict.giveRecTitle}</h2>
                             <p className="font-body-lg text-body-lg text-text-secondary max-w-2xl mb-10">
-                                Punya cerita favorit yang belum ada di daftar ini? Bagikan rekomendasi Anda. 
-                                Saran Anda akan membantu saya menemukan mahakarya berikutnya untuk dipelajari.
+                                {dict.giveRecDesc}
                             </p>
                             <Link 
                                 href="/rec/anime" 
                                 className="group flex items-center justify-center gap-3 bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full font-bold active:scale-95 duration-200 transition-all hover:shadow-[0_0_30px_rgba(30,215,96,0.4)]"
                             >
-                                Mulai Rekomendasikan
+                                {dict.startRec}
                                 <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
                             </Link>
                         </div>
@@ -238,7 +242,7 @@ export default async function AnimeHobbyList({
                     <div className="mt-20 max-w-6xl mx-auto px-4 md:px-0">
                         <div className="flex items-center gap-4 mb-8">
                             <span className="material-symbols-outlined text-3xl text-secondary">forum</span>
-                            <h3 className="font-headline-md text-headline-md text-white">Saran dari Pengunjung</h3>
+                            <h3 className="font-headline-md text-headline-md text-white">{dict.visitorSug}</h3>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {(requests as Hobby[]).map((item) => (
@@ -254,7 +258,7 @@ export default async function AnimeHobbyList({
                                             <div className="flex items-center gap-2 mb-2">
                                                 <span className="text-[10px] bg-secondary/20 text-secondary px-2 py-0.5 rounded font-bold">{item.score ? `⭐ ${item.score}` : 'TBD'}</span>
                                             </div>
-                                            <p className="font-body-md text-xs text-text-secondary line-clamp-2">{item.synopsis || "Direkomendasikan oleh seseorang."}</p>
+                                            <p className="font-body-md text-xs text-text-secondary line-clamp-2">{item.synopsis || dict.recBySomeone}</p>
                                         </div>
                                     </div>
                                     <div className="px-5 py-3 border-t border-white/5 flex justify-between items-center bg-black/20">

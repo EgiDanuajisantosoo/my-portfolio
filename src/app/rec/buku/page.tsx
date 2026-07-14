@@ -1,6 +1,8 @@
 export const dynamic = "force-dynamic";
 import SuccessAlert from "@/components/SuccessAlert";
 import { addBookRec } from "./actions";
+import { cookies } from 'next/headers';
+import { getDictionary, Language } from '@/i18n/dictionaries';
 
 async function getBooks(q: string, source: string) {
   let googleError = null;
@@ -102,6 +104,10 @@ async function getTrendingBooks() {
 }
 
 export default async function BookRecPage({ searchParams }: any) {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get('NEXT_LOCALE')?.value || 'id') as Language;
+  const dict = getDictionary(lang).recBook;
+
   const params = await searchParams;
   const query = params?.q?.trim() || "";
   const source = params?.source === "oplib" ? "oplib" : "google";
@@ -132,10 +138,10 @@ export default async function BookRecPage({ searchParams }: any) {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-extrabold tracking-tight text-white">
-              Kirim Rekomendasi Buku
+              {dict.title}
             </h1>
             <p className="text-sm text-gray-400 mt-1">
-              Bantu saya menemukan mahakarya literatur menggunakan {source === "google" ? "Google Books" : "Open Library"}.
+              {dict.subtitlePrefix} {source === "google" ? "Google Books" : "Open Library"}.
             </p>
           </div>
 
@@ -144,13 +150,13 @@ export default async function BookRecPage({ searchParams }: any) {
               href="/mylist/buku"
               className="text-sm text-blue-400 hover:text-blue-300 underline underline-offset-4"
             >
-              Kembali ke Daftar Buku
+              {dict.backToList}
             </a>
             <a
               href="/portfolio"
               className="text-sm text-gray-400 hover:text-gray-300 underline underline-offset-4"
             >
-              Kembali ke Portofolio
+              {dict.backToPortfolio}
             </a>
           </div>
         </div>
@@ -165,7 +171,7 @@ export default async function BookRecPage({ searchParams }: any) {
               type="text"
               name="q"
               defaultValue={query}
-              placeholder="Cari judul buku yang ingin Anda rekomendasikan..."
+              placeholder={dict.searchPlaceholder}
               className="border border-white/10 bg-white/10 text-white rounded-lg pl-11 pr-3 py-2.5 w-full
           placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -204,7 +210,7 @@ export default async function BookRecPage({ searchParams }: any) {
             type="submit"
             className="bg-blue-600 hover:bg-blue-500 w-full sm:w-auto text-white px-5 py-2.5 rounded-lg font-medium transition-all active:scale-95"
           >
-            Cari
+            {dict.searchButton}
           </button>
         </form>
 
@@ -255,7 +261,7 @@ export default async function BookRecPage({ searchParams }: any) {
 
                     {/* Authors */}
                     <p className="text-xs text-gray-400 mt-1 line-clamp-1">
-                      Oleh: {book.authors}
+                      {dict.author}: {book.authors}
                     </p>
 
                     <div className="flex-1"></div>
@@ -270,7 +276,7 @@ export default async function BookRecPage({ searchParams }: any) {
                         rounded-lg font-medium mt-3 transition-all active:scale-[0.97] cursor-pointer 
                         inline-flex items-center justify-center"
                     >
-                      Kirim Saran
+                      {dict.sendRecommendation}
                     </label>
 
                     {/* Popup modal */}
@@ -298,16 +304,16 @@ export default async function BookRecPage({ searchParams }: any) {
                         <form action={addBookRec} className="mt-4 space-y-3">
                           <div className="bg-white/5 border border-white/10 rounded-lg p-3">
                             <label className="block text-xs text-gray-300 mb-1">
-                              Nama / alias (opsional)
+                              {dict.nameLabel}
                             </label>
                             <input
                               type="text"
                               name="anonymous"
-                              placeholder="Masukkan nama atau alias Anda"
+                              placeholder={dict.namePlaceholder}
                               className="w-full text-sm bg-black/20 border border-white/10 rounded-md px-3 py-2 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <p className="text-[11px] text-gray-400 mt-1">
-                              Boleh dikosongkan.
+                              {dict.optional}
                             </p>
                           </div>
 
@@ -326,7 +332,7 @@ export default async function BookRecPage({ searchParams }: any) {
                               className="flex-1 w-full h-10 text-xs bg-green-600 hover:bg-green-500 text-white 
                           rounded-lg font-medium transition-all active:scale-[0.97] hover:cursor-pointer"
                             >
-                              Simpan Rekomendasi
+                              {dict.saveRecommendation}
                             </button>
 
                             <label
@@ -335,7 +341,7 @@ export default async function BookRecPage({ searchParams }: any) {
                           rounded-lg font-medium transition-all active:scale-[0.97] cursor-pointer 
                           inline-flex items-center justify-center"
                             >
-                              Batal
+                              {dict.cancel}
                             </label>
                           </div>
                         </form>
@@ -352,25 +358,25 @@ export default async function BookRecPage({ searchParams }: any) {
             <div className="border border-dashed rounded-xl p-10 text-center text-gray-400 bg-white/5 backdrop-blur-sm border-white/20 mb-10">
               {query ? (
                 <>
-                  <p className="font-medium text-white mb-2">Buku "{query}" tidak ditemukan di {source === "google" ? "Google Books" : "Open Library"}.</p>
+                  <p className="font-medium text-white mb-2">{dict.noResultsPrefix} "{query}" {dict.noResultsSuffix} {source === "google" ? "Google Books" : "Open Library"}.</p>
                   {errorMsg && <p className="text-xs text-red-400 mb-4">{errorMsg}</p>}
                   
                   {source === "google" ? (
                     <a href={`/rec/buku?q=${encodeURIComponent(query)}&source=oplib`} className="inline-flex items-center gap-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/40 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-blue-500/30">
                       <span className="material-symbols-outlined text-[18px]">travel_explore</span>
-                      Coba cari di Open Library
+                      {dict.tryOpenLibrary}
                     </a>
                   ) : (
                     <a href={`/rec/buku?q=${encodeURIComponent(query)}&source=google`} className="inline-flex items-center gap-2 bg-green-600/20 text-green-400 hover:bg-green-600/40 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-green-500/30">
                       <span className="material-symbols-outlined text-[18px]">travel_explore</span>
-                      Coba cari di Google Books
+                      {dict.tryGoogleBooks}
                     </a>
                   )}
                 </>
               ) : (
                 <>
-                  <p className="font-medium text-white">Cari Buku Rekomendasi Anda</p>
-                  <p className="text-sm mt-1">Ketik judul buku di atas.</p>
+                  <p className="font-medium text-white">{dict.emptyStateTitle}</p>
+                  <p className="text-sm mt-1">{dict.emptyStateSubtitle}</p>
                 </>
               )}
             </div>

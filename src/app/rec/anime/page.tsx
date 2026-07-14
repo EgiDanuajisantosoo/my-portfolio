@@ -1,6 +1,8 @@
 export const dynamic = "force-dynamic";
 import SuccessAlert from "@/components/SuccessAlert";
 import { addAnime } from "./actions";
+import { cookies } from 'next/headers';
+import { getDictionary, Language } from '@/i18n/dictionaries';
 
 // open popup modal sukses
 
@@ -83,6 +85,10 @@ async function getAnime(q: string, source: string) {
 }
 
 export default async function AnimePage({ searchParams }: any) {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get('NEXT_LOCALE')?.value || 'id') as Language;
+  const dict = getDictionary(lang).recAnime;
+
   const params = await searchParams;
   const query = params?.q?.trim() || "";
   const source = params?.source === "anilist" ? "anilist" : "jikan";
@@ -108,10 +114,10 @@ export default async function AnimePage({ searchParams }: any) {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-4xl font-extrabold tracking-tight text-white">
-            Pencarian Rekomendasi Anime
+            {dict.title}
           </h1>
           <p className="text-sm text-gray-400 mt-1">
-            Cari anime untuk direkomendasikan menggunakan {source === "jikan" ? "Jikan (MAL)" : "AniList"}.
+            {dict.subtitlePrefix} {source === "jikan" ? "Jikan (MAL)" : "AniList"}.
           </p>
         </div>
 
@@ -120,13 +126,13 @@ export default async function AnimePage({ searchParams }: any) {
             href="/mylist/anime"
             className="text-sm text-blue-400 hover:text-blue-300 underline underline-offset-4"
           >
-            Kembali ke Daftar Anime
+            {dict.backToList}
           </a>
           <a
             href="/portfolio"
             className="text-sm text-gray-400 hover:text-gray-300 underline underline-offset-4"
           >
-            Kembali ke Portofolio
+            {dict.backToPortfolio}
           </a>
         </div>
       </div>
@@ -141,7 +147,7 @@ export default async function AnimePage({ searchParams }: any) {
             type="text"
             name="q"
             defaultValue={query}
-            placeholder="Cari anime (Naruto, One Piece, dan lainnya...)"
+            placeholder={dict.searchPlaceholder}
             className="border border-white/10 bg-white/10 text-white rounded-lg pl-11 pr-3 py-2.5 w-full
         placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -180,7 +186,7 @@ export default async function AnimePage({ searchParams }: any) {
           type="submit"
           className="bg-blue-600 hover:bg-blue-500 w-full sm:w-auto text-white px-5 py-2.5 rounded-lg font-medium transition-all active:scale-95"
         >
-          Cari
+          {dict.searchButton}
         </button>
       </form>
 
@@ -189,25 +195,25 @@ export default async function AnimePage({ searchParams }: any) {
         <div className="border border-dashed rounded-xl p-10 text-center text-gray-400 bg-white/5 backdrop-blur-sm border-white/20 mb-10">
             {query ? (
               <>
-                <p className="font-medium text-white mb-2">Anime "{query}" tidak ditemukan di {source === "jikan" ? "Jikan (MAL)" : "AniList"}.</p>
+                <p className="font-medium text-white mb-2">{dict.noResults.replace("{query}", query)}</p>
                 {errorMsg && <p className="text-xs text-red-400 mb-4">{errorMsg}</p>}
                 
                 {source === "jikan" ? (
                   <a href={`/rec/anime?q=${encodeURIComponent(query)}&source=anilist`} className="inline-flex items-center gap-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/40 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-blue-500/30">
                     <span className="material-symbols-outlined text-[18px]">travel_explore</span>
-                    Coba cari di AniList API
+                    {dict.tryAniList}
                   </a>
                 ) : (
                   <a href={`/rec/anime?q=${encodeURIComponent(query)}&source=jikan`} className="inline-flex items-center gap-2 bg-green-600/20 text-green-400 hover:bg-green-600/40 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-green-500/30">
                     <span className="material-symbols-outlined text-[18px]">travel_explore</span>
-                    Coba cari di Jikan (MAL)
+                    {dict.tryJikan}
                   </a>
                 )}
               </>
             ) : (
               <>
-                <p className="font-medium text-white">Cari Anime untuk Rekomendasi</p>
-                <p className="text-sm mt-1">Ketik judul anime di kolom pencarian di atas.</p>
+                <p className="font-medium text-white">{dict.emptyStateTitle}</p>
+                <p className="text-sm mt-1">{dict.emptyStateSubtitle}</p>
               </>
             )}
         </div>

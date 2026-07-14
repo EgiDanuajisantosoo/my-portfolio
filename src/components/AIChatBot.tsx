@@ -7,12 +7,12 @@ type Message = {
   content: string;
 };
 
-export function AIChatBot() {
+export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Halo! 👋 Saya Asisten AI Egi. Ada yang ingin kamu ketahui tentang Egi, keahliannya, proyeknya, atau lagu favoritnya saat ini? Silakan tanya saya!'
+      content: dict?.greeting || 'Halo! 👋 Saya Asisten AI Egi. Ada yang ingin kamu ketahui tentang Egi, keahliannya, proyeknya, atau lagu favoritnya saat ini? Silakan tanya saya!'
     }
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -38,7 +38,7 @@ export function AIChatBot() {
 
   // Save messages to localStorage when changed
   useEffect(() => {
-    if (messages.length > 1 || (messages.length === 1 && messages[0].content !== 'Halo! 👋 Saya Asisten AI Egi. Ada yang ingin kamu ketahui tentang Egi, keahliannya, proyeknya, atau lagu favoritnya saat ini? Silakan tanya saya!')) {
+    if (messages.length > 1 || (messages.length === 1 && messages[0].role !== 'assistant')) {
       try {
         localStorage.setItem('egichat_messages', JSON.stringify(messages));
       } catch (e) {
@@ -59,7 +59,7 @@ export function AIChatBot() {
   const handleResetChat = () => {
     const defaultGreeting: Message = {
       role: 'assistant',
-      content: 'Halo! 👋 Saya Asisten AI Egi. Ada yang ingin kamu ketahui tentang Egi, keahliannya, proyeknya, atau lagu favoritnya saat ini? Silakan tanya saya!'
+      content: dict?.greeting || 'Halo! 👋 Saya Asisten AI Egi. Ada yang ingin kamu ketahui tentang Egi, keahliannya, proyeknya, atau lagu favoritnya saat ini? Silakan tanya saya!'
     };
     setMessages([defaultGreeting]);
     try {
@@ -93,7 +93,7 @@ export function AIChatBot() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ messages: chatHistory })
+        body: JSON.stringify({ messages: chatHistory, lang })
       });
 
       let data: any = null;
@@ -109,7 +109,7 @@ export function AIChatBot() {
             ...prev,
             {
               role: 'assistant',
-              content: 'Maaf, kuota harian Asisten AI Egi telah mencapai batas maksimal hari ini. Silakan coba kembali besok ya! Terima kasih atas pengertiannya! 🙏'
+              content: dict?.quotaExceeded || 'Maaf, kuota harian Asisten AI Egi telah mencapai batas maksimal hari ini. Silakan coba kembali besok ya! Terima kasih atas pengertiannya! 🙏'
             }
           ]);
           return;
@@ -117,7 +117,7 @@ export function AIChatBot() {
         throw new Error('Gagal terhubung dengan server');
       }
 
-      const replyContent = data?.reply || 'Maaf, sepertinya ada kendala sistem. Silakan coba sesaat lagi ya!';
+      const replyContent = data?.reply || dict?.systemError || 'Maaf, sepertinya ada kendala sistem. Silakan coba sesaat lagi ya!';
       setMessages(prev => [...prev, { role: 'assistant', content: replyContent }]);
     } catch (err: any) {
       console.error('[Chat Error]', err);
@@ -125,7 +125,7 @@ export function AIChatBot() {
         ...prev,
         {
           role: 'assistant',
-          content: 'Maaf, sepertinya koneksi sedang bermasalah. Coba tanyakan kembali beberapa saat lagi ya! 🙏'
+          content: dict?.connError || 'Maaf, sepertinya koneksi sedang bermasalah. Coba tanyakan kembali beberapa saat lagi ya! 🙏'
         }
       ]);
     } finally {
@@ -133,7 +133,7 @@ export function AIChatBot() {
     }
   };
 
-  const suggestionChips = [
+  const suggestionChips = dict?.topics || [
     '🎵 Lagu favorit Egi saat ini?',
     '⚡ Apa keahlian utamanya?',
     '💼 Apa saja proyek buatan Egi?'
@@ -247,11 +247,11 @@ export function AIChatBot() {
                 <div>
                   <div className="flex items-center gap-1.5">
                     <h4 className="font-bold text-white text-sm tracking-wide">Asisten AI Egi</h4>
-                    <span className="text-[9px] bg-gradient-to-r from-[#1ed760]/10 to-emerald-500/10 border border-[#1ed760]/30 text-[#1ed760] font-bold px-1.5 py-0.25 rounded-md uppercase tracking-widest scale-90">PRO</span>
+                    <span className="text-[9px] bg-gradient-to-r from-[#1ed760]/10 to-emerald-500/10 border border-[#1ed760]/30 text-[#1ed760] font-bold px-1.5 py-0.25 rounded-md uppercase tracking-widest scale-90">{dict?.proBadge || 'PRO'}</span>
                   </div>
                   <p className="text-[10px] text-[#1ed760]/80 font-semibold flex items-center gap-1">
                     <span className="w-1 h-1 rounded-full bg-[#1ed760]/80 animate-pulse"></span>
-                    Online • Llama 3.3
+                    {dict?.onlineStatus || 'Online • Llama 3.3'}
                   </p>
                 </div>
               </div>
@@ -262,8 +262,8 @@ export function AIChatBot() {
                 <button
                   onClick={handleResetChat}
                   className="text-neutral-400 hover:text-[#1ed760] p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all duration-200 cursor-pointer shadow-sm hover:scale-105 active:scale-95"
-                  aria-label="Reset Percakapan"
-                  title="Reset Percakapan"
+                  aria-label={dict?.resetTitle || 'Reset Percakapan'}
+                  title={dict?.resetTitle || 'Reset Percakapan'}
                 >
                   <span className="material-symbols-outlined text-[18px]">refresh</span>
                 </button>
@@ -272,7 +272,7 @@ export function AIChatBot() {
                 <button
                   onClick={() => setIsOpen(false)}
                   className="text-neutral-400 hover:text-white p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all duration-200 cursor-pointer shadow-sm hover:scale-105 active:scale-95"
-                  aria-label="Tutup Chat"
+                  aria-label={dict?.closeTitle || 'Tutup Chat'}
                 >
                   <span className="material-symbols-outlined text-[18px]">close</span>
                 </button>
@@ -329,7 +329,7 @@ export function AIChatBot() {
               <div className="px-5 py-3.5 flex flex-col gap-2.5 bg-surface-container-lowest/50 border-t border-white/5">
                 <p className="text-[9px] text-[#1ed760] font-bold uppercase tracking-wider flex items-center gap-1">
                   <span className="w-1 h-1 rounded-full bg-[#1ed760] animate-pulse"></span>
-                  Rekomendasi Topik Obrolan:
+                  {dict?.recTopics || 'Rekomendasi Topik Obrolan:'}
                 </p>
                 <div className="flex flex-col gap-2">
                   {suggestionChips.map((chip, idx) => (
@@ -358,7 +358,7 @@ export function AIChatBot() {
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Tanya tentang hobi, skill, proyek, dll..."
+                  placeholder={dict?.inputPlaceholder || "Tanya tentang hobi, skill, proyek, dll..."}
                   disabled={isLoading}
                   className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-full px-5 py-3 text-xs focus:outline-none focus:border-[#1ed760] focus:ring-1 focus:ring-[#1ed760]/30 transition-all duration-300 disabled:opacity-50"
                 />

@@ -3,10 +3,16 @@ import { createClient } from "@supabase/supabase-js";
 import { AIChatBot } from '@/components/AIChatBot';
 import ProjectGrid from '@/components/ProjectGrid';
 import SpotifyFloating from '@/components/SpotifyFloating';
+import { cookies } from 'next/headers';
+import { getDictionary, Language } from '@/i18n/dictionaries';
 
 export const dynamic = "force-dynamic";
 
 export default async function Portfolio() {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get('NEXT_LOCALE')?.value || 'id') as Language;
+  const dict = getDictionary(lang);
+
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -19,22 +25,30 @@ export default async function Portfolio() {
   const { data: projectsData } = await supabase.from('portfolio_projects').select('*').order('order_idx');
   const { data: hobbiesData } = await supabase.from('portfolio_hobbies').select('*').order('order_idx');
 
-  const heroTitle = profile?.hero_title || 'Selamat Datang di Web Portfolio Saya';
-  const heroSubtitle = profile?.hero_subtitle || 'Ini adalah halaman Portfolio saya yang sederhana. Fullstack Developer / Laravel.';
+  const isEn = lang === 'en';
+
+  const heroTitle = (isEn && profile?.hero_title_en) ? profile.hero_title_en : (profile?.hero_title || dict.portfolio.greeting);
+  const heroSubtitle = (isEn && profile?.hero_subtitle_en) ? profile.hero_subtitle_en : (profile?.hero_subtitle || dict.portfolio.description);
   const heroImage = profile?.hero_image || '/images/me.png';
   const githubUrl = profile?.github_url || 'https://github.com/EgiDanuajisantosoo';
   const linkedinUrl = profile?.linkedin_url || 'https://www.linkedin.com/in/egi-danuajisantoso';
-  const motto = profile?.motto || '“Hidup itu pilihan, jadi setiap keputusan yang Anda pilih akan menentukan kehidupan Anda dan setiap pilihan terkadang harus ada suatu hal yang dikorbankan...”';
+  const motto = (isEn && profile?.motto_en) ? profile.motto_en : (profile?.motto || '“Hidup itu pilihan, jadi setiap keputusan yang Anda pilih akan menentukan kehidupan Anda dan setiap pilihan terkadang harus ada suatu hal yang dikorbankan...”');
   
-  let aboutParagraphs = [];
+  let aboutParagraphs: string[] = [];
   try {
-    aboutParagraphs = profile?.about_text ? JSON.parse(profile.about_text) : [
-      "Saya adalah Egi Danuajisantoso seorang web developer yang bersemangat dan berdedikasi untuk terus berkembang dalam dunia pengembangan web. Saat ini, fokus utama saya adalah memperdalam keahlian dan mengoptimalkan penggunaan Laravel, framework PHP yang saya yakini sangat powerful dan efisien untuk membangun aplikasi web modern.",
-      "Dengan pengalaman yang saya miliki dalam menggunakan Laravel, saya telah berhasil mengembangkan berbagai proyek, mulai dari aplikasi manajemen konten sederhana hingga sistem yang lumayan kompleks dengan integrasi API. Saya selalu berusaha untuk menulis kode yang bersih, terstruktur, dan mudah dipelihara, mengikuti praktik terbaik (best practices) dalam pengembangan perangkat lunak.",
-      "Saya ingin bergabung dengan tim atau proyek yang memberikan kesempatan untuk belajar dari para ahli, berkolaborasi dalam solusi inovatif agar saya bisa mengukur kemampuan yang sudah saya pelajari."
-    ];
+    const rawAbout = (isEn && profile?.about_text_en) ? profile.about_text_en : profile?.about_text;
+    if (Array.isArray(rawAbout)) {
+      aboutParagraphs = rawAbout;
+    } else {
+      aboutParagraphs = rawAbout ? JSON.parse(rawAbout) : [
+        "Saya adalah Egi Danuajisantoso seorang web developer yang bersemangat dan berdedikasi untuk terus berkembang dalam dunia pengembangan web. Saat ini, fokus utama saya adalah memperdalam keahlian dan mengoptimalkan penggunaan Laravel, framework PHP yang saya yakini sangat powerful dan efisien untuk membangun aplikasi web modern.",
+        "Dengan pengalaman yang saya miliki dalam menggunakan Laravel, saya telah berhasil mengembangkan berbagai proyek, mulai dari aplikasi manajemen konten sederhana hingga sistem yang lumayan kompleks dengan integrasi API. Saya selalu berusaha untuk menulis kode yang bersih, terstruktur, dan mudah dipelihara, mengikuti praktik terbaik (best practices) dalam pengembangan perangkat lunak.",
+        "Saya ingin bergabung dengan tim atau proyek yang memberikan kesempatan untuk belajar dari para ahli, berkolaborasi dalam solusi inovatif agar saya bisa mengukur kemampuan yang sudah saya pelajari."
+      ];
+    }
   } catch (e) {
-    aboutParagraphs = [profile?.about_text || ''];
+    const rawAboutFallback = (isEn && profile?.about_text_en) ? profile.about_text_en : profile?.about_text;
+    aboutParagraphs = Array.isArray(rawAboutFallback) ? rawAboutFallback : [typeof rawAboutFallback === 'string' ? rawAboutFallback : ''];
   }
 
   const yearsExp = profile?.years_experience || '3+';
@@ -46,15 +60,28 @@ export default async function Portfolio() {
     { name: 'MySQL', percentage: '85%' },
   ];
 
-  const experiences = expData && expData.length > 0 ? expData : [
+  const experiences = expData && expData.length > 0 ? expData.map(e => ({
+    ...e,
+    title: (isEn && e.title_en) ? e.title_en : e.title,
+    subtitle: (isEn && e.subtitle_en) ? e.subtitle_en : e.subtitle,
+    period: (isEn && e.period_en) ? e.period_en : e.period
+  })) : [
     { period: '2023 - Saat Ini', title: 'TELKOM UNIVERSITY', subtitle: 'D3 Rekayasa Perangkat Lunak Aplikasi' }
   ];
 
-  const projects = projectsData && projectsData.length > 0 ? projectsData : [
+  const projects = projectsData && projectsData.length > 0 ? projectsData.map(p => ({
+    ...p,
+    title: (isEn && p.title_en) ? p.title_en : p.title,
+    description: (isEn && p.description_en) ? p.description_en : p.description
+  })) : [
     { type: 'project', title: 'Belum ada data', desc: 'Silakan isi data di database.', image: '/placeholder.jpg', link: '#' }
   ];
 
-  const hobbies = hobbiesData && hobbiesData.length > 0 ? hobbiesData : [
+  const hobbies = hobbiesData && hobbiesData.length > 0 ? hobbiesData.map(h => ({
+    ...h,
+    title: (isEn && h.title_en) ? h.title_en : h.title,
+    description: (isEn && h.description_en) ? h.description_en : h.description
+  })) : [
     { icon: 'headphones', title: 'Mendengarkan Musik', description: 'Suka mendengarkan musik saat ngoding atau bersantai.', link: null },
     { icon: 'code', title: 'Ngoding & Eksperimen', description: 'Mencoba teknologi baru dan membuat mini project.', link: null },
     { icon: 'sports_esports', title: 'Gaming', description: 'Bermain game untuk refreshing di waktu senggang.', link: null },
@@ -103,7 +130,7 @@ export default async function Portfolio() {
         {/* About Section */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center" id="about">
           <div>
-            <h2 className="font-display-lg text-display-lg text-text-primary mb-6">Tentang Saya</h2>
+            <h2 className="font-display-lg text-display-lg text-text-primary mb-6">{dict.portfolio.about.title}</h2>
             <div className="space-y-4 font-body-lg text-body-lg text-text-secondary">
               {aboutParagraphs.map((text: string, i: number) => (
                 <p key={i}>{text}</p>
@@ -114,11 +141,11 @@ export default async function Portfolio() {
             <div className="grid grid-cols-2 gap-4">
               <div className="glass-panel p-4 rounded text-center">
                 <span className="block font-headline-md text-headline-md text-primary">{yearsExp}</span>
-                <span className="font-label-md text-label-md text-text-secondary">Years Experience</span>
+                <span className="font-label-md text-label-md text-text-secondary">{dict.portfolio.stats.experience}</span>
               </div>
               <div className="glass-panel p-4 rounded text-center">
                 <span className="block font-headline-md text-headline-md text-primary">{projCompleted}</span>
-                <span className="font-label-md text-label-md text-text-secondary">Projects Completed</span>
+                <span className="font-label-md text-label-md text-text-secondary">{dict.portfolio.stats.projects}</span>
               </div>
             </div>
           </div>
@@ -126,7 +153,7 @@ export default async function Portfolio() {
 
         {/* Skills Section */}
         <section id="skills">
-          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">Keahlian</h2>
+          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">{dict.portfolio.skills.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-w-4xl mx-auto">
             {skills.map((skill) => (
               <div key={skill.name} className="space-y-2">
@@ -144,7 +171,7 @@ export default async function Portfolio() {
 
         {/* Timeline / Education & Experience Section */}
         <section id="timeline">
-          <h2 className="font-display-lg text-display-lg text-text-primary mb-12 text-center">Pendidikan &amp; Pengalaman</h2>
+          <h2 className="font-display-lg text-display-lg text-text-primary mb-12 text-center">{dict.navbar.pengalaman}</h2>
           <div className="relative border-l border-white/10 ml-4 md:mx-auto max-w-3xl space-y-12">
             {experiences.map((exp, idx) => (
               <div key={idx} className="relative pl-8">
@@ -161,13 +188,18 @@ export default async function Portfolio() {
 
         {/* Projects & Certifications Grid */}
         <section id="projects">
-          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">Project &amp; Sertifikasi</h2>
-          <ProjectGrid items={projects.map(p => ({ type: p.type, title: p.title, desc: p.description, image: p.image, link: p.link }))} />
+          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">{dict.portfolio.projects.title}</h2>
+          <ProjectGrid 
+            items={projects.map(p => ({ type: p.type, title: p.title, desc: p.description, image: p.image, link: p.link }))}
+            filterAllStr={dict.portfolio.projects.filterAll}
+            filterProjectStr={dict.portfolio.projects.filterProject}
+            filterCertStr={dict.portfolio.projects.filterCert}
+          />
         </section>
 
         {/* Hobbies Section */}
         <section id="hobbies">
-          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">Hobi</h2>
+          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">{dict.portfolio.hobbies.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {hobbies.map((h, i) => (
               <a href={h.link || '#'} key={i} className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group block">
@@ -184,16 +216,16 @@ export default async function Portfolio() {
               <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                 <span className="material-symbols-outlined text-3xl text-primary">animation</span>
               </div>
-              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Menonton Anime</h3>
-              <p className="font-body-md text-body-md text-text-secondary">Mengikuti serial anime favorit dan mencatatnya ke dalam daftar tontonan (Klik untuk melihat daftar).</p>
+              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">{dict.portfolio.hobbies.anime}</h3>
+              <p className="font-body-md text-body-md text-text-secondary">{dict.portfolio.hobbies.seeAnime}</p>
             </a>
             
             <a href="/mylist/buku" className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group block">
               <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                 <span className="material-symbols-outlined text-3xl text-primary">menu_book</span>
               </div>
-              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Membaca Buku</h3>
-              <p className="font-body-md text-body-md text-text-secondary">Koleksi literatur dan buku-buku yang telah membuka wawasan saya (Klik untuk melihat daftar).</p>
+              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">{dict.portfolio.hobbies.book}</h3>
+              <p className="font-body-md text-body-md text-text-secondary">{dict.portfolio.hobbies.seeBooks}</p>
             </a>
           </div>
         </section>
@@ -216,7 +248,7 @@ export default async function Portfolio() {
       </footer>
 
       <SpotifyFloating />
-      <AIChatBot />
+      <AIChatBot lang={lang} dict={dict.chatbot} />
     </>
   );
 }

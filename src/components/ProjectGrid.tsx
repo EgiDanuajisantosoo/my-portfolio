@@ -10,7 +10,17 @@ type ProjectItem = {
   link: string;
 };
 
-export default function ProjectGrid({ items }: { items: ProjectItem[] }) {
+export default function ProjectGrid({ 
+  items, 
+  filterAllStr = "Semua", 
+  filterProjectStr = "Project", 
+  filterCertStr = "Sertifikasi" 
+}: { 
+  items: ProjectItem[],
+  filterAllStr?: string,
+  filterProjectStr?: string,
+  filterCertStr?: string
+}) {
   const [filter, setFilter] = useState<'all' | 'project' | 'certificate'>('all');
   const filteredItems = filter === 'all' ? items : items.filter((item) => item.type === filter);
 
@@ -21,19 +31,19 @@ export default function ProjectGrid({ items }: { items: ProjectItem[] }) {
           className={`px-4 py-2 rounded-full font-label-md transition-colors ${filter === 'all' ? 'bg-primary-container text-on-primary' : 'bg-surface-raised text-on-surface-variant hover:bg-surface-raised/80 hover:text-primary'}`}
           onClick={() => setFilter('all')}
         >
-          Semua
+          {filterAllStr}
         </button>
         <button
           className={`px-4 py-2 rounded-full font-label-md transition-colors ${filter === 'project' ? 'bg-primary-container text-on-primary' : 'bg-surface-raised text-on-surface-variant hover:bg-surface-raised/80 hover:text-primary'}`}
           onClick={() => setFilter('project')}
         >
-          Project
+          {filterProjectStr}
         </button>
         <button
           className={`px-4 py-2 rounded-full font-label-md transition-colors ${filter === 'certificate' ? 'bg-primary-container text-on-primary' : 'bg-surface-raised text-on-surface-variant hover:bg-surface-raised/80 hover:text-primary'}`}
           onClick={() => setFilter('certificate')}
         >
-          Sertifikasi
+          {filterCertStr}
         </button>
       </div>
 

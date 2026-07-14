@@ -2,19 +2,31 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import LanguageSwitcher from './LanguageSwitcher';
 
-const navLinks = [
-  { href: '#hero', label: 'Beranda' },
-  { href: '#about', label: 'Tentang' },
-  { href: '#skills', label: 'Keahlian' },
-  { href: '#timeline', label: 'Pengalaman' },
-  { href: '#projects', label: 'Project' },
-  { href: '#hobbies', label: 'Hobi' },
-];
-
-export default function Navbar() {
+export default function Navbar({ dict }: { dict?: any }) {
   const [activeLink, setActiveLink] = useState('#hero');
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Fallback if dict is not provided
+  const d = dict || {
+    beranda: 'Beranda',
+    tentang: 'Tentang',
+    keahlian: 'Keahlian',
+    pengalaman: 'Pengalaman',
+    projects: 'Project',
+    hobbies: 'Hobi',
+    rekrut: 'Rekrut Saya'
+  };
+
+  const navLinks = [
+    { href: '#hero', label: d.beranda },
+    { href: '#about', label: d.tentang },
+    { href: '#skills', label: d.keahlian },
+    { href: '#timeline', label: d.pengalaman },
+    { href: '#projects', label: d.projects },
+    { href: '#hobbies', label: d.hobbies },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +53,7 @@ export default function Navbar() {
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [navLinks]);
 
   return (
     <nav className="bg-surface-raised/60 backdrop-blur-md fixed top-0 w-full z-50 border-b border-white/10 transition-all duration-300 ease-in-out">
@@ -51,19 +63,22 @@ export default function Navbar() {
         </div>
         
         {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden text-on-surface-variant hover:text-primary focus:outline-none"
-          onClick={() => setMenuOpen((open) => !open)}
-          aria-label="Toggle navigation"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            {menuOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h16M4 16h16" />
-            )}
-          </svg>
-        </button>
+        <div className="flex items-center gap-4 md:hidden">
+          <button
+            className="text-on-surface-variant hover:text-primary focus:outline-none"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label="Toggle navigation"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              {menuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h16M4 16h16" />
+              )}
+            </svg>
+          </button>
+          <LanguageSwitcher />
+        </div>
 
         {/* Desktop Links */}
         <div className="hidden md:flex gap-6 items-center">
@@ -89,16 +104,19 @@ export default function Navbar() {
               </Link>
             );
           })}
+          
+          <div className="flex items-center pl-4 border-l border-white/10 gap-4">
+            <button className="bg-primary-container text-on-primary px-4 py-2 rounded font-label-md text-label-md hover:bg-primary transition-colors">
+              {d.rekrut}
+            </button>
+            <LanguageSwitcher />
+          </div>
         </div>
-
-        <button className="bg-primary-container text-on-primary px-4 py-2 rounded font-label-md text-label-md hover:bg-primary transition-colors hidden md:block">
-          Rekrut Saya
-        </button>
       </div>
 
       {/* Mobile Links */}
       {menuOpen && (
-        <div className="md:hidden bg-surface-raised border-t border-white/10 px-4 py-4 space-y-4">
+        <div className="md:hidden bg-surface-raised border-t border-white/10 px-4 py-4 space-y-4 shadow-xl">
           {navLinks.map((link) => {
             const isActive = link.href === activeLink;
             return (
@@ -123,7 +141,7 @@ export default function Navbar() {
             );
           })}
           <button className="w-full mt-4 bg-primary-container text-on-primary px-4 py-2 rounded font-label-md text-label-md hover:bg-primary transition-colors">
-            Rekrut Saya
+            {d.rekrut}
           </button>
         </div>
       )}
