@@ -1,35 +1,39 @@
 "use client";
 
 import Link from 'next/link';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 const navLinks = [
-  { href: '#home', label: 'Home' },
-  { href: '#tentang-saya', label: 'Tentang Saya' },
-  { href: '#keahlian', label: 'Keahlian' },
-  { href: '#pendidikan', label: 'Pendidikan' },
-  { href: '#pengalaman-kerja', label: 'Pengalaman' },
-  { href: '#rincian-proyek', label: 'Proyek & Sertifikasi' },
-  { href: '#hobby', label: 'Hobby' },
+  { href: '#hero', label: 'Beranda' },
+  { href: '#about', label: 'Tentang' },
+  { href: '#skills', label: 'Keahlian' },
+  { href: '#timeline', label: 'Pengalaman' },
+  { href: '#projects', label: 'Project' },
+  { href: '#hobbies', label: 'Hobi' },
 ];
 
 export default function Navbar() {
-  const [activeLink, setActiveLink] = useState('#home');
+  const [activeLink, setActiveLink] = useState('#hero');
   const [menuOpen, setMenuOpen] = useState(false);
-  const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      let current = '#home';
+      let current = '#hero';
       for (const link of navLinks) {
         const section = document.querySelector(link.href);
         if (section) {
           const rect = (section as HTMLElement).getBoundingClientRect();
-          if (rect.top <= 80) {
+          if (rect.top <= 150) {
             current = link.href;
           }
         }
       }
+      
+      const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10;
+      if (isAtBottom) {
+        current = navLinks[navLinks.length - 1].href;
+      }
+      
       setActiveLink(current);
     };
 
@@ -40,11 +44,15 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="bg-[#0a0f1a] text-gray-400 fixed w-full z-10">
-      <div className="flex items-center container mx-auto p-4 relative">
-        <div className="flex-grow border-b border-white h-px hidden sm:block"></div>
+    <nav className="bg-surface-raised/60 backdrop-blur-md fixed top-0 w-full z-50 border-b border-white/10 transition-all duration-300 ease-in-out">
+      <div className="flex justify-between items-center px-4 md:px-margin-desktop py-4 max-w-container-max mx-auto">
+        <div className="font-headline-sm text-headline-sm font-bold tracking-tighter text-primary">
+          <Link href="#hero">EGI DANUAJISANTOSO</Link>
+        </div>
+        
+        {/* Mobile Menu Toggle */}
         <button
-          className="sm:hidden ml-auto text-gray-400 hover:text-white focus:outline-none"
+          className="md:hidden text-on-surface-variant hover:text-primary focus:outline-none"
           onClick={() => setMenuOpen((open) => !open)}
           aria-label="Toggle navigation"
         >
@@ -56,42 +64,69 @@ export default function Navbar() {
             )}
           </svg>
         </button>
-        <ul
-          className={`
-            flex-col sm:flex-row sm:flex items-center space-y-4 sm:space-y-0 sm:space-x-8 ml-0 sm:ml-8
-            ${menuOpen ? 'flex' : 'hidden sm:flex'}
-            absolute sm:static left-0 sm:left-auto w-full sm:w-auto bg-[#0A0F1A] sm:bg-transparent z-20
-            top-full sm:top-auto shadow-lg sm:shadow-none
-            transition-all duration-300
-          `}
-        >
+
+        {/* Desktop Links */}
+        <div className="hidden md:flex gap-6 items-center">
           {navLinks.map((link) => {
             const isActive = link.href === activeLink;
             return (
-              <li key={link.href} className="w-full sm:w-auto text-center">
-                <Link
-                  href={link.href}
-                  onClick={e => {
-                    e.preventDefault();
-                    setActiveLink(link.href);
-                    setMenuOpen(false);
-                    const el = document.querySelector(link.href);
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                  className={`block py-2 sm:py-0 text-sm tracking-wider transition-colors duration-300 ${isActive
-                      ? 'text-white border-b-2 border-white pb-1'
-                      : 'hover:text-white'
-                    }`}
-                >
-                  {link.label}
-                </Link>
-              </li>
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveLink(link.href);
+                  const el = document.querySelector(link.href);
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className={
+                  isActive
+                    ? "text-primary font-bold border-b-2 border-primary pb-1 hover:bg-primary/10 hover:text-primary transition-all duration-300 ease-in-out"
+                    : "text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 hover:text-primary transition-all duration-300 ease-in-out"
+                }
+              >
+                {link.label}
+              </Link>
             );
           })}
-        </ul>
+        </div>
+
+        <button className="bg-primary-container text-on-primary px-4 py-2 rounded font-label-md text-label-md hover:bg-primary transition-colors hidden md:block">
+          Rekrut Saya
+        </button>
       </div>
+
+      {/* Mobile Links */}
+      {menuOpen && (
+        <div className="md:hidden bg-surface-raised border-t border-white/10 px-4 py-4 space-y-4">
+          {navLinks.map((link) => {
+            const isActive = link.href === activeLink;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveLink(link.href);
+                  setMenuOpen(false);
+                  const el = document.querySelector(link.href);
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className={
+                  isActive
+                    ? "block text-primary font-bold hover:text-primary transition-colors"
+                    : "block text-on-surface-variant hover:text-primary transition-colors"
+                }
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+          <button className="w-full mt-4 bg-primary-container text-on-primary px-4 py-2 rounded font-label-md text-label-md hover:bg-primary transition-colors">
+            Rekrut Saya
+          </button>
+        </div>
+      )}
     </nav>
   );
 }
