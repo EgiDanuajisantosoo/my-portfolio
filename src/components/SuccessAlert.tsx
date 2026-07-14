@@ -3,7 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function SuccessAlert() {
+import { Suspense } from "react";
+
+function SuccessAlertInner() {
     const params = useSearchParams();
     const success = params.get("success");
     const [open, setOpen] = useState(false);
@@ -235,5 +237,13 @@ export default function SuccessAlert() {
                 }
             `}</style>
         </>
+    );
+}
+
+export default function SuccessAlert() {
+    return (
+        <Suspense fallback={null}>
+            <SuccessAlertInner />
+        </Suspense>
     );
 }

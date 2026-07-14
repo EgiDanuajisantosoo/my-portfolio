@@ -17,15 +17,12 @@ export async function authenticate(formData: FormData) {
   if (user === "egiii" && pass === "@bakwan010011") {
     const cookieStore = await cookies();
     cookieStore.set("portfolio_admin_auth", "true", { path: "/" });
-    return { success: true };
   }
-  return { success: false, error: "Username atau Password salah." };
 }
 
 export async function logout() {
   const cookieStore = await cookies();
   cookieStore.delete("portfolio_admin_auth");
-  return { success: true };
 }
 
 // --- PROFILE ACTIONS ---

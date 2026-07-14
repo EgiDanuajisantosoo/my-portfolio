@@ -332,7 +332,7 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
                   {dict?.recTopics || 'Rekomendasi Topik Obrolan:'}
                 </p>
                 <div className="flex flex-col gap-2">
-                  {suggestionChips.map((chip, idx) => (
+                  {suggestionChips.map((chip: string, idx: number) => (
                     <button
                       key={idx}
                       onClick={() => handleSendMessage(chip.substring(2))} // Strip emoji from trigger content

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { loginAction } from './actions';
 import { useSearchParams } from 'next/navigation';
 
-export default function LoginPage() {
+function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/portfolio';
   
@@ -87,6 +87,9 @@ export default function LoginPage() {
                 'Login'
               )}
             </button>
+            <p className="text-center text-xs text-gray-500 mt-6">
+              © {new Date().getFullYear()} Egi Danuajisantoso. All rights reserved.
+            </p>
           </form>
           
           <div className="mt-6 text-center">
@@ -97,5 +100,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div></div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
