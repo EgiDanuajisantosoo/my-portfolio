@@ -1,52 +1,65 @@
-'use client';
-
-import React, { useState } from 'react';
-import { SpotifyCurrentTrack } from '@/components/SpotifyCurrentTrack';
+import React from 'react';
+import { createClient } from "@supabase/supabase-js";
 import { AIChatBot } from '@/components/AIChatBot';
+import ProjectGrid from '@/components/ProjectGrid';
+import SpotifyFloating from '@/components/SpotifyFloating';
 
-export default function Portfolio() {
-  const [filter, setFilter] = useState<'all' | 'project' | 'certificate'>('all');
-  const [isSpotifyOpen, setIsSpotifyOpen] = useState(false);
+export const dynamic = "force-dynamic";
 
-  const items = [
-    {
-      type: 'project',
-      title: 'Website KontrakanKita',
-      desc: 'Teknologi: Laravel 12, MySQL, Google Client API (OAuth 2.0), Pusher,Tailwind',
-      image: '/proyek/kontrakanKita1.png',
-      link: 'https://github.com/EgiDanuajisantosoo/KontrakanKita',
-    },
-    {
-      type: 'project',
-      title: 'Website UsahaKita',
-      desc: 'Teknologi: Laravel 11, MySQL,fillament, Tailwind',
-      image: '/proyek/usahaKita1.png',
-      link: 'https://github.com/EgiDanuajisantosoo/pbw2_Tubes_UsahaKita',
-    },
-    {
-      type: 'project',
-      title: 'Website Rental Mobil',
-      desc: 'Tailwind,JavaScript,HTML,CSS,Aos.js',
-      image: '/proyek/rentCar1.png',
-      link: 'https://github.com/EgiDanuajisantosoo/RentCar',
-    },
-    {
-      type: 'certificate',
-      title: 'Sertifikat Junior Web Developer',
-      desc: 'Dari Badan Nasional Sertifikasi Profesi.',
-      image: '/sertifikasi/juniorWebDev.png',
-      link: '/sertifikasi/juniorWebDev.png',
-    },
-    {
-      type: 'certificate',
-      title: 'Sertifikat Office Application',
-      desc: 'Dari Badan Nasional Sertifikasi Profesi.',
-      image: '/sertifikasi/OfficeApplication.png',
-      link: '/sertifikasi/OfficeApplication.png',
-    }
+export default async function Portfolio() {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  // Fetch Data (with fallback to default if table is empty or error)
+  const { data: profile } = await supabase.from('portfolio_profile').select('*').eq('id', 1).single();
+  const { data: skillsData } = await supabase.from('portfolio_skills').select('*').order('order_idx');
+  const { data: expData } = await supabase.from('portfolio_experiences').select('*').order('order_idx');
+  const { data: projectsData } = await supabase.from('portfolio_projects').select('*').order('order_idx');
+  const { data: hobbiesData } = await supabase.from('portfolio_hobbies').select('*').order('order_idx');
+
+  const heroTitle = profile?.hero_title || 'Selamat Datang di Web Portfolio Saya';
+  const heroSubtitle = profile?.hero_subtitle || 'Ini adalah halaman Portfolio saya yang sederhana. Fullstack Developer / Laravel.';
+  const heroImage = profile?.hero_image || '/images/me.png';
+  const githubUrl = profile?.github_url || 'https://github.com/EgiDanuajisantosoo';
+  const linkedinUrl = profile?.linkedin_url || 'https://www.linkedin.com/in/egi-danuajisantoso';
+  const motto = profile?.motto || '“Hidup itu pilihan, jadi setiap keputusan yang Anda pilih akan menentukan kehidupan Anda dan setiap pilihan terkadang harus ada suatu hal yang dikorbankan...”';
+  
+  let aboutParagraphs = [];
+  try {
+    aboutParagraphs = profile?.about_text ? JSON.parse(profile.about_text) : [
+      "Saya adalah Egi Danuajisantoso seorang web developer yang bersemangat dan berdedikasi untuk terus berkembang dalam dunia pengembangan web. Saat ini, fokus utama saya adalah memperdalam keahlian dan mengoptimalkan penggunaan Laravel, framework PHP yang saya yakini sangat powerful dan efisien untuk membangun aplikasi web modern.",
+      "Dengan pengalaman yang saya miliki dalam menggunakan Laravel, saya telah berhasil mengembangkan berbagai proyek, mulai dari aplikasi manajemen konten sederhana hingga sistem yang lumayan kompleks dengan integrasi API. Saya selalu berusaha untuk menulis kode yang bersih, terstruktur, dan mudah dipelihara, mengikuti praktik terbaik (best practices) dalam pengembangan perangkat lunak.",
+      "Saya ingin bergabung dengan tim atau proyek yang memberikan kesempatan untuk belajar dari para ahli, berkolaborasi dalam solusi inovatif agar saya bisa mengukur kemampuan yang sudah saya pelajari."
+    ];
+  } catch (e) {
+    aboutParagraphs = [profile?.about_text || ''];
+  }
+
+  const yearsExp = profile?.years_experience || '3+';
+  const projCompleted = profile?.projects_completed || '10+';
+
+  const skills = skillsData && skillsData.length > 0 ? skillsData : [
+    { name: 'Laravel (PHP)', percentage: '90%' },
+    { name: 'Tailwind CSS', percentage: '95%' },
+    { name: 'MySQL', percentage: '85%' },
   ];
 
-  const filteredItems = filter === 'all' ? items : items.filter((item) => item.type === filter);
+  const experiences = expData && expData.length > 0 ? expData : [
+    { period: '2023 - Saat Ini', title: 'TELKOM UNIVERSITY', subtitle: 'D3 Rekayasa Perangkat Lunak Aplikasi' }
+  ];
+
+  const projects = projectsData && projectsData.length > 0 ? projectsData : [
+    { type: 'project', title: 'Belum ada data', desc: 'Silakan isi data di database.', image: '/placeholder.jpg', link: '#' }
+  ];
+
+  const hobbies = hobbiesData && hobbiesData.length > 0 ? hobbiesData : [
+    { icon: 'headphones', title: 'Mendengarkan Musik', description: 'Suka mendengarkan musik saat ngoding atau bersantai.', link: null },
+    { icon: 'code', title: 'Ngoding & Eksperimen', description: 'Mencoba teknologi baru dan membuat mini project.', link: null },
+    { icon: 'sports_esports', title: 'Gaming', description: 'Bermain game untuk refreshing di waktu senggang.', link: null },
+    { icon: 'movie', title: 'Menonton Film / Series', description: 'Rehat sejenak dengan menonton film atau series.', link: null }
+  ];
 
   return (
     <>
@@ -55,30 +68,26 @@ export default function Portfolio() {
         <section className="flex flex-col md:flex-row items-center justify-between gap-12 mt-12" id="hero">
           <div className="flex-1 space-y-6 z-10">
             <h1 className="font-display-lg text-display-lg md:font-display-lg-mobile md:text-display-lg-mobile text-text-primary">
-              Selamat Datang di Web Portfolio Saya
+              {heroTitle}
             </h1>
             <p className="font-body-lg text-body-lg text-text-secondary">
-              Ini adalah halaman Portfolio saya yang sederhana. Fullstack Developer / Laravel.
+              {heroSubtitle}
             </p>
             <div className="flex gap-4 pt-4">
-              <a className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:border-primary hover:text-primary transition-colors" href="#">
-                <span className="material-symbols-outlined">link</span>
-              </a>
-              <a className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:border-primary hover:text-primary transition-colors" href="https://github.com/EgiDanuajisantosoo" target="_blank" rel="noreferrer">
+              <a className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:border-primary hover:text-primary transition-colors" href={githubUrl} target="_blank" rel="noreferrer">
                 <span className="material-symbols-outlined">code</span>
               </a>
-              <a className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:border-primary hover:text-primary transition-colors" href="https://www.linkedin.com/in/egi-danuajisantoso" target="_blank" rel="noreferrer">
+              <a className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:border-primary hover:text-primary transition-colors" href={linkedinUrl} target="_blank" rel="noreferrer">
                 <span className="material-symbols-outlined">work</span>
               </a>
             </div>
           </div>
           <div className="flex-1 relative flex justify-center">
             <div className="absolute inset-0 bg-primary/10 blur-[100px] rounded-full w-3/4 h-3/4 m-auto"></div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              alt="Egi Profile" 
+              alt="Profile" 
               className="relative z-10 rounded-xl glass-panel object-cover max-h-[500px] border border-white/10 p-2" 
-              src="/images/me.png"
+              src={heroImage}
             />
           </div>
         </section>
@@ -87,7 +96,7 @@ export default function Portfolio() {
         <section className="glass-panel p-12 rounded-xl text-center max-w-3xl mx-auto border-l-4 border-l-primary">
           <span className="material-symbols-outlined text-4xl text-primary/50 mb-4 block">format_quote</span>
           <p className="font-headline-md text-headline-md text-text-primary italic">
-            “Hidup itu pilihan, jadi setiap keputusan yang Anda pilih akan menentukan kehidupan Anda dan setiap pilihan terkadang harus ada suatu hal yang dikorbankan...”
+            {motto}
           </p>
         </section>
 
@@ -96,25 +105,19 @@ export default function Portfolio() {
           <div>
             <h2 className="font-display-lg text-display-lg text-text-primary mb-6">Tentang Saya</h2>
             <div className="space-y-4 font-body-lg text-body-lg text-text-secondary">
-              <p>
-                Saya adalah Egi Danuajisantoso seorang web developer yang bersemangat dan berdedikasi untuk terus berkembang dalam dunia pengembangan web. Saat ini, fokus utama saya adalah memperdalam keahlian dan mengoptimalkan penggunaan Laravel, framework PHP yang saya yakini sangat powerful dan efisien untuk membangun aplikasi web modern.
-              </p>
-              <p>
-                Dengan pengalaman yang saya miliki dalam menggunakan Laravel, saya telah berhasil mengembangkan berbagai proyek, mulai dari aplikasi manajemen konten sederhana hingga sistem yang lumayan kompleks dengan integrasi API. Saya selalu berusaha untuk menulis kode yang bersih, terstruktur, dan mudah dipelihara, mengikuti praktik terbaik (best practices) dalam pengembangan perangkat lunak.
-              </p>
-              <p>
-                Saya ingin bergabung dengan tim atau proyek yang memberikan kesempatan untuk belajar dari para ahli, berkolaborasi dalam solusi inovatif agar saya bisa mengukur kemampuan yang sudah saya pelajari.
-              </p>
+              {aboutParagraphs.map((text: string, i: number) => (
+                <p key={i}>{text}</p>
+              ))}
             </div>
           </div>
           <div className="glass-panel rounded-xl p-8 h-full flex flex-col justify-center">
             <div className="grid grid-cols-2 gap-4">
               <div className="glass-panel p-4 rounded text-center">
-                <span className="block font-headline-md text-headline-md text-primary">3+</span>
+                <span className="block font-headline-md text-headline-md text-primary">{yearsExp}</span>
                 <span className="font-label-md text-label-md text-text-secondary">Years Experience</span>
               </div>
               <div className="glass-panel p-4 rounded text-center">
-                <span className="block font-headline-md text-headline-md text-primary">10+</span>
+                <span className="block font-headline-md text-headline-md text-primary">{projCompleted}</span>
                 <span className="font-label-md text-label-md text-text-secondary">Projects Completed</span>
               </div>
             </div>
@@ -125,15 +128,7 @@ export default function Portfolio() {
         <section id="skills">
           <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">Keahlian</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-w-4xl mx-auto">
-            {[
-              { name: 'Laravel', percentage: '90%' },
-              { name: 'PHP', percentage: '80%' },
-              { name: 'MySQL', percentage: '85%' },
-              { name: 'JavaScript', percentage: '75%' },
-              { name: 'Tailwind CSS', percentage: '95%' },
-              { name: 'HTML5 & CSS3', percentage: '95%' },
-              { name: 'NextJS', percentage: '50%' },
-            ].map((skill) => (
+            {skills.map((skill) => (
               <div key={skill.name} className="space-y-2">
                 <div className="flex justify-between font-label-md text-label-md text-text-primary">
                   <span>{skill.name}</span>
@@ -151,117 +146,40 @@ export default function Portfolio() {
         <section id="timeline">
           <h2 className="font-display-lg text-display-lg text-text-primary mb-12 text-center">Pendidikan &amp; Pengalaman</h2>
           <div className="relative border-l border-white/10 ml-4 md:mx-auto max-w-3xl space-y-12">
-            <div className="relative pl-8">
-              <div className="absolute w-4 h-4 bg-primary rounded-full -left-[8px] top-1 border-4 border-background"></div>
-              <div className="glass-panel p-6 rounded-xl hover:scale-[1.02] transition-transform">
-                <span className="font-code text-code text-primary mb-2 block">2023 - Saat Ini</span>
-                <h3 className="font-headline-sm text-headline-sm text-text-primary">TELKOM UNIVERSITY</h3>
-                <p className="font-body-md text-body-md text-text-secondary mt-2">D3 Rekayasa Perangkat Lunak Aplikasi</p>
-              </div>
-            </div>
-            <div className="relative pl-8">
-              <div className="absolute w-4 h-4 bg-surface-raised border border-primary rounded-full -left-[8px] top-1"></div>
-              <div className="glass-panel p-6 rounded-xl hover:scale-[1.02] transition-transform">
-                <span className="font-code text-code text-primary/70 mb-2 block">2020 - 2023</span>
-                <h3 className="font-headline-sm text-headline-sm text-text-primary">SMK TELEKOMUNIKASI TUNAS HARAPAN</h3>
-                <p className="font-body-md text-body-md text-text-secondary mt-2">Rekayasa Perangkat Lunak</p>
-              </div>
-            </div>
-            <div className="relative pl-8">
-              <div className="absolute w-4 h-4 bg-surface-raised border border-primary rounded-full -left-[8px] top-1"></div>
-              <div className="glass-panel p-6 rounded-xl hover:scale-[1.02] transition-transform">
-                <span className="font-code text-code text-primary/70 mb-2 block">Magang 3 Bulan (Saat SMK)</span>
-                <h3 className="font-headline-sm text-headline-sm text-text-primary">PT. Adhikari Inovasi Indonesia</h3>
-                <p className="font-body-md text-body-md text-text-secondary mt-2">Internship</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Projects & Certifications Grid */}
-        <section id="projects">
-          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">Project &amp; Sertifikasi</h2>
-          
-          <div className="flex justify-center gap-4 mb-8">
-            <button
-              className={`px-4 py-2 rounded-full font-label-md transition-colors ${filter === 'all' ? 'bg-primary-container text-on-primary' : 'bg-surface-raised text-on-surface-variant hover:bg-surface-raised/80 hover:text-primary'}`}
-              onClick={() => setFilter('all')}
-            >
-              Semua
-            </button>
-            <button
-              className={`px-4 py-2 rounded-full font-label-md transition-colors ${filter === 'project' ? 'bg-primary-container text-on-primary' : 'bg-surface-raised text-on-surface-variant hover:bg-surface-raised/80 hover:text-primary'}`}
-              onClick={() => setFilter('project')}
-            >
-              Project
-            </button>
-            <button
-              className={`px-4 py-2 rounded-full font-label-md transition-colors ${filter === 'certificate' ? 'bg-primary-container text-on-primary' : 'bg-surface-raised text-on-surface-variant hover:bg-surface-raised/80 hover:text-primary'}`}
-              onClick={() => setFilter('certificate')}
-            >
-              Sertifikasi
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredItems.map((item, idx) => (
-              <div key={idx} className="glass-panel rounded-xl overflow-hidden group hover:scale-[1.02] transition-all duration-300 flex flex-col">
-                <div className={`relative h-48 w-full overflow-hidden ${item.type === 'certificate' ? 'bg-surface-deep flex items-center justify-center p-4' : ''}`}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img 
-                    alt={item.title} 
-                    className={`${item.type === 'certificate' ? 'max-h-full object-contain' : 'absolute inset-0 w-full h-full object-cover'} transition-transform group-hover:scale-110`} 
-                    src={item.image}
-                  />
-                </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">{item.title}</h3>
-                  <p className="font-body-md text-body-md text-text-secondary mb-4 flex-1">{item.desc}</p>
-                  {item.type === 'project' && (
-                    <a className="text-primary font-label-md text-label-md inline-flex items-center hover:underline" href={item.link} target="_blank" rel="noreferrer">
-                      Lihat Project <span className="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
-                    </a>
-                  )}
+            {experiences.map((exp, idx) => (
+              <div key={idx} className="relative pl-8">
+                <div className={`absolute w-4 h-4 rounded-full -left-[8px] top-1 ${idx === 0 ? 'bg-primary border-4 border-background' : 'bg-surface-raised border border-primary'}`}></div>
+                <div className="glass-panel p-6 rounded-xl hover:scale-[1.02] transition-transform">
+                  <span className={`font-code text-code mb-2 block ${idx === 0 ? 'text-primary' : 'text-primary/70'}`}>{exp.period}</span>
+                  <h3 className="font-headline-sm text-headline-sm text-text-primary">{exp.title}</h3>
+                  <p className="font-body-md text-body-md text-text-secondary mt-2">{exp.subtitle}</p>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
+        {/* Projects & Certifications Grid */}
+        <section id="projects">
+          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">Project &amp; Sertifikasi</h2>
+          <ProjectGrid items={projects.map(p => ({ type: p.type, title: p.title, desc: p.description, image: p.image, link: p.link }))} />
+        </section>
+
         {/* Hobbies Section */}
         <section id="hobbies">
           <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">Hobi</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group">
-              <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="material-symbols-outlined text-3xl text-primary">headphones</span>
-              </div>
-              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Mendengarkan Musik</h3>
-              <p className="font-body-md text-body-md text-text-secondary">Suka mendengarkan musik saat ngoding atau bersantai.</p>
-            </div>
-            <div className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group">
-              <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="material-symbols-outlined text-3xl text-primary">code</span>
-              </div>
-              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Ngoding &amp; Eksperimen</h3>
-              <p className="font-body-md text-body-md text-text-secondary">Mencoba teknologi baru dan membuat mini project.</p>
-            </div>
-
-            <div className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group">
-              <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="material-symbols-outlined text-3xl text-primary">sports_esports</span>
-              </div>
-              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Gaming</h3>
-              <p className="font-body-md text-body-md text-text-secondary">Bermain game untuk refreshing di waktu senggang.</p>
-            </div>
-            <div className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group">
-              <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="material-symbols-outlined text-3xl text-primary">movie</span>
-              </div>
-              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Menonton Film / Series</h3>
-              <p className="font-body-md text-body-md text-text-secondary">Rehat sejenak dengan menonton film atau series.</p>
-            </div>
+            {hobbies.map((h, i) => (
+              <a href={h.link || '#'} key={i} className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group block">
+                <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <span className="material-symbols-outlined text-3xl text-primary">{h.icon}</span>
+                </div>
+                <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">{h.title}</h3>
+                <p className="font-body-md text-body-md text-text-secondary">{h.description}</p>
+              </a>
+            ))}
             
+            {/* Dynamic Hobby Pages Hardcoded */}
             <a href="/mylist/anime" className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group block">
               <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                 <span className="material-symbols-outlined text-3xl text-primary">animation</span>
@@ -291,35 +209,13 @@ export default function Portfolio() {
             © 2024 EGI DANUAJISANTOSO. ENGINEERED FOR PERFORMANCE.
           </div>
           <div className="flex gap-4 font-label-md text-label-md text-text-secondary mt-4 md:mt-0">
-            <a className="hover:text-primary transition-colors hover:opacity-80 transition-opacity duration-200" href="https://github.com/EgiDanuajisantosoo" target="_blank" rel="noreferrer">GitHub</a>
-            <a className="hover:text-primary transition-colors hover:opacity-80 transition-opacity duration-200" href="https://www.linkedin.com/in/egi-danuajisantoso" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a className="hover:text-primary transition-colors hover:opacity-80 transition-opacity duration-200" href={githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+            <a className="hover:text-primary transition-colors hover:opacity-80 transition-opacity duration-200" href={linkedinUrl} target="_blank" rel="noreferrer">LinkedIn</a>
           </div>
         </div>
       </footer>
 
-      {/* Mobile Spotify Toggle Button */}
-      <button
-        className="fixed bottom-4 right-4 z-40 sm:hidden w-12 h-12 rounded-full bg-gradient-to-tr from-[#14d1ff] to-blue-600 text-white shadow-[0_8px_24px_rgba(20,209,255,0.3)] hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center cursor-pointer border border-[#14d1ff]/50"
-        onClick={() => setIsSpotifyOpen(!isSpotifyOpen)}
-        aria-label="Toggle Discord Activity"
-      >
-        <span className="material-symbols-outlined text-2xl">
-          {isSpotifyOpen ? 'close' : 'headphones'}
-        </span>
-      </button>
-
-      {/* Komponen SpotifyCurrentTrack */}
-      <div
-        className={`fixed right-0 transition-all duration-500 w-[290px] sm:w-full sm:max-w-xs px-2 z-50 
-          bottom-20 sm:bottom-[-130px]
-          ${isSpotifyOpen ? 'opacity-100 pointer-events-auto translate-y-0 scale-100' : 'opacity-0 pointer-events-none translate-y-10 scale-95'} 
-          sm:opacity-100 sm:pointer-events-auto sm:translate-y-0 sm:scale-100 sm:hover:bottom-4`}
-      >
-        <SpotifyCurrentTrack />
-      </div>
-
-
-      
+      <SpotifyFloating />
       <AIChatBot />
     </>
   );
