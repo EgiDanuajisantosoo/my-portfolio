@@ -58,7 +58,7 @@ export default function Portfolio() {
               Selamat Datang di Web Portfolio Saya
             </h1>
             <p className="font-body-lg text-body-lg text-text-secondary">
-              Ini adalah halaman Portfolio saya yang sederhana. Fullstack Developer / Laravel .
+              Ini adalah halaman Portfolio saya yang sederhana. Fullstack Developer / Laravel.
             </p>
             <div className="flex gap-4 pt-4">
               <a className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:border-primary hover:text-primary transition-colors" href="#">
