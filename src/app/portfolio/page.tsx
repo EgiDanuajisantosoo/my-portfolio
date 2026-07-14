@@ -58,7 +58,7 @@ export default function Portfolio() {
               Selamat Datang di Web Portfolio Saya
             </h1>
             <p className="font-body-lg text-body-lg text-text-secondary">
-              Ini adalah halaman Portfolio saya yang sederhana. Fullstack Developer / Laravel Expert.
+              Ini adalah halaman Portfolio saya yang sederhana. Fullstack Developer / Laravel .
             </p>
             <div className="flex gap-4 pt-4">
               <a className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:border-primary hover:text-primary transition-colors" href="#">
@@ -246,13 +246,7 @@ export default function Portfolio() {
               <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Ngoding &amp; Eksperimen</h3>
               <p className="font-body-md text-body-md text-text-secondary">Mencoba teknologi baru dan membuat mini project.</p>
             </div>
-            <div className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group">
-              <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="material-symbols-outlined text-3xl text-primary">menu_book</span>
-              </div>
-              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Belajar &amp; Membaca</h3>
-              <p className="font-body-md text-body-md text-text-secondary">Membaca dokumentasi dan artikel tentang pemrograman.</p>
-            </div>
+
             <div className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group">
               <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                 <span className="material-symbols-outlined text-3xl text-primary">sports_esports</span>
@@ -274,6 +268,14 @@ export default function Portfolio() {
               </div>
               <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Menonton Anime</h3>
               <p className="font-body-md text-body-md text-text-secondary">Mengikuti serial anime favorit dan mencatatnya ke dalam daftar tontonan (Klik untuk melihat daftar).</p>
+            </a>
+            
+            <a href="/mylist/buku" className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group block">
+              <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="material-symbols-outlined text-3xl text-primary">menu_book</span>
+              </div>
+              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">Membaca Buku</h3>
+              <p className="font-body-md text-body-md text-text-secondary">Koleksi literatur dan buku-buku yang telah membuka wawasan saya (Klik untuk melihat daftar).</p>
             </a>
           </div>
         </section>
