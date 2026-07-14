@@ -6,9 +6,21 @@ type SearchParams = { q?: string };
 async function getAnime(q: string) {
   const res = await fetch(
     `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(q)}&sfw=true`,
-    { next: { revalidate: 0 } }
+    { 
+      next: { revalidate: 0 },
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    }
   );
-  if (!res.ok) throw new Error("Failed to fetch anime data");
+  if (!res.ok) {
+    let errMsg = `API Error ${res.status}`;
+    try {
+      const errData = await res.json();
+      if (errData.message) errMsg += `: ${errData.message}`;
+    } catch (_) {}
+    throw new Error(errMsg);
+  }
   const data = await res.json();
   return data.data;
 }
@@ -17,10 +29,13 @@ export default async function AnimePage({ searchParams }: any) {
   const query = searchParams?.q?.trim() || "naruto";
 
   let animeList: any[] = [];
+  let errorMsg = "";
   try {
     animeList = await getAnime(query);
-  } catch {
+  } catch (e: any) {
+    console.error("Fetch Anime Error:", e);
     animeList = [];
+    errorMsg = e.message;
   }
 
 
@@ -85,8 +100,17 @@ export default async function AnimePage({ searchParams }: any) {
       {/* EMPTY STATE */}
       {animeList.length === 0 ? (
         <div className="border border-dashed rounded-xl p-10 text-center text-gray-400 bg-white/5 backdrop-blur-sm">
-          <p className="font-medium text-white">Tidak ada hasil untuk "{query}".</p>
-          <p className="text-sm mt-1">Coba kata kunci lain.</p>
+          {errorMsg ? (
+            <>
+              <p className="font-medium text-red-400">Terjadi kesalahan dari API.</p>
+              <p className="text-sm mt-1">{errorMsg}</p>
+            </>
+          ) : (
+            <>
+              <p className="font-medium text-white">Tidak ada hasil untuk "{query}".</p>
+              <p className="text-sm mt-1">Coba kata kunci lain.</p>
+            </>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
