@@ -147,7 +147,7 @@ export function AIChatBot() {
       .replace(/>/g, '&gt;');
     
     // Parse bold markdown **text** to high-contrast highlighted inline tags
-    const boldClass = isUser ? 'font-bold text-white underline decoration-white/20' : 'font-semibold text-[#1ed760]';
+    const boldClass = isUser ? 'font-bold text-white underline decoration-white/20' : 'font-semibold text-primary';
     let parsed = escaped.replace(/\*\*(.*?)\*\*/g, `<strong class="${boldClass}">$1</strong>`);
     
     const lines = parsed.split('\n');
@@ -159,7 +159,7 @@ export function AIChatBot() {
       if (isBullet) {
         return (
           <div key={idx} className="flex items-start gap-2 my-1.5 pl-1 animate-fadeIn">
-            <span className={`mt-1.5 text-xs flex-shrink-0 ${isUser ? 'text-white' : 'text-[#1ed760]'}`}>•</span>
+            <span className={`mt-1.5 text-xs flex-shrink-0 ${isUser ? 'text-white' : 'text-primary'}`}>•</span>
             <span dangerouslySetInnerHTML={{ __html: trimmed.substring(1).trim() }} className="text-inherit leading-relaxed" />
           </div>
         );
@@ -171,7 +171,7 @@ export function AIChatBot() {
         const text = trimmed.substring(dotIndex + 1).trim();
         return (
           <div key={idx} className="flex items-start gap-2 my-1.5 pl-1 animate-fadeIn">
-            <span className={`font-bold flex-shrink-0 ${isUser ? 'text-white' : 'text-[#1ed760]'}`}>{number}</span>
+            <span className={`font-bold flex-shrink-0 ${isUser ? 'text-white' : 'text-primary'}`}>{number}</span>
             <span dangerouslySetInnerHTML={{ __html: text }} className="text-inherit leading-relaxed" />
           </div>
         );
@@ -202,7 +202,7 @@ export function AIChatBot() {
           border-radius: 99px;
         }
         .chat-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(30, 215, 96, 0.3);
+          background: rgba(76, 244, 121, 0.3);
         }
         @keyframes chatFadeIn {
           from { opacity: 0; transform: translateY(4px); }
@@ -218,53 +218,40 @@ export function AIChatBot() {
         {!isOpen && (
           <button
             onClick={() => setIsOpen(true)}
-            className="relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-teal-500 text-white shadow-[0_8px_24px_rgba(30,215,96,0.3)] hover:shadow-[0_12px_32px_rgba(30,215,96,0.45)] hover:scale-110 active:scale-95 transition-all duration-300 group cursor-pointer"
+            className="relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-[#1ed760] text-white shadow-[0_8px_24px_rgba(30,215,96,0.3)] hover:shadow-[0_12px_32px_rgba(30,215,96,0.45)] hover:scale-110 active:scale-95 transition-all duration-300 group cursor-pointer"
             aria-label="Tanya AI Asisten"
           >
             {/* Ambient Pulse Glowing Ring */}
-            <span className="absolute -inset-1 rounded-full bg-gradient-to-tr from-[#1ed760] to-teal-400 opacity-40 animate-ping group-hover:opacity-60 transition-opacity"></span>
+            <span className="absolute -inset-1 rounded-full bg-gradient-to-tr from-[#1ed760] to-emerald-400 opacity-40 animate-ping group-hover:opacity-60 transition-opacity"></span>
             
             {/* Chat Icon */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2.2}
-              stroke="currentColor"
-              className="w-6 h-6 sm:w-7 sm:h-7 relative z-10 transform group-hover:rotate-12 transition-transform duration-300"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-              />
-            </svg>
+            <span className="material-symbols-outlined text-[28px] relative z-10 transform group-hover:rotate-12 transition-transform duration-300">forum</span>
           </button>
         )}
 
         {/* Chat Widget Container */}
         {isOpen && (
-          <div className="w-[calc(100vw-32px)] sm:w-[400px] h-[480px] sm:h-[520px] bg-[#0b1329]/85 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom-5">
+          <div className="w-[calc(100vw-32px)] sm:w-[400px] h-[480px] sm:h-[520px] bg-background/85 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom-5">
             {/* Header */}
-            <div className="bg-gradient-to-r from-[#0d1c3a]/90 to-[#070d1e]/90 border-b border-white/5 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+            <div className="bg-gradient-to-r from-surface-raised/90 to-surface-container-lowest/90 border-b border-white/5 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#1ed760]/20 to-teal-500/20 border border-[#1ed760]/30 flex items-center justify-center text-xl shadow-inner">
-                    🤖
+                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#1ed760]/20 to-emerald-500/20 border border-[#1ed760]/30 flex items-center justify-center text-xl shadow-inner">
+                    <span className="material-symbols-outlined text-[#1ed760] text-[24px]">support_agent</span>
                   </div>
                   {/* Glowing active indicator */}
-                  <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-[#0b1329] flex items-center justify-center">
+                  <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-[#1ed760] rounded-full border-2 border-background flex items-center justify-center">
                     <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span>
                   </span>
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
                     <h4 className="font-bold text-white text-sm tracking-wide">Asisten AI Egi</h4>
-                    <span className="text-[9px] bg-gradient-to-r from-[#1ed760]/10 to-teal-500/10 border border-[#1ed760]/30 text-[#1ed760] font-bold px-1.5 py-0.25 rounded-md uppercase tracking-widest scale-90">PRO</span>
+                    <span className="text-[9px] bg-gradient-to-r from-[#1ed760]/10 to-emerald-500/10 border border-[#1ed760]/30 text-[#1ed760] font-bold px-1.5 py-0.25 rounded-md uppercase tracking-widest scale-90">PRO</span>
                   </div>
-                  <p className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
-                    <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Online • Groq Llama 3.3
+                  <p className="text-[10px] text-[#1ed760]/80 font-semibold flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-[#1ed760]/80 animate-pulse"></span>
+                    Online • Llama 3.3
                   </p>
                 </div>
               </div>
@@ -278,20 +265,7 @@ export function AIChatBot() {
                   aria-label="Reset Percakapan"
                   title="Reset Percakapan"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2.2}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
-                    />
-                  </svg>
+                  <span className="material-symbols-outlined text-[18px]">refresh</span>
                 </button>
 
                 {/* Close Button */}
@@ -300,22 +274,13 @@ export function AIChatBot() {
                   className="text-neutral-400 hover:text-white p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all duration-200 cursor-pointer shadow-sm hover:scale-105 active:scale-95"
                   aria-label="Tutup Chat"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+                  <span className="material-symbols-outlined text-[18px]">close</span>
                 </button>
               </div>
             </div>
 
             {/* Chat Messages */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-4 chat-scrollbar bg-[#070d1e]/30">
+            <div className="flex-1 overflow-y-auto p-5 space-y-4 chat-scrollbar bg-surface-container-lowest/30">
               {messages.map((msg, index) => {
                 const isUser = msg.role === 'user';
                 return (
@@ -324,15 +289,15 @@ export function AIChatBot() {
                     className={`flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'} animate-chat-msg`}
                   >
                     {!isUser && (
-                      <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#1ed760]/10 to-emerald-500/10 border border-[#1ed760]/20 flex items-center justify-center text-sm flex-shrink-0 shadow-sm mt-0.5">
-                        🤖
+                      <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#1ed760]/10 to-emerald-500/10 border border-[#1ed760]/20 flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5">
+                        <span className="material-symbols-outlined text-[#1ed760] text-[16px]">support_agent</span>
                       </div>
                     )}
                     
                     <div
                       className={`max-w-[78%] rounded-2xl px-4 py-3 text-xs leading-relaxed shadow-[0_4px_12px_rgba(0,0,0,0.08)] ${
                         isUser
-                          ? 'bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-teal-500 text-white rounded-tr-none font-medium'
+                          ? 'bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-[#1ed760] text-white rounded-tr-none font-medium'
                           : 'bg-white/5 border border-white/10 text-slate-200 rounded-tl-none backdrop-blur-sm'
                       }`}
                     >
@@ -345,13 +310,13 @@ export function AIChatBot() {
               {/* Typing Indicator */}
               {isLoading && (
                 <div className="flex gap-2.5 justify-start animate-chat-msg">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#1ed760]/10 to-emerald-500/10 border border-[#1ed760]/20 flex items-center justify-center text-sm flex-shrink-0 shadow-sm mt-0.5">
-                    🤖
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#1ed760]/10 to-emerald-500/10 border border-[#1ed760]/20 flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5">
+                    <span className="material-symbols-outlined text-[#1ed760] text-[16px]">support_agent</span>
                   </div>
                   <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-none px-4 py-3.5 flex items-center gap-1.5 shadow-sm backdrop-blur-sm">
                     <span className="w-1.5 h-1.5 bg-[#1ed760] rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                    <span className="w-1.5 h-1.5 bg-teal-400 rounded-full animate-bounce"></span>
+                    <span className="w-1.5 h-1.5 bg-[#1ed760]/70 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce"></span>
                   </div>
                 </div>
               )}
@@ -361,7 +326,7 @@ export function AIChatBot() {
 
             {/* Suggestion Chips & Welcome Card */}
             {messages.length === 1 && !isLoading && (
-              <div className="px-5 py-3.5 flex flex-col gap-2.5 bg-[#070d1e]/50 border-t border-white/5">
+              <div className="px-5 py-3.5 flex flex-col gap-2.5 bg-surface-container-lowest/50 border-t border-white/5">
                 <p className="text-[9px] text-[#1ed760] font-bold uppercase tracking-wider flex items-center gap-1">
                   <span className="w-1 h-1 rounded-full bg-[#1ed760] animate-pulse"></span>
                   Rekomendasi Topik Obrolan:
@@ -386,7 +351,7 @@ export function AIChatBot() {
                 e.preventDefault();
                 handleSendMessage(inputValue);
               }}
-              className="p-4 bg-[#070d1e]/90 border-t border-white/5 flex gap-3.5 items-center shadow-[0_-4px_12px_rgba(0,0,0,0.15)]"
+              className="p-4 bg-surface-container-lowest/90 border-t border-white/5 flex gap-3.5 items-center shadow-[0_-4px_12px_rgba(0,0,0,0.15)]"
             >
               <div className="flex-1 relative">
                 <input
@@ -401,17 +366,10 @@ export function AIChatBot() {
               <button
                 type="submit"
                 disabled={!inputValue.trim() || isLoading}
-                className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-teal-500 text-white flex items-center justify-center shadow-[0_4px_12px_rgba(30,215,96,0.2)] hover:scale-105 active:scale-95 transition-all duration-300 disabled:opacity-30 disabled:scale-100 cursor-pointer"
+                className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-[#1ed760] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(30,215,96,0.2)] hover:scale-105 active:scale-95 transition-all duration-300 disabled:opacity-30 disabled:scale-100 cursor-pointer"
                 aria-label="Kirim"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-4.5 h-4.5 transform rotate-0 -translate-x-0.10 translate-y-0.10"
-                >
-                  <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                </svg>
+                <span className="material-symbols-outlined text-[18px]">send</span>
               </button>
             </form>
           </div>

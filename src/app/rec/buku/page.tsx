@@ -139,12 +139,20 @@ export default async function BookRecPage({ searchParams }: any) {
             </p>
           </div>
 
-          <a
-            href="/mylist/buku"
-            className="text-sm text-blue-400 hover:text-blue-300 underline underline-offset-4"
-          >
-            Kembali
-          </a>
+          <div className="flex flex-col items-end gap-1">
+            <a
+              href="/mylist/buku"
+              className="text-sm text-blue-400 hover:text-blue-300 underline underline-offset-4"
+            >
+              Kembali ke Daftar Buku
+            </a>
+            <a
+              href="/portfolio"
+              className="text-sm text-gray-400 hover:text-gray-300 underline underline-offset-4"
+            >
+              Kembali ke Portofolio
+            </a>
+          </div>
         </div>
 
         {/* SEARCH FORM */}

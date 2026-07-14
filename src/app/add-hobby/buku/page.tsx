@@ -136,12 +136,20 @@ export default async function BookPage({ searchParams }: any) {
           </p>
         </div>
 
-        <a
-          href="/mylist/buku"
-          className="text-sm text-blue-400 hover:text-blue-300 underline underline-offset-4"
-        >
-          Kembali
-        </a>
+        <div className="flex gap-4 items-center">
+          <a
+            href="/edit/buku"
+            className="text-sm text-green-400 hover:text-green-300 underline underline-offset-4"
+          >
+            Kelola Koleksi
+          </a>
+          <a
+            href="/mylist/buku"
+            className="text-sm text-blue-400 hover:text-blue-300 underline underline-offset-4"
+          >
+            Kembali
+          </a>
+        </div>
       </div>
 
       {/* SEARCH FORM */}
