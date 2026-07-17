@@ -60,9 +60,9 @@ export default function ProjectGrid({
             <div className="p-6 flex-1 flex flex-col">
               <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">{item.title}</h3>
               <p className="font-body-md text-body-md text-text-secondary mb-4 flex-1">{item.desc}</p>
-              {item.type === 'project' && item.link && item.link !== '#' && (
+              {item.link && item.link !== '#' && (
                 <a className="text-primary font-label-md text-label-md inline-flex items-center hover:underline" href={item.link} target="_blank" rel="noreferrer">
-                  Lihat Project <span className="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
+                  {item.type === 'project' ? 'Lihat Project' : 'Lihat Sertifikat'} <span className="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
                 </a>
               )}
             </div>
