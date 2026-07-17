@@ -16,8 +16,8 @@ export const dictionaries = {
       viewProjects: "Lihat Project Saya",
       contactMe: "Hubungi Saya",
       stats: {
-        projects: "Project Selesai",
-        experience: "Bulan Pengalaman",
+        projects: "Project",
+        experience: "Tahun Pengalaman",
         commits: "Kontribusi Kode"
       },
       about: {
@@ -172,8 +172,8 @@ export const dictionaries = {
       viewProjects: "View My Projects",
       contactMe: "Contact Me",
       stats: {
-        projects: "Completed Projects",
-        experience: "Months Experience",
+        projects: "Projects",
+        experience: "Experience",
         commits: "Code Contributions"
       },
       about: {
