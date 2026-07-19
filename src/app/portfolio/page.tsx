@@ -92,77 +92,75 @@ export default async function Portfolio() {
     <>
       <main className="pt-32 pb-24 px-4 md:px-margin-desktop max-w-container-max mx-auto space-y-[120px]">
         {/* Hero Section */}
-        <section className="flex flex-col md:flex-row items-center justify-between gap-12 mt-12" id="hero">
+        <section className="flex flex-col md:flex-row items-center justify-between gap-12 mt-12 mb-32" id="hero">
           <div className="flex-1 space-y-6 z-10">
-            <h1 className="font-display-lg text-display-lg md:font-display-lg-mobile md:text-display-lg-mobile text-text-primary">
+            <h1 className="font-display text-[48px] md:text-[72px] lg:text-[88px] uppercase tracking-[4px] text-text-primary leading-[1.1] hover:text-secondary hover:scale-105 origin-left transition-all duration-300 cursor-default">
               {heroTitle}
             </h1>
-            <p className="font-body-lg text-body-lg text-text-secondary">
+            <p className="font-body-md text-body-md text-text-secondary max-w-xl hover:text-secondary hover:scale-105 origin-left inline-block transition-all duration-300 cursor-default">
               {heroSubtitle}
             </p>
             <div className="flex gap-4 pt-4">
-              <a className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:border-primary hover:text-primary transition-colors" href={githubUrl} target="_blank" rel="noreferrer">
+              <a className="w-12 h-12 rounded-full border border-primary flex items-center justify-center hover:bg-secondary hover:text-on-secondary hover:border-secondary hover:scale-110 transition-all duration-300 text-primary" href={githubUrl} target="_blank" rel="noreferrer">
                 <span className="material-symbols-outlined">code</span>
               </a>
-              <a className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:border-primary hover:text-primary transition-colors" href={linkedinUrl} target="_blank" rel="noreferrer">
+              <a className="w-12 h-12 rounded-full border border-primary flex items-center justify-center hover:bg-secondary hover:text-on-secondary hover:border-secondary hover:scale-110 transition-all duration-300 text-primary" href={linkedinUrl} target="_blank" rel="noreferrer">
                 <span className="material-symbols-outlined">work</span>
               </a>
             </div>
           </div>
           <div className="flex-1 relative flex justify-center">
-            <div className="absolute inset-0 bg-primary/10 blur-[100px] rounded-full w-3/4 h-3/4 m-auto"></div>
             <img 
               alt="Profile" 
-              className="relative z-10 rounded-xl glass-panel object-cover max-h-[500px] border border-white/10 p-2" 
+              className="relative z-10 rounded-none object-cover w-full max-h-[700px] grayscale hover:grayscale-0 transition-all duration-500 hover:scale-105" 
               src={heroImage}
             />
           </div>
         </section>
 
         {/* Motto Section */}
-        <section className="glass-panel p-12 rounded-xl text-center max-w-3xl mx-auto border-l-4 border-l-primary">
-          <span className="material-symbols-outlined text-4xl text-primary/50 mb-4 block">format_quote</span>
-          <p className="font-headline-md text-headline-md text-text-primary italic">
+        <section className="bg-background border-l border-outline-variant p-12 max-w-3xl mx-auto hover:border-secondary transition-all duration-300 transform hover:scale-105 group">
+          <p className="font-body-md text-body-md text-text-primary italic group-hover:text-secondary transition-colors">
             {motto}
           </p>
         </section>
 
         {/* About Section */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center" id="about">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-32" id="about">
           <div>
-            <h2 className="font-display-lg text-display-lg text-text-primary mb-6">{dict.portfolio.about.title}</h2>
-            <div className="space-y-4 font-body-lg text-body-lg text-text-secondary">
+            <h2 className="inline-block font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-8 hover:text-secondary hover:scale-105 origin-left transition-all duration-300 cursor-default">{dict.portfolio.about.title}</h2>
+            <div className="space-y-6 font-body-md text-body-md text-text-secondary">
               {aboutParagraphs.map((text: string, i: number) => (
-                <p key={i}>{text}</p>
+                <p key={i} className="hover:text-secondary hover:scale-105 origin-left inline-block transition-all duration-300 cursor-default">{text}</p>
               ))}
             </div>
           </div>
-          <div className="glass-panel rounded-xl p-8 h-full flex flex-col justify-center">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="glass-panel p-4 rounded text-center">
-                <span className="block font-headline-md text-headline-md text-primary">{yearsExp}</span>
-                <span className="font-label-md text-label-md text-text-secondary">{dict.portfolio.stats.experience}</span>
+          <div className="bg-surface-container border border-outline rounded-none p-12 h-full flex flex-col justify-center hover:border-secondary transition-colors">
+            <div className="grid grid-cols-2 gap-8">
+              <div className="border border-outline-variant p-6 rounded-none text-center hover:border-secondary group transition-all duration-300 transform hover:scale-105 cursor-default flex flex-col items-center justify-center">
+                <span className="block font-display text-[48px] text-primary group-hover:text-secondary group-hover:scale-110 origin-bottom transition-all duration-300 mb-2 leading-none">{yearsExp}</span>
+                <span className="block font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary group-hover:text-secondary group-hover:scale-105 origin-top transition-all duration-300">{dict.portfolio.stats.experience}</span>
               </div>
-              <div className="glass-panel p-4 rounded text-center">
-                <span className="block font-headline-md text-headline-md text-primary">{projCompleted}</span>
-                <span className="font-label-md text-label-md text-text-secondary">{dict.portfolio.stats.projects}</span>
+              <div className="border border-outline-variant p-6 rounded-none text-center hover:border-secondary group transition-all duration-300 transform hover:scale-105 cursor-default flex flex-col items-center justify-center">
+                <span className="block font-display text-[48px] text-primary group-hover:text-secondary group-hover:scale-110 origin-bottom transition-all duration-300 mb-2 leading-none">{projCompleted}</span>
+                <span className="block font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary group-hover:text-secondary group-hover:scale-105 origin-top transition-all duration-300">{dict.portfolio.stats.projects}</span>
               </div>
             </div>
           </div>
         </section>
 
         {/* Skills Section */}
-        <section id="skills">
-          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">{dict.portfolio.skills.title}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-w-4xl mx-auto">
+        <section id="skills" className="mb-32">
+          <div className="text-center w-full"><h2 className="inline-block font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-12 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.portfolio.skills.title}</h2></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10 max-w-4xl mx-auto">
             {skills.map((skill) => (
-              <div key={skill.name} className="space-y-2">
-                <div className="flex justify-between font-label-md text-label-md text-text-primary">
-                  <span>{skill.name}</span>
-                  <span className="text-primary">{skill.percentage}</span>
+              <div key={skill.name} className="space-y-4 group cursor-default transition-all duration-300 transform hover:scale-105">
+                <div className="flex justify-between font-label-md uppercase tracking-[2px] text-[12px] text-text-primary group-hover:text-secondary transition-colors">
+                  <span className="group-hover:scale-105 origin-left transition-all duration-300 inline-block">{skill.name}</span>
+                  <span className="text-text-secondary group-hover:text-secondary group-hover:scale-110 transition-all duration-300 inline-block">{skill.percentage}</span>
                 </div>
-                <div className="h-2 w-full bg-surface-raised rounded overflow-hidden border border-white/5">
-                  <div className="skill-bar-fill" style={{ width: skill.percentage }}></div>
+                <div className="h-1 w-full bg-surface-container rounded-none overflow-hidden">
+                  <div className="bg-primary h-full transition-all duration-1000 group-hover:bg-secondary" style={{ width: skill.percentage }}></div>
                 </div>
               </div>
             ))}
@@ -170,16 +168,16 @@ export default async function Portfolio() {
         </section>
 
         {/* Timeline / Education & Experience Section */}
-        <section id="timeline">
-          <h2 className="font-display-lg text-display-lg text-text-primary mb-12 text-center">{dict.navbar.pengalaman}</h2>
-          <div className="relative border-l border-white/10 ml-4 md:mx-auto max-w-3xl space-y-12">
+        <section id="timeline" className="mb-32">
+          <div className="text-center w-full"><h2 className="inline-block font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-16 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.navbar.pengalaman}</h2></div>
+          <div className="relative border-l border-outline-variant ml-4 md:mx-auto max-w-3xl space-y-12">
             {experiences.map((exp, idx) => (
-              <div key={idx} className="relative pl-8">
-                <div className={`absolute w-4 h-4 rounded-full -left-[8px] top-1 ${idx === 0 ? 'bg-primary border-4 border-background' : 'bg-surface-raised border border-primary'}`}></div>
-                <div className="glass-panel p-6 rounded-xl hover:scale-[1.02] transition-transform">
-                  <span className={`font-code text-code mb-2 block ${idx === 0 ? 'text-primary' : 'text-primary/70'}`}>{exp.period}</span>
-                  <h3 className="font-headline-sm text-headline-sm text-text-primary">{exp.title}</h3>
-                  <p className="font-body-md text-body-md text-text-secondary mt-2">{exp.subtitle}</p>
+              <div key={idx} className="relative pl-12 pb-12 border-b border-outline last:border-0 last:pb-0">
+                <div className="absolute w-2 h-2 rounded-none bg-primary -left-[4px] top-2"></div>
+                <div className="bg-transparent group transition-all duration-300 transform hover:scale-105 origin-left">
+                  <span className="font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary mb-4 block group-hover:text-secondary group-hover:scale-105 origin-left transition-all duration-300">{exp.period}</span>
+                  <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary mb-2 group-hover:text-secondary group-hover:scale-105 origin-left block transition-all duration-300">{exp.title}</h3>
+                  <p className="font-body-md text-text-secondary group-hover:text-secondary group-hover:scale-105 origin-left block transition-all duration-300">{exp.subtitle}</p>
                 </div>
               </div>
             ))}
@@ -187,8 +185,8 @@ export default async function Portfolio() {
         </section>
 
         {/* Projects & Certifications Grid */}
-        <section id="projects">
-          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">{dict.portfolio.projects.title}</h2>
+        <section id="projects" className="mb-32">
+          <div className="text-center w-full"><h2 className="inline-block font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-16 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.portfolio.projects.title}</h2></div>
           <ProjectGrid 
             items={projects.map(p => ({ type: p.type, title: p.title, desc: p.description, image: p.image, link: p.link }))}
             filterAllStr={dict.portfolio.projects.filterAll}
@@ -198,51 +196,51 @@ export default async function Portfolio() {
         </section>
 
         {/* Hobbies Section */}
-        <section id="hobbies">
-          <h2 className="font-display-lg text-display-lg text-text-primary mb-8 text-center">{dict.portfolio.hobbies.title}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <section id="hobbies" className="mb-32">
+          <div className="text-center w-full"><h2 className="inline-block font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-16 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.portfolio.hobbies.title}</h2></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {hobbies.map((h, i) => (
-              <a href={h.link || '#'} key={i} className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group block">
-                <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <span className="material-symbols-outlined text-3xl text-primary">{h.icon}</span>
+              <a href={h.link || '#'} key={i} className="bg-surface-container border border-outline p-10 rounded-none text-center hover:border-secondary transition-all duration-300 transform hover:scale-105 cursor-pointer group block">
+                <div className="w-16 h-16 mx-auto bg-transparent border border-outline flex items-center justify-center mb-8 group-hover:border-secondary transition-colors rounded-none">
+                  <span className="material-symbols-outlined text-3xl text-primary group-hover:text-secondary transition-colors">{h.icon}</span>
                 </div>
-                <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">{h.title}</h3>
-                <p className="font-body-md text-body-md text-text-secondary">{h.description}</p>
+                <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary mb-4 group-hover:text-secondary transition-colors">{h.title}</h3>
+                <p className="font-body-md text-text-secondary group-hover:text-secondary transition-colors">{h.description}</p>
               </a>
             ))}
             
             {/* Dynamic Hobby Pages Hardcoded */}
-            <a href="/mylist/anime" className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group block">
-              <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="material-symbols-outlined text-3xl text-primary">animation</span>
+            <a href="/mylist/anime" className="bg-surface-container border border-outline p-10 rounded-none text-center hover:border-secondary transition-all duration-300 transform hover:scale-105 cursor-pointer group block">
+              <div className="w-16 h-16 mx-auto bg-transparent border border-outline flex items-center justify-center mb-8 group-hover:border-secondary transition-colors rounded-none">
+                <span className="material-symbols-outlined text-3xl text-primary group-hover:text-secondary transition-colors">animation</span>
               </div>
-              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">{dict.portfolio.hobbies.anime}</h3>
-              <p className="font-body-md text-body-md text-text-secondary">{dict.portfolio.hobbies.seeAnime}</p>
+              <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary mb-4 group-hover:text-secondary transition-colors">{dict.portfolio.hobbies.anime}</h3>
+              <p className="font-body-md text-text-secondary group-hover:text-secondary transition-colors">{dict.portfolio.hobbies.seeAnime}</p>
             </a>
             
-            <a href="/mylist/buku" className="glass-panel p-6 rounded-xl text-center hover:border-primary transition-colors cursor-pointer group block">
-              <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="material-symbols-outlined text-3xl text-primary">menu_book</span>
+            <a href="/mylist/buku" className="bg-surface-container border border-outline p-10 rounded-none text-center hover:border-secondary transition-all duration-300 transform hover:scale-105 cursor-pointer group block">
+              <div className="w-16 h-16 mx-auto bg-transparent border border-outline flex items-center justify-center mb-8 group-hover:border-secondary transition-colors rounded-none">
+                <span className="material-symbols-outlined text-3xl text-primary group-hover:text-secondary transition-colors">menu_book</span>
               </div>
-              <h3 className="font-headline-sm text-headline-sm text-text-primary mb-2">{dict.portfolio.hobbies.book}</h3>
-              <p className="font-body-md text-body-md text-text-secondary">{dict.portfolio.hobbies.seeBooks}</p>
+              <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary mb-4 group-hover:text-secondary transition-colors">{dict.portfolio.hobbies.book}</h3>
+              <p className="font-body-md text-text-secondary group-hover:text-secondary transition-colors">{dict.portfolio.hobbies.seeBooks}</p>
             </a>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="bg-background py-12 border-t border-white/10 w-full">
-        <div className="flex flex-col md:flex-row justify-between items-center px-4 md:px-margin-desktop max-w-container-max mx-auto gap-base">
-          <div className="font-headline-sm text-headline-sm text-primary">
+      <footer className="bg-background py-16 border-t border-outline w-full">
+        <div className="flex flex-col md:flex-row justify-between items-center px-4 md:px-margin-desktop max-w-container-max mx-auto gap-8">
+          <div className="font-display text-[14px] tracking-[6px] uppercase text-text-primary">
             EGI DANUAJISANTOSO
           </div>
-          <div className="font-label-md text-label-md text-text-secondary text-center">
+          <div className="font-body-sm text-text-secondary text-center">
             © 2024 EGI DANUAJISANTOSO. ENGINEERED FOR PERFORMANCE.
           </div>
-          <div className="flex gap-4 font-label-md text-label-md text-text-secondary mt-4 md:mt-0">
-            <a className="hover:text-primary transition-colors hover:opacity-80 transition-opacity duration-200" href={githubUrl} target="_blank" rel="noreferrer">GitHub</a>
-            <a className="hover:text-primary transition-colors hover:opacity-80 transition-opacity duration-200" href={linkedinUrl} target="_blank" rel="noreferrer">LinkedIn</a>
+          <div className="flex gap-6 font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary">
+            <a className="hover:text-secondary hover:scale-110 inline-block transition-all duration-300" href={githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+            <a className="hover:text-secondary hover:scale-110 inline-block transition-all duration-300" href={linkedinUrl} target="_blank" rel="noreferrer">LinkedIn</a>
           </div>
         </div>
       </footer>

@@ -56,16 +56,16 @@ export default function Navbar({ dict }: { dict?: any }) {
   }, [navLinks]);
 
   return (
-    <nav className="bg-surface-raised/60 backdrop-blur-md fixed top-0 w-full z-50 border-b border-white/10 transition-all duration-300 ease-in-out">
-      <div className="flex justify-between items-center px-4 md:px-margin-desktop py-4 max-w-container-max mx-auto">
-        <div className="font-headline-sm text-headline-sm font-bold tracking-tighter text-primary">
-          <Link href="#hero">EGI DANUAJISANTOSO</Link>
+    <nav className="bg-background fixed top-0 w-full z-50 border-b border-outline transition-all duration-300 ease-in-out">
+      <div className="flex justify-between items-center gap-8 px-4 md:px-margin-desktop py-4 max-w-container-max mx-auto">
+        <div className="font-display text-text-primary text-[12px] lg:text-[14px] tracking-[2px] lg:tracking-[4px] uppercase font-bold flex-shrink-0 z-10">
+          <Link href="#hero" className="hover:text-secondary hover:scale-105 inline-block transition-all duration-300">EGI DANUAJISANTOSO</Link>
         </div>
         
         {/* Mobile Menu Toggle */}
-        <div className="flex items-center gap-4 md:hidden">
+        <div className="flex items-center gap-4 lg:hidden">
           <button
-            className="text-on-surface-variant hover:text-primary focus:outline-none"
+            className="text-text-primary hover:text-text-secondary focus:outline-none"
             onClick={() => setMenuOpen((open) => !open)}
             aria-label="Toggle navigation"
           >
@@ -81,7 +81,7 @@ export default function Navbar({ dict }: { dict?: any }) {
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex gap-6 items-center">
+        <div className="hidden lg:flex gap-4 lg:gap-8 items-center">
           {navLinks.map((link) => {
             const isActive = link.href === activeLink;
             return (
@@ -96,8 +96,8 @@ export default function Navbar({ dict }: { dict?: any }) {
                 }}
                 className={
                   isActive
-                    ? "text-primary font-bold border-b-2 border-primary pb-1 hover:bg-primary/10 hover:text-primary transition-all duration-300 ease-in-out"
-                    : "text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 hover:text-primary transition-all duration-300 ease-in-out"
+                    ? "text-primary font-bold border-b border-primary pb-1 font-label-md uppercase tracking-widest text-[12px] transition-all duration-300 ease-in-out"
+                    : "text-text-secondary hover:text-secondary hover:scale-110 inline-block font-label-md uppercase tracking-[1px] lg:tracking-[2px] text-[12px] lg:text-[14px] transition-all duration-300"
                 }
               >
                 {link.label}
@@ -105,8 +105,8 @@ export default function Navbar({ dict }: { dict?: any }) {
             );
           })}
           
-          <div className="flex items-center pl-4 border-l border-white/10 gap-4">
-            <button className="bg-primary-container text-on-primary px-4 py-2 rounded font-label-md text-label-md hover:bg-primary transition-colors">
+          <div className="flex items-center pl-6 border-l border-outline gap-6">
+            <button className="whitespace-nowrap bg-transparent text-primary border border-primary px-8 py-2 rounded-full font-label-md uppercase tracking-[2.5px] text-[14px] hover:bg-secondary hover:text-on-secondary hover:border-secondary hover:scale-105 transition-all duration-300">
               {d.rekrut}
             </button>
             <LanguageSwitcher />
@@ -116,7 +116,7 @@ export default function Navbar({ dict }: { dict?: any }) {
 
       {/* Mobile Links */}
       {menuOpen && (
-        <div className="md:hidden bg-surface-raised border-t border-white/10 px-4 py-4 space-y-4 shadow-xl">
+        <div className="lg:hidden bg-surface-container border-t border-outline px-4 py-6 space-y-6 shadow-none">
           {navLinks.map((link) => {
             const isActive = link.href === activeLink;
             return (
@@ -132,17 +132,19 @@ export default function Navbar({ dict }: { dict?: any }) {
                 }}
                 className={
                   isActive
-                    ? "block text-primary font-bold hover:text-primary transition-colors"
-                    : "block text-on-surface-variant hover:text-primary transition-colors"
+                    ? "block text-primary font-bold font-label-md uppercase tracking-[2px] text-[14px]"
+                    : "block text-text-secondary hover:text-secondary hover:scale-110 inline-block font-label-md uppercase tracking-[2px] text-[14px] transition-all duration-300"
                 }
               >
                 {link.label}
               </Link>
             );
           })}
-          <button className="w-full mt-4 bg-primary-container text-on-primary px-4 py-2 rounded font-label-md text-label-md hover:bg-primary transition-colors">
-            {d.rekrut}
-          </button>
+          <div className="pt-4 border-t border-outline">
+            <button className="w-full bg-transparent text-primary border border-primary px-4 py-3 rounded-full font-label-md uppercase tracking-[2.5px] text-[14px] hover:bg-secondary hover:text-on-secondary hover:border-secondary hover:scale-105 transition-all duration-300">
+              {d.rekrut}
+            </button>
+          </div>
         </div>
       )}
     </nav>

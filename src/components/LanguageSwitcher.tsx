@@ -29,22 +29,22 @@ export default function LanguageSwitcher() {
     router.refresh();
   };
 
-  if (!mounted) return <div className="w-14 h-8 bg-white/5 rounded-full animate-pulse"></div>;
+  if (!mounted) return <div className="w-16 h-8 border border-outline rounded-full opacity-50"></div>;
 
   return (
     <button 
       onClick={toggleLanguage}
-      className="relative flex items-center w-14 h-8 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full p-1 cursor-pointer transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
+      className="relative flex items-center w-16 h-8 bg-transparent border border-primary rounded-full p-1 cursor-pointer transition-colors duration-300 focus:outline-none flex-shrink-0"
       aria-label="Toggle Language"
     >
       <div 
-        className={`absolute top-1 left-1 w-6 h-6 bg-primary rounded-full shadow-md flex items-center justify-center transition-transform duration-300 ease-in-out ${lang === 'en' ? 'transform translate-x-6 bg-secondary' : ''}`}
+        className={`absolute top-1 left-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center transition-transform duration-300 ease-in-out ${lang === 'en' ? 'transform translate-x-8' : ''}`}
       >
-        <span className="text-[10px] font-bold text-on-primary uppercase">
+        <span className="text-[10px] font-bold text-on-primary font-label-md uppercase">
           {lang}
         </span>
       </div>
-      <div className="w-full flex justify-between px-1.5 text-[9px] font-bold text-text-secondary">
+      <div className="w-full flex justify-between px-2 text-[9px] font-bold text-text-secondary font-label-md">
         <span>ID</span>
         <span>EN</span>
       </div>

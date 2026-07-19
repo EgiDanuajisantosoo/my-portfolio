@@ -134,9 +134,9 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
   };
 
   const suggestionChips = dict?.topics || [
-    '🎵 Lagu favorit Egi saat ini?',
-    '⚡ Apa keahlian utamanya?',
-    '💼 Apa saja proyek buatan Egi?'
+    'Lagu favorit Egi saat ini?',
+    'Apa keahlian utamanya?',
+    'Apa saja proyek buatan Egi?'
   ];
 
   // A sleek custom markdown-style parser for premium bullet lists, numbered lists, and bold text
@@ -147,7 +147,7 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
       .replace(/>/g, '&gt;');
     
     // Parse bold markdown **text** to high-contrast highlighted inline tags
-    const boldClass = isUser ? 'font-bold text-white underline decoration-white/20' : 'font-semibold text-primary';
+    const boldClass = isUser ? 'font-bold text-background underline decoration-background/20' : 'font-bold text-text-primary';
     let parsed = escaped.replace(/\*\*(.*?)\*\*/g, `<strong class="${boldClass}">$1</strong>`);
     
     const lines = parsed.split('\n');
@@ -159,7 +159,7 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
       if (isBullet) {
         return (
           <div key={idx} className="flex items-start gap-2 my-1.5 pl-1 animate-fadeIn">
-            <span className={`mt-1.5 text-xs flex-shrink-0 ${isUser ? 'text-white' : 'text-primary'}`}>•</span>
+            <span className={`mt-1.5 text-xs flex-shrink-0 ${isUser ? 'text-background' : 'text-text-secondary'}`}>•</span>
             <span dangerouslySetInnerHTML={{ __html: trimmed.substring(1).trim() }} className="text-inherit leading-relaxed" />
           </div>
         );
@@ -171,7 +171,7 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
         const text = trimmed.substring(dotIndex + 1).trim();
         return (
           <div key={idx} className="flex items-start gap-2 my-1.5 pl-1 animate-fadeIn">
-            <span className={`font-bold flex-shrink-0 ${isUser ? 'text-white' : 'text-primary'}`}>{number}</span>
+            <span className={`font-bold flex-shrink-0 ${isUser ? 'text-background' : 'text-text-primary'}`}>{number}</span>
             <span dangerouslySetInnerHTML={{ __html: text }} className="text-inherit leading-relaxed" />
           </div>
         );
@@ -198,11 +198,11 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
           background: transparent;
         }
         .chat-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.08);
-          border-radius: 99px;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 0;
         }
         .chat-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(76, 244, 121, 0.3);
+          background: rgba(255, 255, 255, 0.4);
         }
         @keyframes chatFadeIn {
           from { opacity: 0; transform: translateY(4px); }
@@ -218,40 +218,37 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
         {!isOpen && (
           <button
             onClick={() => setIsOpen(true)}
-            className="relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-[#1ed760] text-white shadow-[0_8px_24px_rgba(30,215,96,0.3)] hover:shadow-[0_12px_32px_rgba(30,215,96,0.45)] hover:scale-110 active:scale-95 transition-all duration-300 group cursor-pointer"
+            className="relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-primary text-on-primary hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer border border-primary rounded-full"
             aria-label="Tanya AI Asisten"
           >
-            {/* Ambient Pulse Glowing Ring */}
-            <span className="absolute -inset-1 rounded-full bg-gradient-to-tr from-[#1ed760] to-emerald-400 opacity-40 animate-ping group-hover:opacity-60 transition-opacity"></span>
-            
             {/* Chat Icon */}
-            <span className="material-symbols-outlined text-[28px] relative z-10 transform group-hover:rotate-12 transition-transform duration-300">forum</span>
+            <span className="material-symbols-outlined text-[24px] relative z-10">chat</span>
           </button>
         )}
 
         {/* Chat Widget Container */}
         {isOpen && (
-          <div className="w-[calc(100vw-32px)] sm:w-[400px] h-[480px] sm:h-[520px] bg-background/85 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom-5">
+          <div className="w-[calc(100vw-32px)] sm:w-[400px] h-[480px] sm:h-[520px] bg-surface-raised border border-outline flex flex-col overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom-5">
             {/* Header */}
-            <div className="bg-gradient-to-r from-surface-raised/90 to-surface-container-lowest/90 border-b border-white/5 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+            <div className="bg-surface border-b border-outline px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#1ed760]/20 to-emerald-500/20 border border-[#1ed760]/30 flex items-center justify-center text-xl shadow-inner">
-                    <span className="material-symbols-outlined text-[#1ed760] text-[24px]">support_agent</span>
+                  <div className="w-10 h-10 bg-primary text-on-primary flex items-center justify-center text-xl border border-primary">
+                    <span className="material-symbols-outlined text-on-primary text-[20px]">smart_toy</span>
                   </div>
                   {/* Glowing active indicator */}
-                  <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-[#1ed760] rounded-full border-2 border-background flex items-center justify-center">
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span>
+                  <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-primary border-2 border-surface-raised">
+                    <span className="w-full h-full bg-primary block animate-ping opacity-50"></span>
                   </span>
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <h4 className="font-bold text-white text-sm tracking-wide">Asisten AI Egi</h4>
-                    <span className="text-[9px] bg-gradient-to-r from-[#1ed760]/10 to-emerald-500/10 border border-[#1ed760]/30 text-[#1ed760] font-bold px-1.5 py-0.25 rounded-md uppercase tracking-widest scale-90">{dict?.proBadge || 'PRO'}</span>
+                    <h4 className="font-display text-text-primary text-sm tracking-widest uppercase">Asisten AI Egi</h4>
+                    <span className="text-[9px] font-label-md border border-outline text-text-secondary px-1.5 py-0.25 uppercase tracking-widest">PRO</span>
                   </div>
-                  <p className="text-[10px] text-[#1ed760]/80 font-semibold flex items-center gap-1">
-                    <span className="w-1 h-1 rounded-full bg-[#1ed760]/80 animate-pulse"></span>
-                    {dict?.onlineStatus || 'Online • Llama 3.3'}
+                  <p className="text-[9px] font-label-md text-text-secondary flex items-center gap-1 uppercase tracking-widest mt-1">
+                    <span className="w-1.5 h-1.5 bg-primary animate-pulse"></span>
+                    Online • Llama 3.3
                   </p>
                 </div>
               </div>
@@ -261,7 +258,7 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
                 {/* Reset Chat Button */}
                 <button
                   onClick={handleResetChat}
-                  className="text-neutral-400 hover:text-[#1ed760] p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all duration-200 cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+                  className="text-text-secondary hover:text-primary p-2 bg-surface hover:bg-surface-raised border border-outline transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95"
                   aria-label={dict?.resetTitle || 'Reset Percakapan'}
                   title={dict?.resetTitle || 'Reset Percakapan'}
                 >
@@ -271,7 +268,7 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
                 {/* Close Button */}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="text-neutral-400 hover:text-white p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all duration-200 cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+                  className="text-text-secondary hover:text-primary p-2 bg-surface hover:bg-surface-raised border border-outline transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95"
                   aria-label={dict?.closeTitle || 'Tutup Chat'}
                 >
                   <span className="material-symbols-outlined text-[18px]">close</span>
@@ -280,7 +277,7 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
             </div>
 
             {/* Chat Messages */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-4 chat-scrollbar bg-surface-container-lowest/30">
+            <div className="flex-1 overflow-y-auto p-5 space-y-4 chat-scrollbar bg-surface-raised">
               {messages.map((msg, index) => {
                 const isUser = msg.role === 'user';
                 return (
@@ -289,16 +286,16 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
                     className={`flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'} animate-chat-msg`}
                   >
                     {!isUser && (
-                      <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#1ed760]/10 to-emerald-500/10 border border-[#1ed760]/20 flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5">
-                        <span className="material-symbols-outlined text-[#1ed760] text-[16px]">support_agent</span>
+                      <div className="w-7 h-7 bg-surface border border-outline flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="material-symbols-outlined text-text-primary text-[14px]">smart_toy</span>
                       </div>
                     )}
                     
                     <div
-                      className={`max-w-[78%] rounded-2xl px-4 py-3 text-xs leading-relaxed shadow-[0_4px_12px_rgba(0,0,0,0.08)] ${
+                      className={`max-w-[78%] px-4 py-3 text-xs font-body leading-relaxed ${
                         isUser
-                          ? 'bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-[#1ed760] text-white rounded-tr-none font-medium'
-                          : 'bg-white/5 border border-white/10 text-slate-200 rounded-tl-none backdrop-blur-sm'
+                          ? 'bg-primary text-on-primary font-medium'
+                          : 'bg-surface border border-outline text-text-primary'
                       }`}
                     >
                       {renderMessageContent(msg.content, isUser)}
@@ -310,13 +307,13 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
               {/* Typing Indicator */}
               {isLoading && (
                 <div className="flex gap-2.5 justify-start animate-chat-msg">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#1ed760]/10 to-emerald-500/10 border border-[#1ed760]/20 flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5">
-                    <span className="material-symbols-outlined text-[#1ed760] text-[16px]">support_agent</span>
+                  <div className="w-7 h-7 bg-surface border border-outline flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="material-symbols-outlined text-text-primary text-[14px]">smart_toy</span>
                   </div>
-                  <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-none px-4 py-3.5 flex items-center gap-1.5 shadow-sm backdrop-blur-sm">
-                    <span className="w-1.5 h-1.5 bg-[#1ed760] rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                    <span className="w-1.5 h-1.5 bg-[#1ed760]/70 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce"></span>
+                  <div className="bg-surface border border-outline px-4 py-3.5 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 bg-primary animate-bounce [animation-delay:-0.3s]"></span>
+                    <span className="w-1.5 h-1.5 bg-text-secondary animate-bounce [animation-delay:-0.15s]"></span>
+                    <span className="w-1.5 h-1.5 bg-primary animate-bounce"></span>
                   </div>
                 </div>
               )}
@@ -326,17 +323,17 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
 
             {/* Suggestion Chips & Welcome Card */}
             {messages.length === 1 && !isLoading && (
-              <div className="px-5 py-3.5 flex flex-col gap-2.5 bg-surface-container-lowest/50 border-t border-white/5">
-                <p className="text-[9px] text-[#1ed760] font-bold uppercase tracking-wider flex items-center gap-1">
-                  <span className="w-1 h-1 rounded-full bg-[#1ed760] animate-pulse"></span>
+              <div className="px-5 py-3.5 flex flex-col gap-2.5 bg-surface border-t border-outline">
+                <p className="text-[9px] font-label-md text-text-secondary uppercase tracking-widest flex items-center gap-1">
+                  <span className="w-1 h-1 bg-text-secondary animate-pulse"></span>
                   {dict?.recTopics || 'Rekomendasi Topik Obrolan:'}
                 </p>
                 <div className="flex flex-col gap-2">
                   {suggestionChips.map((chip: string, idx: number) => (
                     <button
                       key={idx}
-                      onClick={() => handleSendMessage(chip.substring(2))} // Strip emoji from trigger content
-                      className="text-xs bg-white/5 hover:bg-[#1ed760]/10 hover:text-white text-slate-300 border border-white/5 hover:border-[#1ed760]/30 px-3.5 py-2.5 rounded-xl text-left transition-all duration-300 cursor-pointer shadow-sm hover:shadow-[0_2px_10px_rgba(30,215,96,0.1)] hover:translate-x-1"
+                      onClick={() => handleSendMessage(chip)}
+                      className="text-xs font-body bg-surface-raised hover:bg-primary hover:text-on-primary text-text-primary border border-outline px-3.5 py-2.5 text-left transition-all duration-300 cursor-pointer"
                     >
                       {chip}
                     </button>
@@ -351,7 +348,7 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
                 e.preventDefault();
                 handleSendMessage(inputValue);
               }}
-              className="p-4 bg-surface-container-lowest/90 border-t border-white/5 flex gap-3.5 items-center shadow-[0_-4px_12px_rgba(0,0,0,0.15)]"
+              className="p-4 bg-surface border-t border-outline flex gap-3.5 items-center"
             >
               <div className="flex-1 relative">
                 <input
@@ -360,13 +357,13 @@ export function AIChatBot({ lang = 'id', dict }: { lang?: string, dict?: any }) 
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder={dict?.inputPlaceholder || "Tanya tentang hobi, skill, proyek, dll..."}
                   disabled={isLoading}
-                  className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-full px-5 py-3 text-xs focus:outline-none focus:border-[#1ed760] focus:ring-1 focus:ring-[#1ed760]/30 transition-all duration-300 disabled:opacity-50"
+                  className="w-full bg-surface-raised border border-outline text-text-primary font-body placeholder-text-secondary px-4 py-2.5 text-xs focus:outline-none focus:border-primary transition-all duration-300 disabled:opacity-50"
                 />
               </div>
               <button
                 type="submit"
                 disabled={!inputValue.trim() || isLoading}
-                className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1ed760] via-emerald-500 to-[#1ed760] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(30,215,96,0.2)] hover:scale-105 active:scale-95 transition-all duration-300 disabled:opacity-30 disabled:scale-100 cursor-pointer"
+                className="w-10 h-10 bg-primary text-on-primary flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-300 disabled:opacity-30 disabled:scale-100 cursor-pointer"
                 aria-label="Kirim"
               >
                 <span className="material-symbols-outlined text-[18px]">send</span>

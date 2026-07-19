@@ -28,7 +28,7 @@ function FilterControls({
     limit,
     onLimitChange,
 }: FilterControlsProps) {
-    const baseButtonClass = 'px-4 py-2 rounded-full font-semibold transition-colors';
+    const baseButtonClass = 'px-8 py-3 rounded-full font-label-md uppercase tracking-[2.5px] text-[14px] transition-all duration-300 transform hover:scale-105 border';
     const [limitInput, setLimitInput] = useState<string>(limit.toString());
 
     // Sinkronkan limit dari props saat berubah
@@ -37,13 +37,13 @@ function FilterControls({
     }, [limit]);
 
     return (
-        <div className="sticky top-0 z-50 w-full bg-neutral-800/90 backdrop-blur-md p-4 border-b border-neutral-700 shadow">
+        <div className="sticky top-0 z-50 w-full bg-background p-6 border-b border-outline shadow-none">
             {/* Mobile Dropdown */}
-            <div className="flex flex-col gap-4 md:hidden">
+            <div className="flex flex-col gap-4 md:hidden mb-4">
                 <select
                     value={filter}
                     onChange={(e) => onFilterChange(e.target.value as 'tracks' | 'artists')}
-                    className="rounded bg-neutral-700 text-white p-2 border border-neutral-600"
+                    className="rounded-none bg-background text-on-primary p-3 border border-outline font-label-md uppercase tracking-[2px]"
                 >
                     <option value="tracks">Top Tracks</option>
                     <option value="artists">Top Artists</option>
@@ -52,7 +52,7 @@ function FilterControls({
                 <select
                     value={timeRange}
                     onChange={(e) => onTimeRangeChange(e.target.value as 'short_term' | 'medium_term' | 'long_term')}
-                    className="rounded bg-neutral-700 text-white p-2 border border-neutral-600"
+                    className="rounded-none bg-background text-on-primary p-3 border border-outline font-label-md uppercase tracking-[2px]"
                 >
                     <option value="short_term">4 Minggu</option>
                     <option value="medium_term">6 Bulan</option>
@@ -62,36 +62,36 @@ function FilterControls({
 
             {/* Desktop Buttons */}
             <div className="hidden md:flex flex-wrap items-center gap-6 justify-between">
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                     <button
                         onClick={() => onFilterChange('tracks')}
-                        className={`${baseButtonClass} ${filter === 'tracks' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}
+                        className={`${baseButtonClass} ${filter === 'tracks' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
                     >
                         Top Tracks
                     </button>
                     <button
                         onClick={() => onFilterChange('artists')}
-                        className={`${baseButtonClass} ${filter === 'artists' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}
+                        className={`${baseButtonClass} ${filter === 'artists' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
                     >
                         Top Artists
                     </button>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                     <button
                         onClick={() => onTimeRangeChange('short_term')}
-                        className={`${baseButtonClass} ${timeRange === 'short_term' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}
+                        className={`${baseButtonClass} ${timeRange === 'short_term' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
                     >
                         4 Minggu
                     </button>
                     <button
                         onClick={() => onTimeRangeChange('medium_term')}
-                        className={`${baseButtonClass} ${timeRange === 'medium_term' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}
+                        className={`${baseButtonClass} ${timeRange === 'medium_term' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
                     >
                         6 Bulan
                     </button>
                     <button
                         onClick={() => onTimeRangeChange('long_term')}
-                        className={`${baseButtonClass} ${timeRange === 'long_term' ? 'bg-green-500' : 'bg-neutral-600 hover:bg-neutral-500'}`}
+                        className={`${baseButtonClass} ${timeRange === 'long_term' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
                     >
                         1 Tahun
                     </button>
@@ -99,25 +99,21 @@ function FilterControls({
             </div>
 
             {/* Jumlah */}
-            <div className="mt-4 flex items-center gap-3">
-                <label htmlFor="limit-input" className="text-sm text-neutral-400">Jumlah:</label>
+            <div className="mt-6 flex items-center gap-4">
+                <label htmlFor="limit-input" className="font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary">Jumlah:</label>
                 <input
                     id="limit-input"
                     type="number"
                     value={limitInput}
                     onChange={(e) => {
                         let raw = e.target.value;
-
-                        // Hapus leading zero (misal '05' jadi '5', tapi '0' tetap '0')
                         if (/^0\d/.test(raw)) {
                             raw = raw.replace(/^0+/, '');
                         }
-
                         setLimitInput(raw);
-
                         const num = Number(raw);
                         if (!isNaN(num) && num >= 1 && num <= 50) {
-                            onLimitChange(num); // update ke parent langsung
+                            onLimitChange(num);
                         }
                     }}
                     onBlur={() => {
@@ -128,11 +124,9 @@ function FilterControls({
                         } else if (num > 50) {
                             setLimitInput('50');
                             onLimitChange(50);
-                        } else {
-                            // Tidak perlu setLimitInput di sini karena sudah valid
                         }
                     }}
-                    className="w-20 rounded border border-neutral-600 bg-neutral-700 p-2 text-center text-white"
+                    className="w-20 rounded-none border border-outline bg-background p-3 text-center text-on-primary font-body-md focus:outline-none focus:border-primary transition-colors"
                     min="1"
                     max="50"
                 />
@@ -154,18 +148,18 @@ const TrackItem = ({ track }: { track: Track }) => {
         : 'Artis Tidak Dikenal';
 
     return (
-        <li className="flex items-center gap-4 rounded p-2 transition-colors hover:bg-neutral-800">
-            <img src={imageUrl} alt={track.name} className="h-16 w-16 rounded object-cover bg-neutral-700" />
-            <div>
-                <p className="font-bold text-white">{track.name}</p>
-                <p className="text-sm text-neutral-400">{artistsList}</p>
+        <li className="flex items-center gap-6 border-b border-outline p-4 transition-all duration-300 transform hover:scale-[1.01] hover:translate-x-1 hover:border-secondary group bg-background">
+            <img src={imageUrl} alt={track.name} className="h-20 w-20 rounded-none object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" />
+            <div className="flex-1">
+                <p className="font-display text-[20px] tracking-[1px] text-text-primary mb-1 uppercase group-hover:text-secondary group-hover:scale-105 origin-left inline-block transition-all duration-300">{track.name}</p>
+                <p className="font-body-md text-text-secondary group-hover:text-secondary group-hover:scale-105 origin-left transition-all duration-300 block">{artistsList}</p>
                 <a
                     href={spotifyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-1 inline-block text-sm text-green-400 hover:underline"
+                    className="mt-2 inline-flex items-center font-label-md uppercase tracking-[2px] text-[11px] text-link hover:text-secondary transition-colors"
                 >
-                    Dengarkan Lagu →
+                    Dengarkan Lagu <span className="material-symbols-outlined text-[14px] ml-1">arrow_forward</span>
                 </a>
             </div>
         </li>
@@ -180,20 +174,20 @@ const ArtistItem = ({ artist }: { artist: Artist }) => {
         : 'No Genre';
 
     return (
-        <li className="flex items-center gap-4 rounded p-2 transition-colors hover:bg-neutral-800">
-            <img src={imageUrl} alt={artist.name} className="h-16 w-16 rounded-full object-cover bg-neutral-700" />
-            <div>
-                <p className="font-bold text-white">{artist.name}</p>
-                <p className="text-sm capitalize text-neutral-400">
+        <li className="flex items-center gap-6 border-b border-outline p-4 transition-all duration-300 transform hover:scale-[1.01] hover:translate-x-1 hover:border-secondary group bg-background">
+            <img src={imageUrl} alt={artist.name} className="h-20 w-20 rounded-none object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" />
+            <div className="flex-1">
+                <p className="font-display text-[20px] tracking-[1px] text-text-primary mb-1 uppercase group-hover:text-secondary group-hover:scale-105 origin-left inline-block transition-all duration-300">{artist.name}</p>
+                <p className="font-body-md text-text-secondary capitalize group-hover:text-secondary group-hover:scale-105 origin-left transition-all duration-300 block">
                     {genresList}
                 </p>
                 <a
                     href={spotifyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-1 inline-block text-sm text-green-400 hover:underline"
+                    className="mt-2 inline-flex items-center font-label-md uppercase tracking-[2px] text-[11px] text-link hover:text-secondary transition-colors"
                 >
-                    Lihat Artis →
+                    Lihat Artis <span className="material-symbols-outlined text-[14px] ml-1">arrow_forward</span>
                 </a>
             </div>
         </li>
@@ -264,60 +258,32 @@ export default function TopItemsPage() {
     };
 
     return (
-        <main className='bg-[#0a0a0a] text-white min-h-screen'>
-            <div className="w-full max-w-4xl mx-auto p-4">
+        <main className='bg-background text-on-primary min-h-screen pt-32 pb-32'>
+            <div className="w-full max-w-5xl mx-auto px-4 md:px-margin-desktop">
                 {/* Back to Portfolio Link */}
-                <div className="mb-4">
+                <div className="mb-12">
                     <a
                         href="/portfolio"
-                        className="inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-green-400 transition-colors group"
+                        className="inline-flex items-center gap-2 font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary hover:text-primary transition-colors group"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={2}
-                            stroke="currentColor"
-                            className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                        </svg>
+                        <span className="material-symbols-outlined text-[16px] transform group-hover:-translate-x-1 transition-transform">arrow_back</span>
                         <span>Kembali ke Portfolio</span>
                     </a>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-neutral-800 pb-4">
+                <div className="flex flex-col gap-6 mb-16 border-b border-outline pb-8">
                     <div>
-                        <h1 className="text-3xl font-bold text-white flex items-center gap-2">
+                        <h1 className="font-display text-[48px] uppercase tracking-[3px] text-primary flex flex-wrap items-center gap-4 mb-4">
                             <span>Top Musik Saya</span>
-                            <span className="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full font-normal">dari Last.fm mulai tanggal (17/05/2026)</span>
+                            <span className="text-[11px] font-label-md uppercase tracking-[2px] border border-outline-variant text-text-secondary px-4 py-1 rounded-none">dari Last.fm (17/05/2026)</span>
                         </h1>
-                        <p className="text-neutral-400 mt-1">
+                        <p className="font-body-md text-text-secondary">
                             {lastfmUsername
                                 ? `Menampilkan lagu & artis teratas untuk akun Last.fm: ${lastfmUsername}`
                                 : 'List artis dan lagu yang paling sering diputar.'
                             }
                         </p>
                     </div>
-                    {/* <div>
-                        {lastfmUsername ? (
-                            <a
-                                href="/api/lastfm/logout"
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-red-600/80 hover:bg-red-600 text-white transition-colors"
-                            >
-                                🔴 Keluar dari Last.fm
-                            </a>
-                        ) 
-                        : (
-                            <a
-                                href="/api/lastfm/login"
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-red-500/20 border border-red-500/40 hover:border-red-500 hover:bg-red-500/30 text-red-400 hover:text-white transition-all duration-200"
-                            >
-                                🎵 Hubungkan Last.fm Anda
-                            </a>
-                        )
-                        }
-                    </div> */}
                 </div>
 
                 <FilterControls
@@ -327,11 +293,11 @@ export default function TopItemsPage() {
                 />
 
 
-                {loading && <p className="text-center text-neutral-400">Loading...</p>}
-                {error && <p className="text-center text-red-500">Error: {error}</p>}
+                {loading && <p className="text-center text-text-secondary font-label-md uppercase tracking-[2px] py-16">Loading...</p>}
+                {error && <p className="text-center text-warning font-label-md uppercase tracking-[2px] py-16">Error: {error}</p>}
 
                 {!loading && data && (
-                    <ul className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <ul className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
                         {data.items?.map((item) =>
                             filter === 'tracks'
                                 ? <TrackItem key={item.id} track={item} />

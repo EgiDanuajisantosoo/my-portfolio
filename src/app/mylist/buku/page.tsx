@@ -131,12 +131,12 @@ export default async function BookHobbyList({
 
                 {/* Book Grid */}
                 {!hobbies || hobbies.length === 0 ? (
-                    <div className="rounded-2xl border border-white/10 bg-surface-container/30 p-16 text-center glass-panel">
-                        <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-white/5 grid place-items-center">
-                            <span className="text-2xl">📚</span>
+                    <div className="border border-outline bg-surface-container p-16 text-center">
+                        <div className="mx-auto mb-4 h-16 w-16 bg-transparent border border-outline grid place-items-center">
+                            <span className="text-2xl text-text-secondary">📚</span>
                         </div>
-                        <h3 className="font-headline-sm text-headline-sm text-white mb-2">{dict.noBooks}</h3>
-                        <p className="text-text-secondary">
+                        <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary mb-2">{dict.noBooks}</h3>
+                        <p className="font-body-md text-text-secondary">
                             {selectedStatus ? dict.noBooksStatus : dict.noBooksTotal}
                         </p>
                         <Link href="/add-hobby/buku" className="inline-block mt-4 text-primary hover:underline">
@@ -147,44 +147,42 @@ export default async function BookHobbyList({
                     <>
                         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
                             {(hobbies as Hobby[]).map((item) => (
-                                <div key={item.id} className="anime-card glass-panel rounded-2xl overflow-hidden flex flex-col group bg-surface-container/30 border border-white/5 hover:border-primary/30 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(30,215,96,0.1)]">
-                                    <div className="relative h-80 overflow-hidden">
+                                <div key={item.id} className="bg-surface-container rounded-none overflow-hidden flex flex-col group border border-outline hover:border-secondary transition-all duration-300 transform hover:scale-[1.02]">
+                                    <div className="relative h-80 overflow-hidden bg-background border-b border-outline">
                                         <div 
-                                            className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
+                                            className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100" 
                                             style={{ backgroundImage: `url('${item.image || "/placeholder.jpg"}')` }}
                                         ></div>
-                                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-60"></div>
-                                        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        <div className="absolute top-4 right-4 bg-transparent border border-primary text-primary px-3 py-1 rounded-none font-label-md uppercase tracking-[2px] text-[10px] font-bold flex items-center gap-1">
+                                            <span className="material-symbols-outlined text-[14px]">star</span> {item.score ?? "N/A"}/10
+                                        </div>
                                     </div>
-                                    <div className="p-8 flex flex-col flex-grow relative z-10 -mt-20">
+                                    <div className="p-8 flex flex-col flex-grow relative z-10">
                                         <div className="flex flex-wrap gap-2 mb-4">
                                             {item.genre && (
-                                                <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 bg-primary/20 text-primary rounded-md border border-primary/20 backdrop-blur-md">
+                                                <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 border border-outline-variant text-text-secondary rounded-none group-hover:text-secondary group-hover:border-secondary transition-colors group-hover:scale-105 inline-block transition-all duration-300">
                                                     {item.genre.split(',')[0]}
                                                 </span>
                                             )}
                                             {item.year && (
-                                                <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 bg-surface-raised text-white rounded-md border border-white/10 backdrop-blur-md">
+                                                <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 border border-outline-variant text-text-secondary rounded-none group-hover:text-secondary group-hover:border-secondary transition-colors group-hover:scale-105 inline-block transition-all duration-300">
                                                     {item.year}
                                                 </span>
                                             )}
                                         </div>
-                                        <h3 className="font-headline-md text-headline-md text-white mb-1 group-hover:text-primary transition-colors line-clamp-2">{item.title}</h3>
-                                        <p className="text-xs text-primary mb-3">Oleh: {item.studio || "Unknown"}</p>
-                                        
-                                        <p className="font-body-md text-body-md text-text-secondary line-clamp-3 mb-6 flex-grow">
+                                        <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary mb-3 group-hover:text-secondary transition-colors line-clamp-2 group-hover:scale-105 origin-left inline-block transition-all duration-300">{item.title}</h3>
+                                        <p className="font-body-md text-text-secondary line-clamp-3 mb-8 flex-grow group-hover:text-secondary transition-colors group-hover:scale-105 origin-left inline-block transition-all duration-300">
                                             {item.synopsis || dict.synopsisNotAvailable}
                                         </p>
-                                        <div className="pt-5 border-t border-white/10 flex justify-between items-center">
-                                            <span className="font-label-md text-label-md flex items-center gap-2 text-primary">
-                                                {item.watching_status === 'completed' && <><span className="material-symbols-outlined text-[20px]">check_circle</span> {dict.completed}</>}
-                                                {item.watching_status === 'watching' && <><span className="material-symbols-outlined text-[20px] animate-pulse">play_circle</span> {dict.watching}</>}
-                                                {item.watching_status === 'draft' && <><span className="material-symbols-outlined text-[20px] text-tertiary">schedule</span> <span className="text-tertiary">{dict.planToWatch}</span></>}
-                                                {!item.watching_status && <><span className="material-symbols-outlined text-[20px]">bookmark</span> {dict.added}</>}
+                                        <div className="pt-6 border-t border-outline flex justify-between items-center">
+                                            <span className="font-label-md uppercase tracking-[2px] text-[11px] flex items-center gap-2 text-primary">
+                                                {item.watching_status === 'completed' && <><span className="material-symbols-outlined text-[16px]">check</span> {dict.completed}</>}
+                                                {item.watching_status === 'watching' && <><span className="material-symbols-outlined text-[16px]">menu_book</span> {dict.watching}</>}
+                                                {item.watching_status === 'draft' && <><span className="material-symbols-outlined text-[16px] text-text-secondary">schedule</span> <span className="text-text-secondary">{dict.planToWatch}</span></>}
+                                                {!item.watching_status && <><span className="material-symbols-outlined text-[16px] text-text-secondary">bookmark</span> <span className="text-text-secondary">{dict.added}</span></>}
                                             </span>
-                                            <a href={item.url || "#"} target="_blank" rel="noopener noreferrer" className="text-on-surface-variant hover:text-white transition-colors flex items-center gap-1 text-xs">
-                                                <span>Detail</span>
-                                                <span className="material-symbols-outlined text-sm">open_in_new</span>
+                                            <a href={item.url || "#"} target="_blank" rel="noopener noreferrer" className="text-link hover:text-secondary transition-colors">
+                                                <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                                             </a>
                                         </div>
                                     </div>
@@ -196,7 +194,7 @@ export default async function BookHobbyList({
                         <div className="mt-16 flex items-center justify-center gap-4">
                             <Link
                                 href={`?page=${page - 1}${selectedStatus ? `&status=${encodeURIComponent(selectedStatus)}` : ""}`}
-                                className={`flex items-center justify-center w-12 h-12 rounded-full border border-white/10 transition-colors ${page <= 1 ? "pointer-events-none opacity-30" : "hover:bg-white/5 hover:border-primary/50 text-white"}`}
+                                className={`flex items-center justify-center w-12 h-12 border border-outline transition-all duration-300 transform ${page <= 1 ? "pointer-events-none opacity-30" : "hover:border-secondary hover:text-secondary hover:scale-105 text-white"}`}
                             >
                                 <span className="material-symbols-outlined">arrow_back</span>
                             </Link>
@@ -205,7 +203,7 @@ export default async function BookHobbyList({
                             </span>
                             <Link
                                 href={`?page=${page + 1}${selectedStatus ? `&status=${encodeURIComponent(selectedStatus)}` : ""}`}
-                                className={`flex items-center justify-center w-12 h-12 rounded-full border border-white/10 transition-colors ${(hobbies?.length ?? 0) < PAGE_SIZE ? "pointer-events-none opacity-30" : "hover:bg-white/5 hover:border-primary/50 text-white"}`}
+                                className={`flex items-center justify-center w-12 h-12 border border-outline transition-all duration-300 transform ${(hobbies?.length ?? 0) < PAGE_SIZE ? "pointer-events-none opacity-30" : "hover:border-secondary hover:text-secondary hover:scale-105 text-white"}`}
                             >
                                 <span className="material-symbols-outlined">arrow_forward</span>
                             </Link>
@@ -215,26 +213,21 @@ export default async function BookHobbyList({
             </main>
 
             {/* Enhanced Recommendation Section */}
-            <section className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-                <div className="glass-panel rounded-3xl p-8 md:p-16 border border-primary/20 bg-surface-container/30 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                        <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/10 blur-[100px] rounded-full"></div>
-                        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-secondary/10 blur-[100px] rounded-full"></div>
-                    </div>
-                    
+            <section className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-t border-outline mt-32">
+                <div className="bg-background border border-outline p-8 md:p-16 relative">
                     <div className="max-w-4xl mx-auto flex flex-col lg:flex-row gap-12 lg:items-start relative z-10">
                         <div className="flex flex-col items-center text-center py-8 w-full">
-                            <div className="w-16 h-1 bg-primary mb-8"></div>
-                            <h2 className="font-display-lg text-display-lg text-white mb-6 tracking-tighter leading-none">{dict.giveRecTitle}</h2>
-                            <p className="font-body-lg text-body-lg text-text-secondary max-w-2xl mb-10">
+                            <div className="w-16 h-px bg-hairline-strong mb-8"></div>
+                            <h2 className="font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-6 leading-none">{dict.giveRecTitle}</h2>
+                            <p className="font-body-md text-text-secondary max-w-2xl mb-12">
                                 {dict.giveRecDesc}
                             </p>
                             <Link 
                                 href="/rec/buku" 
-                                className="group flex items-center justify-center gap-3 bg-primary text-on-primary font-label-md text-label-md px-12 py-5 rounded-full font-bold active:scale-95 duration-200 transition-all hover:shadow-[0_0_30px_rgba(30,215,96,0.4)]"
+                                className="group flex items-center justify-center gap-4 bg-transparent border border-primary text-primary font-label-md uppercase tracking-[2.5px] text-[14px] px-12 py-4 rounded-none transition-all duration-300 transform hover:scale-105 hover:bg-secondary hover:text-on-secondary hover:border-secondary"
                             >
                                 {dict.startRec}
-                                <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+                                <span className="material-symbols-outlined transition-transform group-hover:translate-x-1 text-[16px]">arrow_forward</span>
                             </Link>
                         </div>
                     </div>
@@ -242,34 +235,33 @@ export default async function BookHobbyList({
 
                 {/* Requested Book List */}
                 {requests && requests.length > 0 && (
-                    <div className="mt-20 max-w-6xl mx-auto px-4 md:px-0">
-                        <div className="flex items-center gap-4 mb-8">
-                            <span className="material-symbols-outlined text-3xl text-secondary">forum</span>
-                            <h3 className="font-headline-md text-headline-md text-white">{dict.visitorSug}</h3>
+                    <div className="mt-32 max-w-6xl mx-auto">
+                        <div className="flex items-center gap-4 mb-12 border-b border-outline pb-4">
+                            <span className="material-symbols-outlined text-2xl text-text-secondary">forum</span>
+                            <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary">{dict.visitorSug}</h3>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                             {(requests as Hobby[]).map((item) => (
-                                <div key={`req-${item.id}`} className="glass-panel rounded-xl overflow-hidden flex flex-col bg-surface-container/20 border border-white/5">
-                                    <div className="flex items-start gap-4 p-5">
+                                <div key={`req-${item.id}`} className="bg-surface-container border border-outline rounded-none overflow-hidden flex flex-col hover:border-secondary transition-all duration-300 transform hover:scale-[1.02] group">
+                                    <div className="flex items-start gap-6 p-6">
                                         <img 
                                             src={item.image || "/placeholder.jpg"} 
                                             alt={item.title} 
-                                            className="w-20 h-28 object-cover rounded-lg shadow-md"
+                                            className="w-20 h-28 object-cover rounded-none grayscale opacity-80"
                                         />
                                         <div className="flex-1 min-w-0">
-                                            <h4 className="font-headline-sm text-lg text-white font-semibold line-clamp-2 mb-1">{item.title}</h4>
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <span className="text-[10px] bg-secondary/20 text-secondary px-2 py-0.5 rounded font-bold">
-                                                    {item.studio || "Unknown Author"}
-                                                </span>
+                                            <h4 className="font-display text-[20px] uppercase tracking-[1px] text-text-primary mb-1 group-hover:text-secondary group-hover:scale-105 origin-left inline-block transition-all duration-300">{item.title}</h4>
+                                            <p className="font-body-md text-text-secondary line-clamp-2 group-hover:text-secondary group-hover:scale-105 origin-left transition-all duration-300 block mb-2">{item.description}</p>
+                                            <div className="flex items-center gap-2 mb-4">
+                                                <span className="font-label-md uppercase tracking-[2px] text-[10px] text-text-secondary border border-outline px-2 py-1 group-hover:border-secondary group-hover:text-secondary group-hover:scale-105 transition-all duration-300 inline-block">{item.score ? `★ ${item.score}` : 'TBD'}</span>
                                             </div>
-                                            <p className="font-body-md text-xs text-text-secondary line-clamp-2">{item.synopsis || dict.recBySomeone}</p>
+                                            <p className="font-body-sm text-text-secondary line-clamp-2 group-hover:text-secondary group-hover:scale-105 origin-left inline-block transition-all duration-300">{item.synopsis || dict.recBySomeone}</p>
                                         </div>
                                     </div>
-                                    <div className="px-5 py-3 border-t border-white/5 flex justify-between items-center bg-black/20">
-                                        <span className="text-xs text-text-secondary italic">Dari: {item.anonymous || "Anonymous"}</span>
-                                        <a href={item.url || "#"} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
-                                            Detail
+                                    <div className="px-6 py-4 border-t border-outline flex justify-between items-center bg-background">
+                                        <span className="font-label-md uppercase tracking-[2px] text-[10px] text-text-secondary">DARI: {item.anonymous || "ANONYMOUS"}</span>
+                                        <a href={item.url || "#"} target="_blank" rel="noopener noreferrer" className="font-label-md uppercase tracking-[2px] text-[10px] text-link hover:text-secondary transition-colors">
+                                            DETAIL
                                         </a>
                                     </div>
                                 </div>
