@@ -251,7 +251,7 @@ export default async function BookHobbyList({
                                         />
                                         <div className="flex-1 min-w-0">
                                             <h4 className="font-display text-[20px] uppercase tracking-[1px] text-text-primary mb-1 group-hover:text-secondary group-hover:scale-105 origin-left inline-block transition-all duration-300">{item.title}</h4>
-                                            <p className="font-body-md text-text-secondary line-clamp-2 group-hover:text-secondary group-hover:scale-105 origin-left transition-all duration-300 block mb-2">{item.description}</p>
+
                                             <div className="flex items-center gap-2 mb-4">
                                                 <span className="font-label-md uppercase tracking-[2px] text-[10px] text-text-secondary border border-outline px-2 py-1 group-hover:border-secondary group-hover:text-secondary group-hover:scale-105 transition-all duration-300 inline-block">{item.score ? `★ ${item.score}` : 'TBD'}</span>
                                             </div>
