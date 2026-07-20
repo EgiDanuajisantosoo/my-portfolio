@@ -131,7 +131,7 @@ export default async function Portfolio() {
             <h2 className="inline-block font-display text-[32px] md:text-display-lg uppercase tracking-[3px] text-text-primary mb-6 md:mb-8 hover:text-secondary hover:scale-105 origin-center md:origin-left transition-all duration-300 cursor-default">{dict.portfolio.about.title}</h2>
             <div className="space-y-4 md:space-y-6 font-body-md text-[16px] md:text-body-md text-text-secondary">
               {aboutParagraphs.map((text: string, i: number) => (
-                <p key={i} className="hover:text-secondary hover:scale-105 origin-center md:origin-left inline-block transition-all duration-300 cursor-default">{text}</p>
+                <p key={i} className="text-justify hover:text-secondary hover:scale-105 origin-center md:origin-left inline-block transition-all duration-300 cursor-default">{text}</p>
               ))}
             </div>
           </div>

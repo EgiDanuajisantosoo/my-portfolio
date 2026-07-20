@@ -49,10 +49,19 @@ export function SpotifyCurrentTrack() {
 
   const getStatusColor = (status?: string) => {
     switch (status) {
-      case 'online': return 'bg-primary';
-      case 'idle': return 'bg-text-secondary';
-      case 'dnd': return 'bg-text-primary';
-      default: return 'bg-surface-raised';
+      case 'online': return 'bg-green-500';
+      case 'idle': return 'bg-yellow-500';
+      case 'dnd': return 'bg-red-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+  const getStatusText = (status?: string) => {
+    switch (status) {
+      case 'online': return 'Online';
+      case 'idle': return 'Idle';
+      case 'dnd': return 'Do Not Disturb';
+      default: return 'Offline';
     }
   };
 
@@ -100,8 +109,8 @@ export function SpotifyCurrentTrack() {
     <div className="bg-surface border border-outline text-text-primary p-4 w-full max-w-xs font-body group hover:border-secondary transition-all duration-300 transform hover:scale-[1.02]">
       <div className="flex justify-between items-center mb-4 pb-2 border-b border-outline">
         <div className="text-[10px] font-label-md text-text-secondary tracking-widest uppercase flex items-center gap-1.5 group-hover:text-secondary group-hover:scale-105 origin-left transition-all duration-300">
-          <span className={`w-2 h-2 ${getStatusColor(data?.discord_status)}`}></span>
-          <span>Aktivitas Discord</span>
+          <span className={`w-2 h-2 rounded-full ${getStatusColor(data?.discord_status)}`}></span>
+          <span>Discord • {getStatusText(data?.discord_status)}</span>
         </div>
         
         {data.isPlaying ? (
@@ -140,7 +149,7 @@ export function SpotifyCurrentTrack() {
               E
             </div>
           )}
-          <span className={`absolute bottom-0 right-0 block h-3 w-3 border-2 border-background ${getStatusColor(data?.discord_status)}`}></span>
+          <span className={`absolute bottom-0 right-0 block h-3 w-3 rounded-full border-[1.5px] border-surface ${getStatusColor(data?.discord_status)}`}></span>
         </div>
         
         <div className="flex-1 min-w-0">
