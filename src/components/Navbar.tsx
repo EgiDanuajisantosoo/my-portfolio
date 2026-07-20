@@ -57,8 +57,8 @@ export default function Navbar({ dict }: { dict?: any }) {
 
   return (
     <nav className="bg-background fixed top-0 w-full z-50 border-b border-outline transition-all duration-300 ease-in-out">
-      <div className="flex justify-between items-center gap-8 px-4 md:px-margin-desktop py-4 max-w-container-max mx-auto">
-        <div className="font-display text-text-primary text-[12px] lg:text-[14px] tracking-[2px] lg:tracking-[4px] uppercase font-bold flex-shrink-0 z-10">
+      <div className="flex justify-between items-center gap-4 lg:gap-8 px-4 md:px-margin-desktop py-4 max-w-container-max mx-auto">
+        <div className="font-display text-text-primary text-[10px] sm:text-[12px] lg:text-[14px] tracking-[1px] sm:tracking-[2px] lg:tracking-[4px] uppercase font-bold flex-shrink-0 z-10">
           <Link href="#hero" className="hover:text-secondary hover:scale-105 inline-block transition-all duration-300">EGI DANUAJISANTOSO</Link>
         </div>
         
@@ -116,7 +116,7 @@ export default function Navbar({ dict }: { dict?: any }) {
 
       {/* Mobile Links */}
       {menuOpen && (
-        <div className="lg:hidden bg-surface-container border-t border-outline px-4 py-6 space-y-6 shadow-none">
+        <div className="lg:hidden absolute top-full left-0 w-full bg-background border-b border-outline px-6 py-6 space-y-5 shadow-2xl">
           {navLinks.map((link) => {
             const isActive = link.href === activeLink;
             return (
@@ -132,16 +132,16 @@ export default function Navbar({ dict }: { dict?: any }) {
                 }}
                 className={
                   isActive
-                    ? "block text-primary font-bold font-label-md uppercase tracking-[2px] text-[14px]"
-                    : "block text-text-secondary hover:text-secondary hover:scale-110 inline-block font-label-md uppercase tracking-[2px] text-[14px] transition-all duration-300"
+                    ? "block text-primary font-bold font-label-md uppercase tracking-[2px] text-[12px] sm:text-[14px]"
+                    : "block text-text-secondary active:text-secondary hover:text-secondary font-label-md uppercase tracking-[2px] text-[12px] sm:text-[14px] transition-colors"
                 }
               >
                 {link.label}
               </Link>
             );
           })}
-          <div className="pt-4 border-t border-outline">
-            <button className="w-full bg-transparent text-primary border border-primary px-4 py-3 rounded-full font-label-md uppercase tracking-[2.5px] text-[14px] hover:bg-secondary hover:text-on-secondary hover:border-secondary hover:scale-105 transition-all duration-300">
+          <div className="pt-5 border-t border-outline">
+            <button className="w-full bg-transparent text-primary border border-primary px-4 py-3 rounded-full font-label-md uppercase tracking-[2px] text-[12px] active:bg-secondary active:text-on-secondary active:border-secondary transition-colors">
               {d.rekrut}
             </button>
           </div>

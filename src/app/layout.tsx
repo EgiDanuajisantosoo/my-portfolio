@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import CustomCursor from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
   title: "Portfolio Egi",
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body
         suppressHydrationWarning
         className={`font-body-md text-body-md antialiased overflow-x-hidden selection:bg-primary-container/30 selection:text-primary`}>
+        <CustomCursor />
         {children}
       </body>
     </html>

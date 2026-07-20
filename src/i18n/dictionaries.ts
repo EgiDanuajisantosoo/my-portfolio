@@ -43,8 +43,10 @@ export const dictionaries = {
         anime: "My Anime List",
         book: "Daftar Buku",
         seeAnime: "Lihat Daftar Anime",
-        seeBooks: "Lihat Daftar Buku"
       }
+    },
+    footer: {
+      copyright: "© 2024 EGI DANUAJISANTOSO. SEMUA HAK CIPTA DILINDUNGI."
     },
     animeList: {
       title: "Daftar Anime Saya",
@@ -199,8 +201,10 @@ export const dictionaries = {
         anime: "My Anime List",
         book: "My Book List",
         seeAnime: "See Anime List",
-        seeBooks: "See Books List"
       }
+    },
+    footer: {
+      copyright: "© 2024 EGI DANUAJISANTOSO. ALL RIGHTS RESERVED."
     },
     animeList: {
       title: "My Anime List",

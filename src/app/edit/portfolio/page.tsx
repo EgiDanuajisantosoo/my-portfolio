@@ -425,7 +425,16 @@ export default async function PortfolioEditPage() {
           </summary>
           <div className={`${sectionClasses} mt-4`}>
             {hobbies?.map((hobby) => (
-              <div key={hobby.id} className="bg-black/20 p-4 rounded-xl border border-white/5 mb-4">
+              <div key={hobby.id} className="bg-black/20 p-4 rounded-xl border border-white/5 mb-4 relative">
+                {hobby.is_priority && (
+                  <div className="bg-error/10 border border-error/20 p-3 mb-4 rounded-lg text-error text-sm flex items-start gap-2">
+                    <span className="material-symbols-outlined text-[18px]">warning</span>
+                    <p>
+                      <strong>Peringatan Prioritas:</strong> Item ini merupakan tautan langsung ke fitur halaman khusus. 
+                      Jika dihapus, pengguna tidak akan bisa mengakses halaman fitur tersebut melalui portofolio.
+                    </p>
+                  </div>
+                )}
                 <form className="flex flex-col gap-4">
                   <input type="hidden" name="id" value={hobby.id} />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -450,6 +459,10 @@ export default async function PortfolioEditPage() {
                     <div className="flex-1">
                       <label className={labelClasses}>Link (Opsional)</label>
                       <input type="text" name="link" defaultValue={hobby.link || ''} className={inputClasses} />
+                    </div>
+                    <div className="flex items-center gap-2 pb-2">
+                      <input type="checkbox" name="is_priority" defaultChecked={hobby.is_priority} className="w-4 h-4 cursor-pointer accent-error" id={`priority-${hobby.id}`} />
+                      <label htmlFor={`priority-${hobby.id}`} className="text-sm font-label-md text-error cursor-pointer">Prioritas?</label>
                     </div>
                     <div className="w-16">
                       <label className={labelClasses}>Urutan</label>
@@ -488,6 +501,10 @@ export default async function PortfolioEditPage() {
                     <div className="flex-1">
                       <label className={labelClasses}>Link (Opsional)</label>
                       <input type="text" name="link" className={inputClasses} />
+                    </div>
+                    <div className="flex items-center gap-2 pb-2">
+                      <input type="checkbox" name="is_priority" className="w-4 h-4 cursor-pointer accent-error" id="new-priority" />
+                      <label htmlFor="new-priority" className="text-sm font-label-md text-error cursor-pointer">Prioritas?</label>
                     </div>
                     <div className="w-16">
                       <label className={labelClasses}>Urutan</label>

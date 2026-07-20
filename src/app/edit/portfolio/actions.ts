@@ -187,6 +187,7 @@ export async function addHobby(formData: FormData) {
     description: formData.get("description"),
     description_en: formData.get("description_en"),
     link: formData.get("link") || null,
+    is_priority: formData.get("is_priority") === "on",
     order_idx: parseInt(formData.get("order_idx") as string) || 0,
   };
   const { error } = await supabase.from("portfolio_hobbies").insert([data]);
@@ -204,6 +205,7 @@ export async function updateHobby(formData: FormData) {
     description: formData.get("description"),
     description_en: formData.get("description_en"),
     link: formData.get("link") || null,
+    is_priority: formData.get("is_priority") === "on",
     order_idx: parseInt(formData.get("order_idx") as string) || 0,
   };
   const { error } = await supabase.from("portfolio_hobbies").update(data).eq("id", id);

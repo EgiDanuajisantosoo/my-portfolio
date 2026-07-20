@@ -90,17 +90,17 @@ export default async function Portfolio() {
 
   return (
     <>
-      <main className="pt-32 pb-24 px-4 md:px-margin-desktop max-w-container-max mx-auto space-y-[120px]">
+      <main className="pt-24 md:pt-32 pb-16 md:pb-24 px-4 md:px-margin-desktop max-w-container-max mx-auto space-y-20 md:space-y-[120px]">
         {/* Hero Section */}
-        <section className="flex flex-col md:flex-row items-center justify-between gap-12 mt-12 mb-32" id="hero">
-          <div className="flex-1 space-y-6 z-10">
-            <h1 className="font-display text-[48px] md:text-[72px] lg:text-[88px] uppercase tracking-[4px] text-text-primary leading-[1.1] hover:text-secondary hover:scale-105 origin-left transition-all duration-300 cursor-default">
+        <section className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 mt-8 md:mt-12 mb-20 md:mb-32 text-center md:text-left" id="hero">
+          <div className="flex-1 space-y-6 z-10 flex flex-col items-center md:items-start">
+            <h1 className="font-display text-[48px] md:text-[72px] lg:text-[88px] uppercase tracking-[4px] text-text-primary leading-[1.1] hover:text-secondary hover:scale-105 origin-center md:origin-left transition-all duration-300 cursor-default">
               {heroTitle}
             </h1>
-            <p className="font-body-md text-body-md text-text-secondary max-w-xl hover:text-secondary hover:scale-105 origin-left inline-block transition-all duration-300 cursor-default">
+            <p className="font-body-md text-body-md text-text-secondary max-w-xl hover:text-secondary hover:scale-105 origin-center md:origin-left inline-block transition-all duration-300 cursor-default">
               {heroSubtitle}
             </p>
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-4 pt-4 justify-center md:justify-start">
               <a className="w-12 h-12 rounded-full border border-primary flex items-center justify-center hover:bg-secondary hover:text-on-secondary hover:border-secondary hover:scale-110 transition-all duration-300 text-primary" href={githubUrl} target="_blank" rel="noreferrer">
                 <span className="material-symbols-outlined">code</span>
               </a>
@@ -109,50 +109,50 @@ export default async function Portfolio() {
               </a>
             </div>
           </div>
-          <div className="flex-1 relative flex justify-center">
+          <div className="flex-1 relative flex justify-center mt-10 md:mt-0">
             <img 
               alt="Profile" 
-              className="relative z-10 rounded-none object-cover w-full max-h-[700px] grayscale hover:grayscale-0 transition-all duration-500 hover:scale-105" 
+              className="relative z-10 rounded-none object-cover w-full max-h-[400px] md:max-h-[700px] grayscale hover:grayscale-0 transition-all duration-500 hover:scale-105" 
               src={heroImage}
             />
           </div>
         </section>
 
         {/* Motto Section */}
-        <section className="bg-background border-l border-outline-variant p-12 max-w-3xl mx-auto hover:border-secondary transition-all duration-300 transform hover:scale-105 group">
-          <p className="font-body-md text-body-md text-text-primary italic group-hover:text-secondary transition-colors">
+        <section className="bg-background border-l-2 md:border-l border-outline-variant p-6 md:p-12 max-w-3xl mx-auto hover:border-secondary transition-all duration-300 transform hover:scale-105 group mb-20 md:mb-32">
+          <p className="font-body-md text-[16px] md:text-body-md text-text-primary italic group-hover:text-secondary transition-colors text-center md:text-left">
             {motto}
           </p>
         </section>
 
         {/* About Section */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-32" id="about">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-20 md:mb-32 text-center md:text-left" id="about">
           <div>
-            <h2 className="inline-block font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-8 hover:text-secondary hover:scale-105 origin-left transition-all duration-300 cursor-default">{dict.portfolio.about.title}</h2>
-            <div className="space-y-6 font-body-md text-body-md text-text-secondary">
+            <h2 className="inline-block font-display text-[32px] md:text-display-lg uppercase tracking-[3px] text-text-primary mb-6 md:mb-8 hover:text-secondary hover:scale-105 origin-center md:origin-left transition-all duration-300 cursor-default">{dict.portfolio.about.title}</h2>
+            <div className="space-y-4 md:space-y-6 font-body-md text-[16px] md:text-body-md text-text-secondary">
               {aboutParagraphs.map((text: string, i: number) => (
-                <p key={i} className="hover:text-secondary hover:scale-105 origin-left inline-block transition-all duration-300 cursor-default">{text}</p>
+                <p key={i} className="hover:text-secondary hover:scale-105 origin-center md:origin-left inline-block transition-all duration-300 cursor-default">{text}</p>
               ))}
             </div>
           </div>
-          <div className="bg-surface-container border border-outline rounded-none p-12 h-full flex flex-col justify-center hover:border-secondary transition-colors">
-            <div className="grid grid-cols-2 gap-8">
-              <div className="border border-outline-variant p-6 rounded-none text-center hover:border-secondary group transition-all duration-300 transform hover:scale-105 cursor-default flex flex-col items-center justify-center">
-                <span className="block font-display text-[48px] text-primary group-hover:text-secondary group-hover:scale-110 origin-bottom transition-all duration-300 mb-2 leading-none">{yearsExp}</span>
-                <span className="block font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary group-hover:text-secondary group-hover:scale-105 origin-top transition-all duration-300">{dict.portfolio.stats.experience}</span>
+          <div className="bg-surface-container border border-outline rounded-none p-6 md:p-12 h-full flex flex-col justify-center hover:border-secondary transition-colors mt-8 md:mt-0">
+            <div className="grid grid-cols-2 gap-4 md:gap-8">
+              <div className="border border-outline-variant p-4 md:p-6 rounded-none text-center hover:border-secondary group transition-all duration-300 transform hover:scale-105 cursor-default flex flex-col items-center justify-center">
+                <span className="block font-display text-[36px] md:text-[48px] text-primary group-hover:text-secondary group-hover:scale-110 origin-bottom transition-all duration-300 mb-2 leading-none">{yearsExp}</span>
+                <span className="block font-label-md uppercase tracking-[1px] md:tracking-[2px] text-[10px] md:text-[11px] text-text-secondary group-hover:text-secondary group-hover:scale-105 origin-top transition-all duration-300">{dict.portfolio.stats.experience}</span>
               </div>
-              <div className="border border-outline-variant p-6 rounded-none text-center hover:border-secondary group transition-all duration-300 transform hover:scale-105 cursor-default flex flex-col items-center justify-center">
-                <span className="block font-display text-[48px] text-primary group-hover:text-secondary group-hover:scale-110 origin-bottom transition-all duration-300 mb-2 leading-none">{projCompleted}</span>
-                <span className="block font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary group-hover:text-secondary group-hover:scale-105 origin-top transition-all duration-300">{dict.portfolio.stats.projects}</span>
+              <div className="border border-outline-variant p-4 md:p-6 rounded-none text-center hover:border-secondary group transition-all duration-300 transform hover:scale-105 cursor-default flex flex-col items-center justify-center">
+                <span className="block font-display text-[36px] md:text-[48px] text-primary group-hover:text-secondary group-hover:scale-110 origin-bottom transition-all duration-300 mb-2 leading-none">{projCompleted}</span>
+                <span className="block font-label-md uppercase tracking-[1px] md:tracking-[2px] text-[10px] md:text-[11px] text-text-secondary group-hover:text-secondary group-hover:scale-105 origin-top transition-all duration-300">{dict.portfolio.stats.projects}</span>
               </div>
             </div>
           </div>
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="mb-32">
-          <div className="text-center w-full"><h2 className="inline-block font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-12 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.portfolio.skills.title}</h2></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10 max-w-4xl mx-auto">
+        <section id="skills" className="mb-20 md:mb-32">
+          <div className="text-center w-full"><h2 className="inline-block font-display text-[32px] md:text-display-lg uppercase tracking-[3px] text-text-primary mb-8 md:mb-12 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.portfolio.skills.title}</h2></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 md:gap-x-16 gap-y-8 md:gap-y-10 max-w-4xl mx-auto px-4 md:px-0">
             {skills.map((skill) => (
               <div key={skill.name} className="space-y-4 group cursor-default transition-all duration-300 transform hover:scale-105">
                 <div className="flex justify-between font-label-md uppercase tracking-[2px] text-[12px] text-text-primary group-hover:text-secondary transition-colors">
@@ -168,16 +168,16 @@ export default async function Portfolio() {
         </section>
 
         {/* Timeline / Education & Experience Section */}
-        <section id="timeline" className="mb-32">
-          <div className="text-center w-full"><h2 className="inline-block font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-16 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.navbar.pengalaman}</h2></div>
-          <div className="relative border-l border-outline-variant ml-4 md:mx-auto max-w-3xl space-y-12">
+        <section id="timeline" className="mb-20 md:mb-32">
+          <div className="text-center w-full"><h2 className="inline-block font-display text-[32px] md:text-display-lg uppercase tracking-[3px] text-text-primary mb-10 md:mb-16 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.navbar.pengalaman}</h2></div>
+          <div className="relative border-l border-outline-variant ml-2 md:mx-auto max-w-3xl space-y-8 md:space-y-12">
             {experiences.map((exp, idx) => (
-              <div key={idx} className="relative pl-12 pb-12 border-b border-outline last:border-0 last:pb-0">
+              <div key={idx} className="relative pl-8 md:pl-12 pb-8 md:pb-12 border-b border-outline last:border-0 last:pb-0">
                 <div className="absolute w-2 h-2 rounded-none bg-primary -left-[4px] top-2"></div>
                 <div className="bg-transparent group transition-all duration-300 transform hover:scale-105 origin-left">
-                  <span className="font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary mb-4 block group-hover:text-secondary group-hover:scale-105 origin-left transition-all duration-300">{exp.period}</span>
-                  <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary mb-2 group-hover:text-secondary group-hover:scale-105 origin-left block transition-all duration-300">{exp.title}</h3>
-                  <p className="font-body-md text-text-secondary group-hover:text-secondary group-hover:scale-105 origin-left block transition-all duration-300">{exp.subtitle}</p>
+                  <span className="font-label-md uppercase tracking-[2px] text-[10px] md:text-[11px] text-text-secondary mb-2 md:mb-4 block group-hover:text-secondary group-hover:scale-105 origin-left transition-all duration-300">{exp.period}</span>
+                  <h3 className="font-display text-[20px] md:text-[24px] uppercase tracking-[1px] md:tracking-[1.5px] text-text-primary mb-2 group-hover:text-secondary group-hover:scale-105 origin-left block transition-all duration-300">{exp.title}</h3>
+                  <p className="font-body-md text-[14px] md:text-[16px] text-text-secondary group-hover:text-secondary group-hover:scale-105 origin-left block transition-all duration-300">{exp.subtitle}</p>
                 </div>
               </div>
             ))}
@@ -185,8 +185,8 @@ export default async function Portfolio() {
         </section>
 
         {/* Projects & Certifications Grid */}
-        <section id="projects" className="mb-32">
-          <div className="text-center w-full"><h2 className="inline-block font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-16 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.portfolio.projects.title}</h2></div>
+        <section id="projects" className="mb-20 md:mb-32">
+          <div className="text-center w-full"><h2 className="inline-block font-display text-[32px] md:text-display-lg uppercase tracking-[3px] text-text-primary mb-10 md:mb-16 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.portfolio.projects.title}</h2></div>
           <ProjectGrid 
             items={projects.map(p => ({ type: p.type, title: p.title, desc: p.description, image: p.image, link: p.link }))}
             filterAllStr={dict.portfolio.projects.filterAll}
@@ -196,35 +196,18 @@ export default async function Portfolio() {
         </section>
 
         {/* Hobbies Section */}
-        <section id="hobbies" className="mb-32">
-          <div className="text-center w-full"><h2 className="inline-block font-display text-display-lg uppercase tracking-[3px] text-text-primary mb-16 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.portfolio.hobbies.title}</h2></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <section id="hobbies" className="mb-20 md:mb-32">
+          <div className="text-center w-full"><h2 className="inline-block font-display text-[32px] md:text-display-lg uppercase tracking-[3px] text-text-primary mb-10 md:mb-16 text-center hover:text-secondary hover:scale-105 transition-all duration-300 cursor-default">{dict.portfolio.hobbies.title}</h2></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
             {hobbies.map((h, i) => (
-              <a href={h.link || '#'} key={i} className="bg-surface-container border border-outline p-10 rounded-none text-center hover:border-secondary transition-all duration-300 transform hover:scale-105 cursor-pointer group block">
-                <div className="w-16 h-16 mx-auto bg-transparent border border-outline flex items-center justify-center mb-8 group-hover:border-secondary transition-colors rounded-none">
-                  <span className="material-symbols-outlined text-3xl text-primary group-hover:text-secondary transition-colors">{h.icon}</span>
+              <a href={h.link || '#'} key={i} className="bg-surface-container border border-outline p-6 md:p-10 rounded-none text-center hover:border-secondary transition-all duration-300 transform hover:scale-105 cursor-pointer group block">
+                <div className="w-12 h-12 md:w-16 md:h-16 mx-auto bg-transparent border border-outline flex items-center justify-center mb-6 md:mb-8 group-hover:border-secondary transition-colors rounded-none">
+                  <span className="material-symbols-outlined text-2xl md:text-3xl text-primary group-hover:text-secondary transition-colors">{h.icon}</span>
                 </div>
-                <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary mb-4 group-hover:text-secondary transition-colors">{h.title}</h3>
-                <p className="font-body-md text-text-secondary group-hover:text-secondary transition-colors">{h.description}</p>
+                <h3 className="font-display text-[20px] md:text-[24px] uppercase tracking-[1px] md:tracking-[1.5px] text-text-primary mb-3 md:mb-4 group-hover:text-secondary transition-colors">{h.title}</h3>
+                <p className="font-body-md text-[14px] md:text-[16px] text-text-secondary group-hover:text-secondary transition-colors">{h.description}</p>
               </a>
             ))}
-            
-            {/* Dynamic Hobby Pages Hardcoded */}
-            <a href="/mylist/anime" className="bg-surface-container border border-outline p-10 rounded-none text-center hover:border-secondary transition-all duration-300 transform hover:scale-105 cursor-pointer group block">
-              <div className="w-16 h-16 mx-auto bg-transparent border border-outline flex items-center justify-center mb-8 group-hover:border-secondary transition-colors rounded-none">
-                <span className="material-symbols-outlined text-3xl text-primary group-hover:text-secondary transition-colors">animation</span>
-              </div>
-              <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary mb-4 group-hover:text-secondary transition-colors">{dict.portfolio.hobbies.anime}</h3>
-              <p className="font-body-md text-text-secondary group-hover:text-secondary transition-colors">{dict.portfolio.hobbies.seeAnime}</p>
-            </a>
-            
-            <a href="/mylist/buku" className="bg-surface-container border border-outline p-10 rounded-none text-center hover:border-secondary transition-all duration-300 transform hover:scale-105 cursor-pointer group block">
-              <div className="w-16 h-16 mx-auto bg-transparent border border-outline flex items-center justify-center mb-8 group-hover:border-secondary transition-colors rounded-none">
-                <span className="material-symbols-outlined text-3xl text-primary group-hover:text-secondary transition-colors">menu_book</span>
-              </div>
-              <h3 className="font-display text-[24px] uppercase tracking-[1.5px] text-text-primary mb-4 group-hover:text-secondary transition-colors">{dict.portfolio.hobbies.book}</h3>
-              <p className="font-body-md text-text-secondary group-hover:text-secondary transition-colors">{dict.portfolio.hobbies.seeBooks}</p>
-            </a>
           </div>
         </section>
       </main>
@@ -235,8 +218,8 @@ export default async function Portfolio() {
           <div className="font-display text-[14px] tracking-[6px] uppercase text-text-primary">
             EGI DANUAJISANTOSO
           </div>
-          <div className="font-body-sm text-text-secondary text-center">
-            © 2024 EGI DANUAJISANTOSO. ENGINEERED FOR PERFORMANCE.
+          <div className="font-body-sm text-text-secondary text-center uppercase">
+            {dict.footer.copyright}
           </div>
           <div className="flex gap-6 font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary">
             <a className="hover:text-secondary hover:scale-110 inline-block transition-all duration-300" href={githubUrl} target="_blank" rel="noreferrer">GitHub</a>

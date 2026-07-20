@@ -60,76 +60,79 @@ function FilterControls({
                 </select>
             </div>
 
-            {/* Desktop Buttons */}
-            <div className="hidden md:flex flex-wrap items-center gap-6 justify-between">
-                <div className="flex gap-4">
-                    <button
-                        onClick={() => onFilterChange('tracks')}
-                        className={`${baseButtonClass} ${filter === 'tracks' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
-                    >
-                        Top Tracks
-                    </button>
-                    <button
-                        onClick={() => onFilterChange('artists')}
-                        className={`${baseButtonClass} ${filter === 'artists' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
-                    >
-                        Top Artists
-                    </button>
+            {/* Desktop Buttons & Jumlah Container */}
+            <div className="flex flex-col md:flex-row flex-wrap items-start md:items-center gap-6 justify-between">
+                {/* Desktop Buttons */}
+                <div className="hidden md:flex flex-wrap items-center gap-6">
+                    <div className="flex gap-4">
+                        <button
+                            onClick={() => onFilterChange('tracks')}
+                            className={`${baseButtonClass} ${filter === 'tracks' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
+                        >
+                            Top Tracks
+                        </button>
+                        <button
+                            onClick={() => onFilterChange('artists')}
+                            className={`${baseButtonClass} ${filter === 'artists' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
+                        >
+                            Top Artists
+                        </button>
+                    </div>
+                    <div className="flex gap-4">
+                        <button
+                            onClick={() => onTimeRangeChange('short_term')}
+                            className={`${baseButtonClass} ${timeRange === 'short_term' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
+                        >
+                            4 Minggu
+                        </button>
+                        <button
+                            onClick={() => onTimeRangeChange('medium_term')}
+                            className={`${baseButtonClass} ${timeRange === 'medium_term' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
+                        >
+                            6 Bulan
+                        </button>
+                        <button
+                            onClick={() => onTimeRangeChange('long_term')}
+                            className={`${baseButtonClass} ${timeRange === 'long_term' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
+                        >
+                            1 Tahun
+                        </button>
+                    </div>
                 </div>
-                <div className="flex gap-4">
-                    <button
-                        onClick={() => onTimeRangeChange('short_term')}
-                        className={`${baseButtonClass} ${timeRange === 'short_term' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
-                    >
-                        4 Minggu
-                    </button>
-                    <button
-                        onClick={() => onTimeRangeChange('medium_term')}
-                        className={`${baseButtonClass} ${timeRange === 'medium_term' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
-                    >
-                        6 Bulan
-                    </button>
-                    <button
-                        onClick={() => onTimeRangeChange('long_term')}
-                        className={`${baseButtonClass} ${timeRange === 'long_term' ? 'border-primary bg-primary text-on-primary' : 'border-outline text-text-secondary hover:bg-primary hover:text-on-primary'}`}
-                    >
-                        1 Tahun
-                    </button>
-                </div>
-            </div>
 
-            {/* Jumlah */}
-            <div className="mt-6 flex items-center gap-4">
-                <label htmlFor="limit-input" className="font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary">Jumlah:</label>
-                <input
-                    id="limit-input"
-                    type="number"
-                    value={limitInput}
-                    onChange={(e) => {
-                        let raw = e.target.value;
-                        if (/^0\d/.test(raw)) {
-                            raw = raw.replace(/^0+/, '');
-                        }
-                        setLimitInput(raw);
-                        const num = Number(raw);
-                        if (!isNaN(num) && num >= 1 && num <= 50) {
-                            onLimitChange(num);
-                        }
-                    }}
-                    onBlur={() => {
-                        const num = Number(limitInput);
-                        if (isNaN(num) || num < 1) {
-                            setLimitInput('1');
-                            onLimitChange(1);
-                        } else if (num > 50) {
-                            setLimitInput('50');
-                            onLimitChange(50);
-                        }
-                    }}
-                    className="w-20 rounded-none border border-outline bg-background p-3 text-center text-on-primary font-body-md focus:outline-none focus:border-primary transition-colors"
-                    min="1"
-                    max="50"
-                />
+                {/* Jumlah */}
+                <div className="flex items-center gap-4">
+                    <label htmlFor="limit-input" className="font-label-md uppercase tracking-[2px] text-[11px] text-text-secondary">Jumlah:</label>
+                    <input
+                        id="limit-input"
+                        type="number"
+                        value={limitInput}
+                        onChange={(e) => {
+                            let raw = e.target.value;
+                            if (/^0\d/.test(raw)) {
+                                raw = raw.replace(/^0+/, '');
+                            }
+                            setLimitInput(raw);
+                            const num = Number(raw);
+                            if (!isNaN(num) && num >= 1 && num <= 50) {
+                                onLimitChange(num);
+                            }
+                        }}
+                        onBlur={() => {
+                            const num = Number(limitInput);
+                            if (isNaN(num) || num < 1) {
+                                setLimitInput('1');
+                                onLimitChange(1);
+                            } else if (num > 50) {
+                                setLimitInput('50');
+                                onLimitChange(50);
+                            }
+                        }}
+                        className="w-20 rounded-none border border-outline bg-background p-3 text-center text-text-primary font-body-md focus:outline-none focus:border-primary transition-colors"
+                        min="1"
+                        max="50"
+                    />
+                </div>
             </div>
         </div>
     );
